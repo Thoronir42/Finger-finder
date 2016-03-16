@@ -1,7 +1,11 @@
-﻿namespace FrontForm
+﻿using FingerFinder;
+
+namespace FrontForm
 {
     partial class FrontForm
     {
+        FprintAnalyzer Analyzer { get; set; }
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -33,6 +37,9 @@
             this.menuStripItem_open = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripItem_close = new System.Windows.Forms.ToolStripSeparator();
             this.zavřítToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.analýzaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detekcemarkantůToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.klasifikaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel_fingerPrint = new System.Windows.Forms.Panel();
             this.groupBox_toolkit = new System.Windows.Forms.GroupBox();
             this.menuStrip.SuspendLayout();
@@ -42,7 +49,8 @@
             // 
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuStripItem_soubor});
+            this.MenuStripItem_soubor,
+            this.analýzaToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(770, 28);
@@ -80,6 +88,27 @@
             this.zavřítToolStripMenuItem.Size = new System.Drawing.Size(182, 26);
             this.zavřítToolStripMenuItem.Text = "Zavřít";
             this.zavřítToolStripMenuItem.Click += new System.EventHandler(this.zavřítToolStripMenuItem_Click);
+            // 
+            // analýzaToolStripMenuItem
+            // 
+            this.analýzaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.detekcemarkantůToolStripMenuItem,
+            this.klasifikaceToolStripMenuItem});
+            this.analýzaToolStripMenuItem.Name = "analýzaToolStripMenuItem";
+            this.analýzaToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
+            this.analýzaToolStripMenuItem.Text = "&Analýza";
+            // 
+            // detekcemarkantůToolStripMenuItem
+            // 
+            this.detekcemarkantůToolStripMenuItem.Name = "detekcemarkantůToolStripMenuItem";
+            this.detekcemarkantůToolStripMenuItem.Size = new System.Drawing.Size(204, 26);
+            this.detekcemarkantůToolStripMenuItem.Text = "Detekce &markantů";
+            // 
+            // klasifikaceToolStripMenuItem
+            // 
+            this.klasifikaceToolStripMenuItem.Name = "klasifikaceToolStripMenuItem";
+            this.klasifikaceToolStripMenuItem.Size = new System.Drawing.Size(204, 26);
+            this.klasifikaceToolStripMenuItem.Text = "&Klasifikace";
             // 
             // panel_fingerPrint
             // 
@@ -129,6 +158,9 @@
         private System.Windows.Forms.ToolStripMenuItem zavřítToolStripMenuItem;
         private System.Windows.Forms.Panel panel_fingerPrint;
         private System.Windows.Forms.GroupBox groupBox_toolkit;
+        private System.Windows.Forms.ToolStripMenuItem analýzaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detekcemarkantůToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem klasifikaceToolStripMenuItem;
     }
 }
 

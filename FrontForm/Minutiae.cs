@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace FingerFinder
 {
-    class Minutiae
+    public class Minutiae
     {
         public PointF Position { get; set; }
         public MinutiaeType Type { get; set; }
 
     }
 
-    enum MinutiaeType
+    public enum MinutiaeType
     {
         RidgeEnding, RidgeBifurcation, ShortRidge, Island, RidgeEnclosure, Spur, CrossoverOrBridge, Delta, Core
     }

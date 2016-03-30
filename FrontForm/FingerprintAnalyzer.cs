@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace FingerFinder
 {
-    partial class FprintAnalyzer
+    public partial class FingerprintAnalyzer
     {
         private Image fingerprintOriginal;
         private Image fingerpintSkeleton;
-        Image OriginalFingerprint
+
+        Image FingerprintOriginal
         {
             get { return fingerprintOriginal; }
             set
@@ -21,6 +22,7 @@ namespace FingerFinder
 
             }
         }
+        Image FingerprintSkeleton { get { return this.fingerpintSkeleton; } }
 
         private Image createFingerprintSkeleton(Image original)
         {

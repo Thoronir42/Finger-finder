@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FingerFinder
 {
     /* Minutiae */
-    partial class FprintAnalyzer
+    partial class FingerprintAnalyzer
     {
         public Minutiae[] detectMinituae()
         {

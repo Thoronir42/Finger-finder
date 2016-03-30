@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>FrontForm.Program</StartupObject>
+    <StartupObject>FingerFinder.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FprintAnalyzer_Classification.cs" />
-    <Compile Include="FprintAnalyzer_Minutiae.cs" />
-    <Compile Include="FprintAnalyzer.cs" />
+    <Compile Include="FingerprintAnalyzer_Classification.cs" />
+    <Compile Include="FingerprintAnalyzer_Minutiae.cs" />
+    <Compile Include="FingerprintAnalyzer.cs" />
     <Compile Include="FrontForm.cs">
       <SubType>Form</SubType>
     </Compile>

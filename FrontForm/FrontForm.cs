@@ -8,10 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrontForm
+namespace FingerFinder
 {
     public partial class FrontForm : Form
     {
+
+        FingerprintAnalyzer FprintAnalyzer { get; set; } = new FingerprintAnalyzer();
+
         public FrontForm()
         {
             InitializeComponent();
@@ -25,6 +28,13 @@ namespace FrontForm
         private void otevřítToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Otevřít");
+            if(this.imageOpener.ShowDialog() != DialogResult.OK)
+            {
+                Console.WriteLine("Otevírání souboru zrušeno.");
+                return;
+            }
+
+            Console.WriteLine(this.imageOpener.FileName);
         }
 
         private void zavřítToolStripMenuItem_Click(object sender, EventArgs e)

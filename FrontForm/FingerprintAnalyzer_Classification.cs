@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FingerFinder
 {
     /* Minutiae */
-    partial class FprintAnalyzer
+    partial class FingerprintAnalyzer
     {
         public FingerprintCategory classificate()
         {
@@ -16,7 +16,7 @@ namespace FingerFinder
 
     }
 
-    enum FingerprintCategory
+    public enum FingerprintCategory
     {
         ArchPlain, ArchTented, LoopRadial, LoopUlnar, WhorlPlain, WhorlCentralPocket, WhorlDoubleLoop, WhorlAccidental
     }

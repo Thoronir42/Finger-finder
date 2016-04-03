@@ -52,5 +52,39 @@ namespace FingerFinder
             }
             
         }
+
+        private void imageOpener_FileOk(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                Image fingerprint = Image.FromFile(imageOpener.FileName);
+                this.FprintAnalyzer.FingerprintOriginal = fingerprint;
+                this.drawFingerprint();
+            } catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
+        }
+
+        private void drawFingerprint()
+        {
+            var g = this.panel_fingerPrint.CreateGraphics();
+            Image fingerprint = this.FprintAnalyzer.getImage(tabs_typeSelect.SelectedIndex);
+
+            Rectangle bounds = new Rectangle() { X = 0, Y = 0, Height = panel_fingerPrint.Height, Width = panel_fingerPrint.Width };
+            if(fingerprint == null)
+            {
+                Brush fill = new SolidBrush(Color.HotPink);
+                g.FillRectangle(fill, bounds);
+                return;
+            }
+            g.DrawImage(fingerprint, 0, 0);
+
+        }
+
+        private void tabs_typeSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            drawFingerprint();
+        }
     }
 }

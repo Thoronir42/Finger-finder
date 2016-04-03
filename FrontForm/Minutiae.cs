@@ -9,13 +9,13 @@ namespace FingerFinder
 {
     public class Minutiae
     {
-        public PointF Position { get; set; }
-        public MinutiaeType Type { get; set; }
-
+        public PointF Position { get; set; } = new PointF();
+        public MinutiaeType Type { get; set; } = MinutiaeType.Unspecified;
     }
 
     public enum MinutiaeType
     {
+        Unspecified, 
         RidgeEnding, RidgeBifurcation, ShortRidge, Island, RidgeEnclosure, Spur, CrossoverOrBridge, Delta, Core
     }
 }

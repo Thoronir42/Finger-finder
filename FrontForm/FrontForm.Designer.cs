@@ -45,11 +45,11 @@ namespace FingerFinder
             this.panel_fingerPrint = new System.Windows.Forms.Panel();
             this.groupBox_toolkit = new System.Windows.Forms.GroupBox();
             this.imageOpener = new System.Windows.Forms.OpenFileDialog();
-            this.tab_fpOriginal = new System.Windows.Forms.TabControl();
+            this.tabs_typeSelect = new System.Windows.Forms.TabControl();
             this.tabPage_original = new System.Windows.Forms.TabPage();
             this.tabPage_skeleton = new System.Windows.Forms.TabPage();
             this.menuStrip.SuspendLayout();
-            this.tab_fpOriginal.SuspendLayout();
+            this.tabs_typeSelect.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -151,16 +151,18 @@ namespace FingerFinder
             // 
             this.imageOpener.FileName = "Obraz otisku";
             this.imageOpener.Filter = "JPG|*.jpg|PNG|*.png";
+            this.imageOpener.FileOk += new System.ComponentModel.CancelEventHandler(this.imageOpener_FileOk);
             // 
-            // tab_fpOriginal
+            // tabs_typeSelect
             // 
-            this.tab_fpOriginal.Controls.Add(this.tabPage_original);
-            this.tab_fpOriginal.Controls.Add(this.tabPage_skeleton);
-            this.tab_fpOriginal.Location = new System.Drawing.Point(12, 31);
-            this.tab_fpOriginal.Name = "tab_fpOriginal";
-            this.tab_fpOriginal.SelectedIndex = 0;
-            this.tab_fpOriginal.Size = new System.Drawing.Size(420, 26);
-            this.tab_fpOriginal.TabIndex = 0;
+            this.tabs_typeSelect.Controls.Add(this.tabPage_original);
+            this.tabs_typeSelect.Controls.Add(this.tabPage_skeleton);
+            this.tabs_typeSelect.Location = new System.Drawing.Point(12, 31);
+            this.tabs_typeSelect.Name = "tabs_typeSelect";
+            this.tabs_typeSelect.SelectedIndex = 0;
+            this.tabs_typeSelect.Size = new System.Drawing.Size(420, 24);
+            this.tabs_typeSelect.TabIndex = 0;
+            this.tabs_typeSelect.SelectedIndexChanged += new System.EventHandler(this.tabs_typeSelect_SelectedIndexChanged);
             // 
             // tabPage_original
             // 
@@ -177,7 +179,7 @@ namespace FingerFinder
             this.tabPage_skeleton.Location = new System.Drawing.Point(4, 25);
             this.tabPage_skeleton.Name = "tabPage_skeleton";
             this.tabPage_skeleton.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_skeleton.Size = new System.Drawing.Size(490, 0);
+            this.tabPage_skeleton.Size = new System.Drawing.Size(412, 21);
             this.tabPage_skeleton.TabIndex = 1;
             this.tabPage_skeleton.Text = "Otisk skeleton";
             this.tabPage_skeleton.UseVisualStyleBackColor = true;
@@ -187,7 +189,7 @@ namespace FingerFinder
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(809, 491);
-            this.Controls.Add(this.tab_fpOriginal);
+            this.Controls.Add(this.tabs_typeSelect);
             this.Controls.Add(this.groupBox_toolkit);
             this.Controls.Add(this.panel_fingerPrint);
             this.Controls.Add(this.menuStrip);
@@ -200,7 +202,7 @@ namespace FingerFinder
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrontForm_FormClosing);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.tab_fpOriginal.ResumeLayout(false);
+            this.tabs_typeSelect.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -221,7 +223,7 @@ namespace FingerFinder
         private System.Windows.Forms.OpenFileDialog imageOpener;
         private System.Windows.Forms.ToolStripSeparator menuStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuStripItem_import;
-        private System.Windows.Forms.TabControl tab_fpOriginal;
+        private System.Windows.Forms.TabControl tabs_typeSelect;
         private System.Windows.Forms.TabPage tabPage_original;
         private System.Windows.Forms.TabPage tabPage_skeleton;
     }

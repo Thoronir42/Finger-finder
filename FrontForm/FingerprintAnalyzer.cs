@@ -12,7 +12,7 @@ namespace FingerFinder
         private Image fingerprintOriginal;
         private Image fingerpintSkeleton;
 
-        Image FingerprintOriginal
+        public Image FingerprintOriginal
         {
             get { return fingerprintOriginal; }
             set
@@ -22,11 +22,35 @@ namespace FingerFinder
 
             }
         }
-        Image FingerprintSkeleton { get { return this.fingerpintSkeleton; } }
+        public Image FingerprintSkeleton { get { return this.fingerpintSkeleton; } }
 
         private Image createFingerprintSkeleton(Image original)
         {
-            return original;
+            Bitmap original_b = new Bitmap(original);
+            Bitmap skeleton = new Bitmap(original.Width, original.Height);
+            Graphics g = Graphics.FromImage(skeleton);
+            for(int y = 0; y < original.Height; y++)
+            {
+                for(int x = 0; x < original.Width; x++)
+                {
+                    Color c = original_b.GetPixel(original.Width - 1 - x, y);
+                    skeleton.SetPixel(x, y, c);
+                }
+            }
+
+            return skeleton;
+        }
+
+
+        internal Image getImage(int selectedIndex)
+        {
+            if(selectedIndex == 0)
+            {
+                return this.FingerprintOriginal;
+            } else
+            {
+                return this.FingerprintSkeleton;
+            }
         }
     }
 }

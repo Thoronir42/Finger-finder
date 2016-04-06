@@ -1,0 +1,35 @@
+﻿<Window x:Class="FingerFinderPresenter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FingerFinderPresenter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="420" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" VerticalAlignment="Stretch" SelectionChanged="tabControl_fingerprintDrawer_SelectionChanged">
+            <TabItem Header="Otisk originál" Height="Auto" Margin="-2,0">
+                <Grid x:Name="tab_fingerprintOriginal" Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton">
+                <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.531,0.556">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

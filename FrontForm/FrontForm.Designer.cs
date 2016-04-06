@@ -1,10 +1,11 @@
 ﻿using FingerFinder;
+using FingerprintAnalyzer;
 
 namespace FingerFinder
 {
     partial class FrontForm
     {
-        FingerprintAnalyzer Analyzer { get; set; }
+        Analyzer Analyzer { get; set; }
 
         /// <summary>
         /// Required designer variable.
@@ -43,13 +44,17 @@ namespace FingerFinder
             this.detekcemarkantůToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.klasifikaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel_fingerPrint = new System.Windows.Forms.Panel();
-            this.groupBox_toolkit = new System.Windows.Forms.GroupBox();
             this.imageOpener = new System.Windows.Forms.OpenFileDialog();
             this.tabs_typeSelect = new System.Windows.Forms.TabControl();
             this.tabPage_original = new System.Windows.Forms.TabPage();
             this.tabPage_skeleton = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.menuStrip.SuspendLayout();
             this.tabs_typeSelect.SuspendLayout();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -95,6 +100,7 @@ namespace FingerFinder
             this.menuStripItem_import.Name = "menuStripItem_import";
             this.menuStripItem_import.Size = new System.Drawing.Size(182, 26);
             this.menuStripItem_import.Text = "Import";
+            this.menuStripItem_import.Click += new System.EventHandler(this.menuStripItem_import_Click);
             // 
             // menuStripSeparator2
             // 
@@ -107,7 +113,7 @@ namespace FingerFinder
             this.menuStripItem_close.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.menuStripItem_close.Size = new System.Drawing.Size(182, 26);
             this.menuStripItem_close.Text = "Zavřít";
-            this.menuStripItem_close.Click += new System.EventHandler(this.zavřítToolStripMenuItem_Click);
+            this.menuStripItem_close.Click += new System.EventHandler(this.menuStripItem_close_Click);
             // 
             // analýzaToolStripMenuItem
             // 
@@ -138,19 +144,10 @@ namespace FingerFinder
             this.panel_fingerPrint.Size = new System.Drawing.Size(420, 420);
             this.panel_fingerPrint.TabIndex = 1;
             // 
-            // groupBox_toolkit
-            // 
-            this.groupBox_toolkit.Location = new System.Drawing.Point(438, 31);
-            this.groupBox_toolkit.Name = "groupBox_toolkit";
-            this.groupBox_toolkit.Size = new System.Drawing.Size(359, 445);
-            this.groupBox_toolkit.TabIndex = 2;
-            this.groupBox_toolkit.TabStop = false;
-            this.groupBox_toolkit.Text = "Nástroje";
-            // 
             // imageOpener
             // 
             this.imageOpener.FileName = "Obraz otisku";
-            this.imageOpener.Filter = "JPG|*.jpg|PNG|*.png";
+            this.imageOpener.Filter = "TIF|*.tif|JPG|*.jpg|PNG|*.png";
             this.imageOpener.FileOk += new System.ComponentModel.CancelEventHandler(this.imageOpener_FileOk);
             // 
             // tabs_typeSelect
@@ -179,18 +176,58 @@ namespace FingerFinder
             this.tabPage_skeleton.Location = new System.Drawing.Point(4, 25);
             this.tabPage_skeleton.Name = "tabPage_skeleton";
             this.tabPage_skeleton.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_skeleton.Size = new System.Drawing.Size(412, 21);
+            this.tabPage_skeleton.Size = new System.Drawing.Size(412, 0);
             this.tabPage_skeleton.TabIndex = 1;
             this.tabPage_skeleton.Text = "Otisk skeleton";
             this.tabPage_skeleton.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(438, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 17);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "label1";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(438, 58);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(359, 421);
+            this.tabControl1.TabIndex = 3;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(351, 392);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(351, 392);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // FrontForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(809, 491);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.tabs_typeSelect);
-            this.Controls.Add(this.groupBox_toolkit);
             this.Controls.Add(this.panel_fingerPrint);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -203,6 +240,7 @@ namespace FingerFinder
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.tabs_typeSelect.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,7 +254,6 @@ namespace FingerFinder
         private System.Windows.Forms.ToolStripSeparator menuStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem menuStripItem_close;
         private System.Windows.Forms.Panel panel_fingerPrint;
-        private System.Windows.Forms.GroupBox groupBox_toolkit;
         private System.Windows.Forms.ToolStripMenuItem analýzaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detekcemarkantůToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem klasifikaceToolStripMenuItem;
@@ -226,6 +263,10 @@ namespace FingerFinder
         private System.Windows.Forms.TabControl tabs_typeSelect;
         private System.Windows.Forms.TabPage tabPage_original;
         private System.Windows.Forms.TabPage tabPage_skeleton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
 

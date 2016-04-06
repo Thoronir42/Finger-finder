@@ -6,3 +6,8 @@ data/*
 !data/101_2.tif
 !data/101_3.tif
 !data/princess_is_in_another_castle.txt
+
+FingerFinderPresenter/bin/
+FingerFinderPresenter/obj/
+FiingerprintAnalyzer/bin/
+FiingerprintAnalyzer/obj/

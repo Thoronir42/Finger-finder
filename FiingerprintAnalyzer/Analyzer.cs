@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FingerFinder
+namespace FingerprintAnalyzer
 {
-    public partial class FingerprintAnalyzer
+    public partial class Analyzer
     {
         private Image fingerprintOriginal;
         private Image fingerpintSkeleton;
@@ -42,7 +42,7 @@ namespace FingerFinder
         }
 
 
-        internal Image getImage(int selectedIndex)
+        public Image getImage(int selectedIndex)
         {
             if(selectedIndex == 0)
             {

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FingerFinder
+namespace FingerprintAnalyzer
 {
-    /* Minutiae */
-    partial class FingerprintAnalyzer
+    /* Classification */
+    partial class Analyzer
     {
         public FingerprintCategory classificate()
         {

@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FingerprintAnalyzer;
 
 namespace FingerFinder
 {
     public partial class FrontForm : Form
     {
 
-        FingerprintAnalyzer FprintAnalyzer { get; set; } = new FingerprintAnalyzer();
+        Analyzer FprintAnalyzer { get; set; } = new Analyzer();
 
         public FrontForm()
         {
@@ -27,19 +28,7 @@ namespace FingerFinder
 
         private void otevřítToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Otevřít");
-            if(this.imageOpener.ShowDialog() != DialogResult.OK)
-            {
-                Console.WriteLine("Otevírání souboru zrušeno.");
-                return;
-            }
-
-            Console.WriteLine(this.imageOpener.FileName);
-        }
-
-        private void zavřítToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
+            
         }
 
         private void FrontForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -85,6 +74,23 @@ namespace FingerFinder
         private void tabs_typeSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             drawFingerprint();
+        }
+
+        private void menuStripItem_close_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void menuStripItem_import_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Otevřít");
+            if (this.imageOpener.ShowDialog() != DialogResult.OK)
+            {
+                Console.WriteLine("Otevírání souboru zrušeno.");
+                return;
+            }
+
+            Console.WriteLine(this.imageOpener.FileName);
         }
     }
 }

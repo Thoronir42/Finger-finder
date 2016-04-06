@@ -1,0 +1,11 @@
+1. Načtení obrázku
+ ?+ vytvoření kostry
+2. Ověření kostry
+  - upravení parametrů skeletizace
+
+3. Detekce markantů
+  - detekce chybných markantů
+  - respektive manuální úpravy (přidání odebrání)
+
+4. Klasifikace
+ ???

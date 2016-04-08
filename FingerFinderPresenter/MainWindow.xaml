@@ -5,31 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FingerFinderPresenter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="420" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" VerticalAlignment="Stretch" SelectionChanged="tabControl_fingerprintDrawer_SelectionChanged">
-            <TabItem Header="Otisk originál" Height="Auto" Margin="-2,0">
-                <Grid x:Name="tab_fingerprintOriginal" Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton">
-                <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.531,0.556">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </TabItem>
-        </TabControl>
+        Title="Finger Finder" Height="420" Width="800">
 
-    </Grid>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Soubor">
+                <MenuItem Header="Otevřít" InputGestureText="Ctrl+O"/>
+                <MenuItem Header="Import" Click="MenuItem_import_Click"/>
+                <MenuItem Header="Zavřít" Click="MenuItem_close_Click"  InputGestureText="Alt+F4"/>
+            </MenuItem>
+            <MenuItem Header="Analýza">
+                <MenuItem Header="Detekce markantů"/>
+                <MenuItem Header="Klasifikace"/>
+            </MenuItem>
+        </Menu>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" VerticalAlignment="Stretch" SelectionChanged="tabControl_fingerprintDrawer_SelectionChanged">
+                <TabItem x:Name="tab_fingerprintOriginal" Header="Otisk originál" Height="Auto" Margin="-2,0">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton">
+                    <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.531,0.556">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+
+            <Canvas x:Name="canvas" Grid.Row="1">
+
+            </Canvas>
+
+        </Grid>
+    </DockPanel>
 </Window>

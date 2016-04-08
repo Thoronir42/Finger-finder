@@ -37,6 +37,7 @@ namespace FingerFinderPresenter
         private void MenuItem_import_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.tif, *.png) | *.jpg; *.jpeg; *.tif; *.png";
             if (openFileDialog.ShowDialog() == true)
             {
                 Console.WriteLine(openFileDialog.FileName);

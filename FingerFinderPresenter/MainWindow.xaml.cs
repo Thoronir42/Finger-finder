@@ -46,6 +46,7 @@ namespace FingerFinderPresenter
                 {
                     System.Drawing.Image fingerprint = System.Drawing.Image.FromFile(openFileDialog.FileName);
                     this.Analyzer.FingerprintOriginal = fingerprint;
+                    this.Analyzer.originalChanged();
                     this.drawFingerprint();
                 }
                 catch (Exception ex)

@@ -7,7 +7,7 @@
     <ProjectGuid>{F8FC22F7-C698-4720-A36F-4A2AFDFEFDE4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FiingerprintAnalyzer</RootNamespace>
+    <RootNamespace>FingerprintAnalyzer</RootNamespace>
     <AssemblyName>FiingerprintAnalyzer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,6 +46,10 @@
     <Compile Include="Analyzer.cs" />
     <Compile Include="Analyzer_Classification.cs" />
     <Compile Include="Analyzer_Minutiae.cs" />
+    <Compile Include="Manipulators\AImageManipulator.cs" />
+    <Compile Include="Manipulators\ImageEqualizer.cs" />
+    <Compile Include="Manipulators\ImageSkeletonizer.cs" />
+    <Compile Include="Manipulators\ImageTresholder.cs" />
     <Compile Include="Minutiae.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

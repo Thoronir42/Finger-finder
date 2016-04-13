@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FingerFinder", "FrontForm\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FingerFinderPresenter", "FingerFinderPresenter\FingerFinderPresenter.csproj", "{0B89647C-5AB4-42A9-87B4-91E93D58A938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiingerprintAnalyzer", "FiingerprintAnalyzer\FiingerprintAnalyzer.csproj", "{F8FC22F7-C698-4720-A36F-4A2AFDFEFDE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FingerprintAnalyzer", "FingerprintAnalyzer\FingerprintAnalyzer.csproj", "{F8FC22F7-C698-4720-A36F-4A2AFDFEFDE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -45,8 +45,9 @@ namespace FingerFinderPresenter
                 try
                 {
                     System.Drawing.Image fingerprint = System.Drawing.Image.FromFile(openFileDialog.FileName);
-                    this.Analyzer.FingerprintOriginal = fingerprint;
-                    this.Analyzer.originalChanged();
+
+                    this.Analyzer.createNewFromImage(fingerprint);
+
                     this.drawFingerprint();
                 }
                 catch (Exception ex)
@@ -101,6 +102,11 @@ namespace FingerFinderPresenter
         private void MenuItem_close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void MenuItem_save_Click(object sender, RoutedEventArgs e)
+        {
+            Console.Write("TODO: Save fingerprint file");
         }
     }
 }

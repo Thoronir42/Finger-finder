@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FingerprintAnalyzer.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,5 @@ namespace FingerprintAnalyzer
             return FingerprintCategory.ArchPlain;
         }
 
-    }
-
-    public enum FingerprintCategory
-    {
-        ArchPlain, ArchTented, LoopRadial, LoopUlnar, WhorlPlain, WhorlCentralPocket, WhorlDoubleLoop, WhorlAccidental
     }
 }

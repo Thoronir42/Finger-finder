@@ -4,7 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FingerprintAnalyzer.Manipulators;
+using FingerprintAnalyzer.ImageManipulation;
+using FingerprintAnalyzer.Model;
 
 namespace FingerprintAnalyzer
 {
@@ -15,17 +16,22 @@ namespace FingerprintAnalyzer
         const int FINGERPRINT_TRESHOLDING = 2;
         const int FINGERPRINT_SKELETONIZED = 3;
 
-        public Image FingerprintOriginal { get; set; }
-        public Image FingerprintEqualization { get; private set; }
-        public Image FingerprintTresholding { get; private set; }
-        public Image FingerprintSkeleton { get; private set; }
 
-        public void originalChanged()
+        public Fingerprint Fingerprint { get; private set; }
+
+        public Image ImageOriginal { get; private set; }
+        public Image ImageEqualization { get; private set; }
+        public Image ImageTresholding { get; private set; }
+        public Image ImageSkeleton { get; private set; }
+
+        public void createNewFromImage(Image original)
         {
+            Fingerprint = new Fingerprint();
             {
-                FingerprintEqualization = doHistogramEqualization(FingerprintOriginal);
-                FingerprintTresholding = doTresholding(FingerprintEqualization, 128);
-                FingerprintSkeleton = createFingerprintSkeleton(FingerprintTresholding);
+                ImageOriginal = original;
+                ImageEqualization = doHistogramEqualization(ImageOriginal);
+                ImageTresholding = doTresholding(ImageEqualization, 128);
+                ImageSkeleton = createFingerprintSkeleton(ImageTresholding);
 
             }
         }
@@ -56,10 +62,10 @@ namespace FingerprintAnalyzer
             switch (imageIndex)
             {
                 default:
-                case FINGERPRINT_ORIGINAL: return FingerprintOriginal;
-                case FINGERPRINT_EQUALIZATION: return FingerprintEqualization;
-                case FINGERPRINT_TRESHOLDING: return FingerprintTresholding;
-                case FINGERPRINT_SKELETONIZED: return FingerprintSkeleton;
+                case FINGERPRINT_ORIGINAL: return ImageOriginal;
+                case FINGERPRINT_EQUALIZATION: return ImageEqualization;
+                case FINGERPRINT_TRESHOLDING: return ImageTresholding;
+                case FINGERPRINT_SKELETONIZED: return ImageSkeleton;
             }
         }
     }

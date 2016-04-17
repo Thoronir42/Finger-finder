@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FingerprintAnalyzer.Manipulators
+namespace FingerprintAnalyzer.ImageManipulation
 {
     class ImageEqualizer : AImageManipulator
     {

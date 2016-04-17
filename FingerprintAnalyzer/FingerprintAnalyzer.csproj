@@ -45,12 +45,15 @@
   <ItemGroup>
     <Compile Include="Analyzer.cs" />
     <Compile Include="Analyzer_Classification.cs" />
-    <Compile Include="Analyzer_Minutiae.cs" />
-    <Compile Include="Manipulators\AImageManipulator.cs" />
-    <Compile Include="Manipulators\ImageEqualizer.cs" />
-    <Compile Include="Manipulators\ImageSkeletonizer.cs" />
-    <Compile Include="Manipulators\ImageTresholder.cs" />
-    <Compile Include="Minutiae.cs" />
+    <Compile Include="Analyzer_Minutia.cs" />
+    <Compile Include="Model\Fingerprint.cs" />
+    <Compile Include="ImportExport\IO_XML.cs" />
+    <Compile Include="ImageManipulation\AImageManipulator.cs" />
+    <Compile Include="ImageManipulation\ImageEqualizer.cs" />
+    <Compile Include="ImageManipulation\ImageSkeletonizer.cs" />
+    <Compile Include="ImageManipulation\ImageTresholder.cs" />
+    <Compile Include="Model\FingerprintCategory.cs" />
+    <Compile Include="Model\Minutia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

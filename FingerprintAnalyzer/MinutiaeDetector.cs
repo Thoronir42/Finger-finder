@@ -8,10 +8,9 @@ using FingerprintAnalyzer.Model;
 
 namespace FingerprintAnalyzer
 {
-    /* Minutia */
-    partial class FingerprintAnalyzer
+    class MinutiaeDetector
     {
-        public List<Minutia> detectMinituae()
+        public List<Minutia> detectMinituae(Image fingerprintSkeleton)
         {
             var types = (MinutiaType[])Enum.GetValues(typeof(MinutiaType));
             List<Minutia> minutiae = new List<Minutia>();

@@ -13,9 +13,9 @@
             <MenuItem Header="Soubor">
                 <MenuItem Header="Otevřít" IsEnabled="False" InputGestureText="Ctrl+O"/>
                 <MenuItem Header="Uložit" Click="MenuItem_save_Click" InputGestureText="Ctrl+S"/>
-                <Separator></Separator>
+                <Separator/>
                 <MenuItem Header="Import" Click="MenuItem_import_Click"/>
-                <Separator></Separator>
+                <Separator/>
                 <MenuItem Header="Zavřít" Click="MenuItem_close_Click"  InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Header="Analýza">
@@ -30,28 +30,19 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="23"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
 
-            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0" VerticalAlignment="Stretch" SelectionChanged="tabControl_fingerprintDrawer_SelectionChanged">
-                <TabItem x:Name="tab_fingerprintOriginal" Header="Otisk originál" Height="Auto" Margin="-2,0">
+            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch" SelectionChanged="tabControl_fingerprintDrawer_SelectionChanged">
+                <TabItem x:Name="tab_fingerprintOriginal" Header="Otisk originál" IsEnabled="False">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tab_fingerprintEqualization" Header="Otisk ekvalizace" Height="Auto" Margin="-2,0">
-                    <Grid Background="#FFE5E5E5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                    </Grid>
-                </TabItem>
-                <TabItem x:Name="tab_fingerprintTresholding" Header="Otisk prahování" Height="Auto" Margin="-2,0">
+                <TabItem x:Name="tab_fingerprintEqualization" Header="Otisk ekvalizace" IsEnabled="False">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -59,7 +50,15 @@
 
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton">
+                <TabItem x:Name="tab_fingerprintTresholding" Header="Otisk prahování" IsEnabled="False">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton" IsEnabled="False">
                     <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.531,0.556">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -68,8 +67,18 @@
                 </TabItem>
             </TabControl>
 
-            <Canvas x:Name="canvas" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" Height="20" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="10,0,0,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="button_prevStage" Click="prevStage" IsEnabled="false">Předcházející fáze</Button>
+                <Button x:Name="button_nextStage" Click="nextStage" IsEnabled="false">Další fáze</Button>
+            </StackPanel>
 
+            <Canvas x:Name="canvas" Grid.Column="1" Grid.RowSpan="2">
+                <Image x:Name="image_fingerprint"/>
             </Canvas>
 
         </Grid>

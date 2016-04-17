@@ -11,6 +11,7 @@ using System.Drawing.Imaging;
 
 namespace FingerFinderPresenter
 {
+    
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -25,8 +26,8 @@ namespace FingerFinderPresenter
 
         private void tabControl_fingerprintDrawer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            Console.WriteLine(sender.ToString());
-            drawFingerprint();
+            var selectedIndex = tabControl_fingerprintDrawer.SelectedIndex;
+            drawFingerprint(selectedIndex);
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace FingerFinderPresenter
 
                     this.Analyzer.createNewFromImage(fingerprint);
 
-                    this.drawFingerprint();
+                    this.changeStage(Analyzer.STAGE_ORIGINAL);
                 }
                 catch (Exception ex)
                 {
@@ -58,15 +59,55 @@ namespace FingerFinderPresenter
                 
         }
 
-        private void drawFingerprint()
+        private void prevStage(object sender, EventArgs e)
         {
-            System.Drawing.Image fingerprintIm = this.Analyzer.getImage(tabControl_fingerprintDrawer.SelectedIndex);
+            var selectedIndex = tabControl_fingerprintDrawer.SelectedIndex;
+            changeStage(selectedIndex - 1);
+        }
 
-            if (fingerprintIm == null)
+        private void nextStage(object sender, EventArgs e)
+        {
+            var selectedIndex = tabControl_fingerprintDrawer.SelectedIndex;
+            changeStage(selectedIndex + 1);
+        }
+
+        private void changeStage(int newStage)
+        {
+            // TODO: refactor
+            int currentStage = tabControl_fingerprintDrawer.SelectedIndex;
+
+            button_prevStage.IsEnabled = newStage > Analyzer.STAGE_ORIGINAL;
+            button_nextStage.IsEnabled = newStage < Analyzer.STAGE_SKELETIZED;
+
+
+            // Stage is going forward - create new stage if newStage is a valid one and draw is
+            switch (newStage) {
+                default: return;
+                case Analyzer.STAGE_ORIGINAL:
+                    break;
+                case Analyzer.STAGE_EQUALIZED:
+                    Analyzer.doHistogramEqualization();
+                    break;
+                case Analyzer.STAGE_TRESHOLDED:
+                    Analyzer.doTresholding(160); // TODO: user controls
+                    break;
+                case Analyzer.STAGE_SKELETIZED:
+                    Analyzer.doSkeletonize();
+                    break;
+            }
+            this.drawFingerprint(newStage);
+            tabControl_fingerprintDrawer.SelectedIndex = newStage;
+        }
+
+        private void drawFingerprint(int stage)
+        {
+            var currentImage = Analyzer.getImage(stage);
+
+            if (currentImage == null)
             {
-                SolidColorBrush fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("HotPink"));
+                SolidColorBrush fill = new SolidColorBrush(Color.FromRgb(240,80,160));
                 canvas.Background = fill;
-
+                //image_fingerprint;
                 return;
             }
 
@@ -74,7 +115,7 @@ namespace FingerFinderPresenter
 
             using (MemoryStream memory = new MemoryStream())
             {
-                fingerprintIm.Save(memory, ImageFormat.Png);
+                currentImage.Save(memory, ImageFormat.Png);
                 memory.Position = 0;
                 fingerprint.BeginInit();
                 fingerprint.StreamSource = memory;
@@ -94,9 +135,7 @@ namespace FingerFinderPresenter
             RenderTargetBitmap bmp = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 120, 96, PixelFormats.Pbgra32);
             bmp.Render(drawingVisual);
 
-            Image image = new Image();
-            image.Source = bmp;
-            canvas.Children.Add(image);
+            image_fingerprint.Source = bmp;
         }
 
         private void MenuItem_close_Click(object sender, RoutedEventArgs e)

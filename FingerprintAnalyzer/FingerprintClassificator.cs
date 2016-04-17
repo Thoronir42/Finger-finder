@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace FingerprintAnalyzer
 {
-    /* Classification */
-    partial class Analyzer
+    class FingerprintClassificator
     {
         public FingerprintCategory classificate()
         {

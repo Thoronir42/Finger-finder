@@ -9,12 +9,19 @@ using FingerprintAnalyzer.Model;
 
 namespace FingerprintAnalyzer
 {
-    public partial class Analyzer
+    public class Analyzer
     {
-        const int FINGERPRINT_ORIGINAL = 0;
-        const int FINGERPRINT_EQUALIZATION = 1;
-        const int FINGERPRINT_TRESHOLDING = 2;
-        const int FINGERPRINT_SKELETONIZED = 3;
+        public const int 
+            FINGERPRINT_ORIGINAL = 0,
+            FINGERPRINT_EQUALIZATION = 1,
+            FINGERPRINT_TRESHOLDING = 2,
+            FINGERPRINT_SKELETONIZED = 3;
+
+        public const int
+            STAGE_ORIGINAL = 0,
+            STAGE_EQUALIZED = 1,
+            STAGE_TRESHOLDED = 2,
+            STAGE_SKELETIZED = 3;
 
 
         public Fingerprint Fingerprint { get; private set; }
@@ -24,21 +31,22 @@ namespace FingerprintAnalyzer
         public Image ImageTresholding { get; private set; }
         public Image ImageSkeleton { get; private set; }
 
+        public int CurrentStage { get; private set; }
+
+        private MinutiaeDetector MinutiaeDetector { get; } = new MinutiaeDetector();
+        private FingerprintClassificator FingerprintClassificator { get; } = new FingerprintClassificator();
+
+
         public void createNewFromImage(Image original)
         {
             Fingerprint = new Fingerprint();
-            {
-                ImageOriginal = original;
-                ImageEqualization = doHistogramEqualization(ImageOriginal);
-                ImageTresholding = doTresholding(ImageEqualization, 128);
-                ImageSkeleton = createFingerprintSkeleton(ImageTresholding);
-
-            }
+            ImageOriginal = original;
+            CurrentStage = STAGE_ORIGINAL;
         }
 
-        public Image createFingerprintSkeleton(Image original)
+        public Image doSkeletonize()
         {
-            return new ImageSkeletonizer().transform(original);
+            return ImageSkeleton = new ImageSkeletonizer().transform(ImageTresholding);
         }
 
         /// <summary>
@@ -46,14 +54,15 @@ namespace FingerprintAnalyzer
         /// </summary>
         /// <param name="original">Původní snímek</param>
         /// <returns></returns>
-        private Image doHistogramEqualization(Image original)
+        public Image doHistogramEqualization()
         {
-            return (new ImageEqualizer()).transform(original);
+            return ImageEqualization = (new ImageEqualizer()).transform(ImageOriginal);
         }
 
-        public Image doTresholding(Image original, int tresholdLevel)
+        public Image doTresholding(int tresholdLevel)
         {
-            return (new ImageTresholder { TresholdLevel = tresholdLevel }).transform(original);
+
+            return ImageTresholding = (new ImageTresholder { TresholdLevel = tresholdLevel }).transform(ImageOriginal);
         }
 
 

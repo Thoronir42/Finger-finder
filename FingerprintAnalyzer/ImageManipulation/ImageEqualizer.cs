@@ -36,7 +36,7 @@ namespace FingerprintAnalyzer.ImageManipulation
                 for (int x = 0; x < original.Width; x++)
                 {
                     Color c = original_b.GetPixel(x, y);
-                    int luminance = (int)Math.Round(0.299 * c.R + 0.587 * c.G + 0.114 * c.B);
+                    int luminance = (int)Math.Round(LUMINANCY_COEFICIENT_RED * c.R + LUMINANCY_COEFICIENT_GREEN * c.G + LUMINANCY_COEFICIENT_BLUE * c.B);
 
                     double sum = 0;
                     int p0 = original.Width * original.Height;

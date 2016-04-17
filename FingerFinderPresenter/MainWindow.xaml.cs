@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Drawing.Imaging;
+using FingerprintAnalyzer.Model;
 
 namespace FingerFinderPresenter
 {
@@ -48,6 +49,7 @@ namespace FingerFinderPresenter
                     System.Drawing.Image fingerprint = System.Drawing.Image.FromFile(openFileDialog.FileName);
 
                     this.Analyzer.createNewFromImage(fingerprint);
+                    MenuItem_save.IsEnabled = true;
 
                     this.changeStage(Analyzer.STAGE_ORIGINAL);
                 }
@@ -111,29 +113,10 @@ namespace FingerFinderPresenter
                 return;
             }
 
-            BitmapImage fingerprint = new BitmapImage();
-
-            using (MemoryStream memory = new MemoryStream())
-            {
-                currentImage.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                fingerprint.BeginInit();
-                fingerprint.StreamSource = memory;
-                fingerprint.CacheOption = BitmapCacheOption.OnLoad;
-                fingerprint.EndInit();
-                
-            }
-
-            SolidColorBrush fillW = new SolidColorBrush((Color)ColorConverter.ConvertFromString("White"));
+            SolidColorBrush fillW = new SolidColorBrush(Color.FromRgb(255,255,255));
             canvas.Background = fillW;
 
-            DrawingVisual drawingVisual = new DrawingVisual();
-            var draw = drawingVisual.RenderOpen();
-            draw.DrawImage(fingerprint, new Rect(0, 0, fingerprint.PixelWidth, fingerprint.PixelHeight));
-            draw.Close();
-
-            RenderTargetBitmap bmp = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 120, 96, PixelFormats.Pbgra32);
-            bmp.Render(drawingVisual);
+            var bmp = FiFiPrToolkit.imageToRenderTargetBitmap(currentImage, (int)canvas.ActualWidth, (int)canvas.ActualHeight);
 
             image_fingerprint.Source = bmp;
         }
@@ -145,7 +128,8 @@ namespace FingerFinderPresenter
 
         private void MenuItem_save_Click(object sender, RoutedEventArgs e)
         {
-            Console.Write("TODO: Save fingerprint file");
+            // TODO: delete when implemented
+            Analyzer.mockAnalyzeAndClassify();
         }
     }
 }

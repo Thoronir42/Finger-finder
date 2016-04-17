@@ -35,6 +35,7 @@ namespace FingerprintAnalyzer
 
         private MinutiaeDetector MinutiaeDetector { get; } = new MinutiaeDetector();
         private FingerprintClassificator FingerprintClassificator { get; } = new FingerprintClassificator();
+        private FingerprintXML<Fingerprint> XML { get; } = new FingerprintXML<Fingerprint>();
 
 
         public void createNewFromImage(Image original)
@@ -76,6 +77,18 @@ namespace FingerprintAnalyzer
                 case FINGERPRINT_TRESHOLDING: return ImageTresholding;
                 case FINGERPRINT_SKELETONIZED: return ImageSkeleton;
             }
+        }
+
+        public void mockAnalyzeAndClassify()
+        {
+            Fingerprint.Minutiae = MinutiaeDetector.detectMinituae(ImageSkeleton);
+            Fingerprint.Category = FingerprintClassificator.classificate(ImageSkeleton);
+        }
+
+        public bool loadFromFile(string filename)
+        {
+            this.XML.Load(filename);
+            return true;
         }
     }
 }

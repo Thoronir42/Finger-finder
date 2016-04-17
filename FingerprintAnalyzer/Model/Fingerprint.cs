@@ -19,5 +19,8 @@ namespace FingerprintAnalyzer.Model
         [XmlElement("Minutiae")]
         public List<Minutia> Minutiae { get; set; } = new List<Minutia>();
 
+        [XmlElement("Category")]
+        public FingerprintCategory Category { get; set; } = FingerprintCategory.Undefined;
+
     }
 }

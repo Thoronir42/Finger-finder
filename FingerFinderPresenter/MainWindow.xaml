@@ -12,7 +12,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Soubor">
                 <MenuItem Header="Otevřít" IsEnabled="False" InputGestureText="Ctrl+O"/>
-                <MenuItem Header="Uložit" Click="MenuItem_save_Click" InputGestureText="Ctrl+S"/>
+                <MenuItem x:Name="MenuItem_save" Header="Uložit" IsEnabled="False" Click="MenuItem_save_Click" InputGestureText="Ctrl+S"/>
                 <Separator/>
                 <MenuItem Header="Import" Click="MenuItem_import_Click"/>
                 <Separator/>

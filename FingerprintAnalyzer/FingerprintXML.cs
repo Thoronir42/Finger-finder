@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace FingerprintAnalyzer.ImportExport
+namespace FingerprintAnalyzer
 {
-    class FingerprintXML<Type>
+    public class FingerprintXML<Type>
     {
-        public static void Save(Type typeInstance, string fileName)
+        public void Save(Type typeInstance, string fileName)
         {
             var xs = new XmlSerializer(typeof(Type));
 
@@ -21,7 +21,7 @@ namespace FingerprintAnalyzer.ImportExport
             }
         }
 
-        public static Type Load(string fileName)
+        public Type Load(string fileName)
         {
             Type result;
 

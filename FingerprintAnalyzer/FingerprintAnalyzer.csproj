@@ -45,9 +45,9 @@
   <ItemGroup>
     <Compile Include="Analyzer.cs" />
     <Compile Include="FingerprintClassificator.cs" />
+    <Compile Include="FingerprintXML.cs" />
     <Compile Include="MinutiaeDetector.cs" />
     <Compile Include="Model\Fingerprint.cs" />
-    <Compile Include="ImportExport\IO_XML.cs" />
     <Compile Include="ImageManipulation\AImageManipulator.cs" />
     <Compile Include="ImageManipulation\ImageEqualizer.cs" />
     <Compile Include="ImageManipulation\ImageSkeletonizer.cs" />

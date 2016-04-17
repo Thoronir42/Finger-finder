@@ -1,6 +1,7 @@
 ﻿using FingerprintAnalyzer.Model;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace FingerprintAnalyzer
 {
     class FingerprintClassificator
     {
-        public FingerprintCategory classificate()
+        public FingerprintCategory classificate(Image skeleton)
         {
-            return FingerprintCategory.ArchPlain;
+            return FingerprintCategory.Undefined;
         }
 
     }

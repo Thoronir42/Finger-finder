@@ -9,6 +9,9 @@ namespace FingerprintAnalyzer.Model
 {
     public enum FingerprintCategory
     {
+        [XmlEnum("N/A")]
+        Undefined,
+
         [XmlEnum("AP")]
         ArchPlain,
         [XmlEnum("AT")]

@@ -21,6 +21,7 @@ namespace FingerprintAnalyzer.Model
     {
         [XmlEnum("N/A")]
         Unspecified,
+
         [XmlEnum("RE")]
         RidgeEnding,
         [XmlEnum("RB")]

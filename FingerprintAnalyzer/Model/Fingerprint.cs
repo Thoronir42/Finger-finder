@@ -8,6 +8,9 @@ using System.Xml.Serialization;
 
 namespace FingerprintAnalyzer.Model
 {
+    /// <summary>
+    /// Fingerprint data container
+    /// </summary>
     public class Fingerprint
     {
         [XmlElement("SavedOn")]

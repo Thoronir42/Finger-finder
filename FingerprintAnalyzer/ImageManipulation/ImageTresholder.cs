@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FingerprintAnalyzer.ImageManipulation
 {
+    /// <summary>
+    /// Transforms image into Black-White representation using customisable treshold level
+    /// </summary>
     class ImageTresholder : AImageManipulator
     {
         public int TresholdLevel { get; set; } = 128;

@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace FingerprintAnalyzer.Model
 {
+    /// <summary>
+    /// Classifiable fingerprint categories
+    /// </summary>
     public enum FingerprintCategory
     {
         [XmlEnum("N/A")]

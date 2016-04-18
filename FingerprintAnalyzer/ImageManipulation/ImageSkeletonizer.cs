@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace FingerprintAnalyzer.ImageManipulation
 {
+
+    /// <summary>
+    /// Image manipulator which uses sciencey magic to change equalized image into a skeletized bitmap
+    /// </summary>
     class ImageSkeletonizer : AImageManipulator
     {
         public override Image transform(Image original)

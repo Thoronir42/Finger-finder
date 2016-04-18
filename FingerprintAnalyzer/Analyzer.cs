@@ -9,8 +9,12 @@ using FingerprintAnalyzer.Model;
 
 namespace FingerprintAnalyzer
 {
+    /// <summary>
+    /// Interface grouping fingerprint analyzation controls
+    /// </summary>
     public class Analyzer
     {
+
         public const int 
             FINGERPRINT_ORIGINAL = 0,
             FINGERPRINT_EQUALIZATION = 1,
@@ -63,9 +67,14 @@ namespace FingerprintAnalyzer
             return ImageSkeleton = new ImageSkeletonizer().transform(ImageTresholding);
         }
 
-        public Image getImage(int imageIndex)
+        /// <summary>
+        /// Returns image corresponding to requested stageNumber or original if stage number wasn't recognised
+        /// </summary>
+        /// <param name="stageNumber">Stage number specifying requested image</param>
+        /// <returns>Corresponding image</returns>
+        public Image getImage(int stageNumber)
         {
-            switch (imageIndex)
+            switch (stageNumber)
             {
                 default:
                 case FINGERPRINT_ORIGINAL: return ImageOriginal;
@@ -75,18 +84,34 @@ namespace FingerprintAnalyzer
             }
         }
 
+
+        /// <summary>
+        /// Temporary method assigning testing data to fingerprint
+        /// </summary>
         public void mockAnalyzeAndClassify()
         {
             Fingerprint.Minutiae = MinutiaeDetector.detectMinituae(ImageSkeleton);
             Fingerprint.Category = FingerprintClassificator.classificate(ImageSkeleton);
         }
 
+        /// <summary>
+        /// Loads fingerprint datafrom file
+        /// TODO: specify which image (if any) will be saved alongside fingerprint data
+        /// </summary>
+        /// <param name="filename">Location of file containing fingerprint data</param>
+        /// <returns>Succesfullness of operation</returns>
         public bool loadFromFile(string filename)
         {
             this.XML.Load(filename);
             return true;
         }
 
+        /// <summary>
+        /// Saves fingerprint data to file
+        /// TODO: specify which image (if any) will be saved alongside fingerprint data
+        /// </summary>
+        /// <param name="filename">Desired destination for fingerprint data file</param>
+        /// <returns>Succesfullness of operation</returns>
         public bool saveToFile(string filename)
         {
             this.XML.Save(Fingerprint, filename);

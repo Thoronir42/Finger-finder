@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 
 namespace FingerprintAnalyzer.Model
 {
+    /// <summary>
+    /// Minutia container
+    /// </summary>
     public class Minutia
     {
         [XmlElement("Position")]
@@ -17,6 +20,9 @@ namespace FingerprintAnalyzer.Model
         public MinutiaType Type { get; set; } = MinutiaType.Unspecified;
     }
 
+    /// <summary>
+    /// Possible Minutia types
+    /// </summary>
     public enum MinutiaType
     {
         [XmlEnum("N/A")]

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FingerprintAnalyzer.ImageManipulation
 {
+    /// <summary>
+    /// Equalizes image, which results in luminancy being distributed more evenly over the histogram
+    /// </summary>
     class ImageEqualizer : AImageManipulator
     {
         public override Image transform(Image original)

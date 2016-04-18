@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FingerprintAnalyzer.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,30 +10,11 @@ using System.Xml.Serialization;
 
 namespace FingerprintAnalyzer
 {
-    public class FingerprintXML<Type>
+    /// <summary>
+    /// Fingerprint data importer/exporter
+    /// </summary>
+    public class FingerprintXML : XML_ImportExport<Fingerprint>
     {
-        public void Save(Type typeInstance, string fileName)
-        {
-            var xs = new XmlSerializer(typeof(Type));
-
-            using (var writer = XmlWriter.Create(fileName, new XmlWriterSettings() { Indent = true }))
-            {
-                xs.Serialize(writer, typeInstance);
-            }
-        }
-
-        public Type Load(string fileName)
-        {
-            Type result;
-
-            var xs = new XmlSerializer(typeof(Type));
-
-            using (var reader = XmlReader.Create(fileName))
-            {
-                result = (Type)xs.Deserialize(reader);
-            }
-
-            return result;
-        }
+        
     }
 }

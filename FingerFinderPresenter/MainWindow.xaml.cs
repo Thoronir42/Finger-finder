@@ -88,13 +88,13 @@ namespace FingerFinderPresenter
                 case Analyzer.STAGE_ORIGINAL:
                     break;
                 case Analyzer.STAGE_EQUALIZED:
-                    Analyzer.doHistogramEqualization();
+                    Analyzer.transformEqualization();
                     break;
                 case Analyzer.STAGE_TRESHOLDED:
-                    Analyzer.doTresholding(160); // TODO: user controls
+                    Analyzer.transformTresholding(160); // TODO: user controls
                     break;
                 case Analyzer.STAGE_SKELETIZED:
-                    Analyzer.doSkeletonize();
+                    Analyzer.transformSkeletonize();
                     break;
             }
             this.drawFingerprint(newStage);

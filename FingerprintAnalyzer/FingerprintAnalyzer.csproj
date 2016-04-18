@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Analyzer.cs" />
     <Compile Include="FingerprintClassificator.cs" />
+    <Compile Include="XML_ImportExport.cs" />
     <Compile Include="FingerprintXML.cs" />
     <Compile Include="MinutiaeDetector.cs" />
     <Compile Include="Model\Fingerprint.cs" />

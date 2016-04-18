@@ -45,27 +45,23 @@ namespace FingerprintAnalyzer
             CurrentStage = STAGE_ORIGINAL;
         }
 
-        public Image doSkeletonize()
+        public Image transformEqualization()
         {
-            return ImageSkeleton = new ImageSkeletonizer().transform(ImageTresholding);
-        }
-
-        /// <summary>
-        /// Provede ekvalizaci histogramu, slouží k vyrovnání jasově nerovnoměrného obrazu otisku prstu
-        /// </summary>
-        /// <param name="original">Původní snímek</param>
-        /// <returns></returns>
-        public Image doHistogramEqualization()
-        {
+            CurrentStage = STAGE_EQUALIZED
             return ImageEqualization = (new ImageEqualizer()).transform(ImageOriginal);
         }
 
-        public Image doTresholding(int tresholdLevel)
+        public Image transformTresholding(int tresholdLevel)
         {
-
+            CurrentStage = STAGE_SKELETIZED;
             return ImageTresholding = (new ImageTresholder { TresholdLevel = tresholdLevel }).transform(ImageOriginal);
         }
 
+        public Image transformSkeletonize()
+        {
+            CurrentStage = STAGE_SKELETIZED;
+            return ImageSkeleton = new ImageSkeletonizer().transform(ImageTresholding);
+        }
 
         public Image getImage(int imageIndex)
         {

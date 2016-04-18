@@ -13,23 +13,22 @@ namespace FingerprintAnalyzer.ImageManipulation
 
         public override Image transform(Image original)
         {
-            Bitmap original_b = new Bitmap(original);
-            Bitmap tresholding = new Bitmap(original.Width, original.Height);
-            int color;
+            Bitmap origBitmap = new Bitmap(original);
+            Bitmap result = new Bitmap(original.Width, original.Height);
+            int gray;
 
             for (int y = 0; y < original.Height; y++)
             {
                 for (int x = 0; x < original.Width; x++)
                 {
-                    Color c = original_b.GetPixel(x, y);
-                    color = (c.R < TresholdLevel) ? 0 : 255;
+                    gray = (colorToLuminance(origBitmap.GetPixel(x, y)) < TresholdLevel) ? 0 : 255;
 
-                    Color c2 = Color.FromArgb(color, color, color);
-                    tresholding.SetPixel(x, y, c2);
+                    Color c2 = Color.FromArgb(gray, gray, gray);
+                    result.SetPixel(x, y, c2);
                 }
             }
 
-            return tresholding;
+            return result;
         }
     }
 }

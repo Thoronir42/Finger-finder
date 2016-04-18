@@ -11,49 +11,58 @@ namespace FingerprintAnalyzer.ImageManipulation
     {
         public override Image transform(Image original)
         {
-            Bitmap original_b = new Bitmap(original);
-            Bitmap equalization = new Bitmap(original.Width, original.Height);
-            int[] histogram = new int[256];
-            int max = 0;
-            int min = 255;
+            Bitmap origBitmap = new Bitmap(original);
+            Bitmap result = new Bitmap(original.Width, original.Height);
 
+            int max, min;
+            int[] histogram = new int[256];
+
+            scanImage(origBitmap, histogram, out max, out min);
+
+
+            int surface = original.Width * original.Height;
             for (int y = 0; y < original.Height; y++)
             {
                 for (int x = 0; x < original.Width; x++)
                 {
-                    Color c = original_b.GetPixel(x, y);
-                    int luminance = (int)Math.Round(LUMINANCY_COEFICIENT_RED * c.R + LUMINANCY_COEFICIENT_GREEN * c.G + LUMINANCY_COEFICIENT_BLUE * c.B);
+                    int luminance = colorToLuminance(origBitmap.GetPixel(x, y));
+                    double sum = 0;
+                    
+                    for (int n = 0; n < luminance; n++)
+                    {
+                        sum += histogram[n] / (double)surface;
+                    }
+
+                    int gray = (int)((max - min) * sum + min);
+
+
+                    Color color = Color.FromArgb(gray, gray, gray);
+                    result.SetPixel(x, y, color);
+                }
+            }
+
+            return result;
+        }
+
+        private void scanImage(Bitmap image, int[] histogram, out int max, out int min)
+        {
+            max = 0;
+            min = 255;
+
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    int luminance = colorToLuminance(image.GetPixel(x, y));
+
                     histogram[luminance]++;
+
                     if (max < luminance)
                         max = luminance;
                     if (min > luminance)
                         min = luminance;
                 }
             }
-
-            for (int y = 0; y < original.Height; y++)
-            {
-                for (int x = 0; x < original.Width; x++)
-                {
-                    Color c = original_b.GetPixel(x, y);
-                    int luminance = (int)Math.Round(LUMINANCY_COEFICIENT_RED * c.R + LUMINANCY_COEFICIENT_GREEN * c.G + LUMINANCY_COEFICIENT_BLUE * c.B);
-
-                    double sum = 0;
-                    int p0 = original.Width * original.Height;
-                    for (int n = 0; n < luminance; n++)
-                    {
-                        sum += histogram[n] / (double)p0;
-                    }
-
-                    int g = (int)((max - min) * sum + min);
-
-
-                    Color c2 = Color.FromArgb(g, g, g);
-                    equalization.SetPixel(x, y, c2);
-                }
-            }
-
-            return equalization;
         }
     }
 }

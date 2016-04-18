@@ -14,5 +14,10 @@ namespace FingerprintAnalyzer.ImageManipulation
         public const float LUMINANCY_COEFICIENT_BLUE = 0.114f;
 
         public abstract Image transform(Image original);
+
+        protected int colorToLuminance(Color c)
+        {
+            return (int)Math.Round(LUMINANCY_COEFICIENT_RED * c.R + LUMINANCY_COEFICIENT_GREEN * c.G + LUMINANCY_COEFICIENT_BLUE * c.B);
+        }
     }
 }

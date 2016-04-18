@@ -11,20 +11,10 @@ namespace FingerprintAnalyzer.ImageManipulation
     {
         public override Image transform(Image original)
         {
-            Bitmap original_b = new Bitmap(original);
-            Bitmap skeleton = new Bitmap(original.Width, original.Height);
+            Bitmap origBitmap = new Bitmap(original);
 
             int min, X = original.Width - 1, Y = original.Height - 1;
-            int[,] M = new int[original.Height, original.Width];
-
-            for (int y = 0; y < original.Height; y++)
-            {
-                for (int x = 0; x < original.Width; x++)
-                {
-                    Color c = original_b.GetPixel(x, y);
-                    M[y, x] = (c.R != 0) ? 1 : 0;
-                }
-            }
+            int[,] M = createBinaryMatrix(origBitmap);
 
             for (int y = 1; y < Y; y++)
             {
@@ -139,26 +129,40 @@ namespace FingerprintAnalyzer.ImageManipulation
                 }
             }
 
+            return createSkeleton(M, X, Y);
+        }
+
+        
+
+        private int[,] createBinaryMatrix(Bitmap image)
+        {
+            int[,] M = new int[image.Height, image.Width];
+
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    Color c = image.GetPixel(x, y);
+                    M[y, x] = (c.R != 0) ? 1 : 0;
+                }
+            }
+            return M;
+        }
+
+        private Bitmap createSkeleton(int[,] M, int X, int Y)
+        {
+
+            Bitmap skeleton = new Bitmap(M.GetLength(0), M.GetLength(1));
             for (int y = 1; y < Y; y++)
             {
                 for (int x = 1; x < X; x++)
                 {
-
-                    Color c2;
-
-                    if (M[y, x] < 0)
-                    {
-                        c2 = Color.FromArgb(0, 0, 0);
-                    }
-                    else
-                    {
-                        c2 = Color.FromArgb(255, 255, 255);
-                    }
-
+                    int gray = M[y, x] < 0 ? 0 : 255;
+                    
+                    Color c2 = Color.FromArgb(gray, gray, gray);
                     skeleton.SetPixel(x, y, c2);
                 }
             }
-
             return skeleton;
         }
     }

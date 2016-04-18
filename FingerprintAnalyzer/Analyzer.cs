@@ -90,5 +90,11 @@ namespace FingerprintAnalyzer
             this.XML.Load(filename);
             return true;
         }
+
+        public bool saveToFile(string filename)
+        {
+            this.XML.Save(Fingerprint, filename);
+            return true;
+        }
     }
 }

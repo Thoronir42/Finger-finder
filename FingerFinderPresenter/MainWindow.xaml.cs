@@ -128,8 +128,15 @@ namespace FingerFinderPresenter
 
         private void MenuItem_save_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: delete when implemented
             Analyzer.mockAnalyzeAndClassify();
+
+            SaveFileDialog saver = new SaveFileDialog();
+            saver.Filter = "Otisk prstu (*.fpr) | *.fpr;";
+            if(saver.ShowDialog() != true)
+            {
+                return;
+            }
+            Analyzer.saveToFile(saver.FileName);
         }
     }
 }

@@ -11,7 +11,7 @@
 \usepackage{indentfirst}
 \usepackage{listings}
 \usepackage{color}
-\usepackage{multirow}
+\usepackage{array}
 
 %Pravidlo pro řádkování
 \renewcommand{\baselinestretch}{1.5}
@@ -76,19 +76,100 @@
 Desktopová aplikace v programovacím jazyce C\# umožňující analýzu a klasifikaci otisků prstů
 \subsection{Další požadavky na aplikaci}
 
-Program umožní: 
+\paragraph{Program umožní:}
 \begin{itemize}
 \item načítání nenormalizovaných snímků otisků prstů z fyzického média.
-\item předzpracování načtených obrázků pomocí řady automatických nebo konfigurovatelných transformací, které jej připraví na analýzu a klasifikaci
 \item rozpoznání neobvyklých elementů na otisku prstu, takzvaných markantů, a klasifikaci otisku do jedné z možných kategorií
 \item úpravy a doladění detekovaných hodnot
 \item načítání a ukládání informací o otisku prstu pro možné porovnávání
 \end{itemize}
+\section{Analýza}
+\subsection{Načítání snímků otisků prstů}
+Výběr zdrojového obrázku zajistí hotové nástroje prostředí .NET. Pro zajištění výběru správného typu souboru poslouží poskytnutý filtr, nicméně nelze zajistit že se na vstup dostanou pouze obrázky s otisky prstů. Aplikace bude spoléhat že uživatel vždy vybere pouze obrázek s otiskem prstu a nebude rozlišovat různé stavy.
+\subsection{Analýza načteného obrázku}
+Samotné zkoumání načteného otisku prstu je složitý úkon a nemá cenu analyzovat daný obrázek v jeho původní podobě protože se často stane, že snímek není zachycen v ideálních podmínkách. Z toho důvodů se nejdříve obrázek předzpracuje a analýza se provádí až na upraveném obrázku.
+\subsubsection{Předzpracování}
+\paragraph{Ekvalizace histogramu}
+Prvním krokem předzpracování je ekvalizace, což znamená zjištění jasového spektra, které nemusí být v základu rozložené po celém použitelném intervalu, a jeho roztažení. Tento krok usnadňuje následující krok, prahování.
+\paragraph{Prahování}
+Tato transformace vyžaduje určení hrany v jasovém spektru, neboli prahu, podle které se každá jasová úroveň změní buď na bílou nebo na černou. Tento krok umožňuje rozpoznávání tvarů.
+\paragraph{Skeletizace}
+V tomto kroku se pomocí sofistikovaného algoritmu z ekvalizovaného snímku vytvoří kostra reprezentující jednotlivé papylární linie.
+\subsubsection{Hledání markantů}
+Papylární linie ve většině případů nejsou jen rovnoběžné - často se dělí či slévají, vytvářejí očka, háčky a další různé útvary. Těmto útvarům se říká markanty a pro srovnávání otisků prstů je efektivnější porovnávat nalezené markanty nežli na sebe zkoušet mapovat celé otisky. \\
+{[}Markanty bude aplikace hledat metodou procházení čar, což znamená že bude obsahovat algoritmus, který bude procházet kostru papylárních linií a bude na nich hledat zvláštní úkazy.{]}
+\subsubsection{Klasifikace otisků prstů}
+Papilární linie otisků prstů jakožto celky tvoří tvary, které slouží jako hrubý předpis směru jednotlivých linií. Tyto tvary můžou být například kruh, přeliv nebo smyčka. Pro rychlé porovnávání otisků je ideální z množiny srovnávaných otisků část vynechat a třídění otisků do kategorií podle těchto tvarů je vysoce ideální. \\
+{[}Klasifikace daného otisku prstu se provádí na základě směrnic papylárních linií. Pro stabilnější výběr kategorie otisku se v algoritmu výběru může objevit zhodnocení nalezených markantů.{]}
+\subsection{Datový model}
+Aby bylo možné ukládat údaje o otiscích prstů aby s nimi šlo nadále pracovat, je třeba je jednoznačně specifikovat.
+\subsubsection{Otisk prstu}
+Každý záznam otisku prstu je sám o sobě plnohodnotný a není potřeba k němu vést doplňující záznamy. \\
+Každý záznam otisku prstu schraňuje tyto informace:
+\begin{itemize}
+\setlength\itemsep{-0.3cm}
+\item Verze aplikace při uložení
+\item Datum uložení otisku
+\item Textový popis
+\item Seznam nalezených markantů
+\item Kategorie otisku prstu
+\end{itemize}
+\subsubsection{Markant}
+U každého markantu je potřeba zaznamenávat tyto informace
+\begin{itemize}
+\setlength\itemsep{-0.3cm}
+\item Pozice
+\item Typ markantu
+\end{itemize}
+\paragraph{Typ markantu} je výčet typů markantů a slouží k definování kategorií do kterých může markant spadat.
+Typ markantu může nabývat těchto hodnot {[} Bude přidáno {]}
+\subsubsection{Kategorie otisku prstu}
+Otisk prstu lze klasifikovat do jedné z kategorií definovaných tímto výčtem.
 
+\section{Implementace}
+\subsection{Uživatelské rozhraní}
+Jakožto uživatelské rozhraní bylo zvoleno prostředí WPF (Windows Presentation Foundation) pomocí kterého lze jednoduše deklarovat ovládací prvky.
+\subsection{Jádro programu}
+Výkonná část programu je oddělená v samostatné knihovně tříd, což umožňuje znovupoužitelnost a relativně jednoduché obměňování uživatelského rozhraní.
+\subsubsection{Analyzátor}
+Hlavní třída programu, ve které se zpracovává většina operací z uživatelského rozhraní. Analyzátor v sobě nese informaci o aktuálním stavu průběhu zpracování obrázku otisku prstu. Díky této vlastnosti je možné postupně zpracovávat obrázek a konfigurovat jednotlivé transformace. \par
+Jednotlivé transformace jsou zpracovávány specifickými manipulátory.
+V této třídě se také zprostředkovává načítání a ukládání záznamů o otiscích prstů.
+\subsubsection{Detektor markantů}
+Tato třída má pouze jednu funkci, jejíž účelem je zpracování obrázku kostry otisku a jejíž výstupem je seznam nalezených markantů.
+{[} Je třeba naimplementovat {]}
+\subsubsection{Klasifikátor otisku}
+Tato třída je také dedikovaná pro specifickou funkci, jímž je zpracování obrázku kostry otisku. Výstup této funkce je potom jedna z definovaných kategorií.
+\subsubsection{XML exportér / importér záznamu o otisku}
+Tato třída se stará o serializaci respektive de-serializaci záznamu o otisku prstu. Laicky řečeno ukládá informace o otisku prstu do souboru nebo je naopak ze souboru načítá. \par
+V aplikaci existuje i generická varianta, která převádí libovolný jiný objekt do souboru.
+\subsubsection{Manipulátory obrázku}
+Manipulátory jsou třídy dedikované určité transformaci neboli přeměně, například ekvalizaci histogramu. Neboť všechny manipulátory funguje typově stejně, tedy převádí obrázek na upravený obrázek, jsou sloučeny pod společnou abstraktní třídu, která zvyšuje znovupoužitelnost. Tato abstraktní třída také zajišťuje jednotné deklarace všeobecných konstant a sjednocení stejných transformací, například tříprvkové barvy na jednoprvkovou 'světlost'.
 
+\section{Uživatelská příručka}
+{[}Bude dodána{]}
 \section{Závěr}
-TBA
+{[}TBA{]}
 
+\section*{Programátorský deník}
+Tato sekce nezahrnuje všechna sezení nad touto prací neboť jsem si vždy nevzpomněl spustit časovač a také protože na některých částech pracoval spoluautor.
+\begin{table}[h!]
+\centering
+\begin{tabular}
+{| c | >{\centering}m{12cm} | c |} \hline
+Datum & Aktivita & Délka \\ \hline
+
+03.04. & Návrh WinForms vzhledu UI & 1:20 \\ \hline
+03.04. & Načítání a vykreslování obrázků & 0:40 \\ \hline
+17.04. & Export / import & 1:30 \\ \hline
+17.04. & Úprava WPF - nástrojová struktura & 1:20 \\ \hline
+18.04. & Refaktorizace struktury - postupné zpracování & 2:00 \\ \hline
+23.04. & Dokumentace & 4:00 \\ \hline
+\hline
+ & \textbf{Celkem} & \textbf{10:50} \\ \hline
+
+\end{tabular}
+\end{table}
 
 %------------------------------------------
 

@@ -39,7 +39,7 @@ namespace FingerprintAnalyzer
 
         private MinutiaeDetector MinutiaeDetector { get; } = new MinutiaeDetector();
         private FingerprintClassificator FingerprintClassificator { get; } = new FingerprintClassificator();
-        private FingerprintXML<Fingerprint> XML { get; } = new FingerprintXML<Fingerprint>();
+        private FingerprintXML XML { get; } = new FingerprintXML();
 
 
         public void createNewFromImage(Image original)
@@ -51,7 +51,7 @@ namespace FingerprintAnalyzer
 
         public Image transformEqualization()
         {
-            CurrentStage = STAGE_EQUALIZED
+            CurrentStage = STAGE_EQUALIZED;
             return ImageEqualization = (new ImageEqualizer()).transform(ImageOriginal);
         }
 

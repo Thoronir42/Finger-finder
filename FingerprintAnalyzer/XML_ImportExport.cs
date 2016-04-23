@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using FingerprintAnalyzer.Model;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -40,4 +35,9 @@ namespace FingerprintAnalyzer
             return result;
         }
     }
+
+    /// <summary>
+    /// Fingerprint specific data importer/exporter
+    /// </summary>
+    public class FingerprintXML : XML_ImportExport<Fingerprint> { }
 }

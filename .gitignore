@@ -11,3 +11,6 @@ FingerFinderPresenter/bin/
 FingerFinderPresenter/obj/
 FingerprintAnalyzer/bin/
 FingerprintAnalyzer/obj/
+doc/*.*
+!doc/*.tex
+!doc/images

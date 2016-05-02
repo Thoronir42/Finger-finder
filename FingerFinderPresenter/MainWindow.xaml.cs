@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using System.Drawing.Imaging;
 using FingerprintAnalyzer.Model;
+using FingerprintAnalyzer.Analyze;
 
 namespace FingerFinderPresenter
 {
@@ -28,7 +29,7 @@ namespace FingerFinderPresenter
         private void tabControl_fingerprintDrawer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             var selectedIndex = tabControl_fingerprintDrawer.SelectedIndex;
-            drawFingerprint(selectedIndex);
+            drawFingerprint((AnalyzerStages)selectedIndex);
         }
 
         /// <summary>
@@ -51,59 +52,46 @@ namespace FingerFinderPresenter
                     this.Analyzer.createNewFromImage(fingerprint);
                     MenuItem_save.IsEnabled = true;
 
-                    this.changeStage(Analyzer.STAGE_ORIGINAL);
+                    this.changeStage(AnalyzerStages.Original);
                 }
                 catch (Exception ex)
                 {
                     Console.Error.WriteLine(ex.Message);
                 }
-            }
-                
+            }       
         }
 
-        private void prevStage(object sender, EventArgs e)
-        {
-            var selectedIndex = tabControl_fingerprintDrawer.SelectedIndex;
-            changeStage(selectedIndex - 1);
-        }
-
-        private void nextStage(object sender, EventArgs e)
-        {
-            var selectedIndex = tabControl_fingerprintDrawer.SelectedIndex;
-            changeStage(selectedIndex + 1);
-        }
-
-        private void changeStage(int newStage)
+        private void changeStage(AnalyzerStages newStage)
         {
             // TODO: refactor
             int currentStage = tabControl_fingerprintDrawer.SelectedIndex;
 
-            button_prevStage.IsEnabled = newStage > Analyzer.STAGE_ORIGINAL;
-            button_nextStage.IsEnabled = newStage < Analyzer.STAGE_SKELETIZED;
+            button_prevStage.IsEnabled = newStage > AnalyzerStages.Original;
+            button_nextStage.IsEnabled = newStage < AnalyzerStages.Skeletonized;
 
 
             // Stage is going forward - create new stage if newStage is a valid one and draw is
             switch (newStage) {
                 default: return;
-                case Analyzer.STAGE_ORIGINAL:
+                case AnalyzerStages.Original:
                     break;
-                case Analyzer.STAGE_EQUALIZED:
+                case AnalyzerStages.Equalized:
                     Analyzer.transformEqualization();
                     break;
-                case Analyzer.STAGE_TRESHOLDED:
+                case AnalyzerStages.Tresholded:
                     Analyzer.transformTresholding(160); // TODO: user controls
                     break;
-                case Analyzer.STAGE_SKELETIZED:
+                case AnalyzerStages.Skeletonized:
                     Analyzer.transformSkeletonize();
                     break;
             }
             this.drawFingerprint(newStage);
-            tabControl_fingerprintDrawer.SelectedIndex = newStage;
+            tabControl_fingerprintDrawer.SelectedIndex = (int)newStage;
         }
 
-        private void drawFingerprint(int stage)
+        private void drawFingerprint(AnalyzerStages stage)
         {
-            var currentImage = Analyzer.getImage(stage);
+            var currentImage = Analyzer.getImageFor(stage);
 
             if (currentImage == null)
             {

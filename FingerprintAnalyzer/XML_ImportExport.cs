@@ -39,5 +39,5 @@ namespace FingerprintAnalyzer
     /// <summary>
     /// Fingerprint specific data importer/exporter
     /// </summary>
-    public class FingerprintXML : XML_ImportExport<Fingerprint> { }
+    public class FingerprintXML : XML_ImportExport<FingerprintData> { }
 }

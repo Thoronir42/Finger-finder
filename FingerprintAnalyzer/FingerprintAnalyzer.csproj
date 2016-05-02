@@ -43,8 +43,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Analyzer.cs" />
+    <Compile Include="Analyzer\Analyzer.cs" />
+    <Compile Include="Analyzer\AnalyzerStage.cs" />
     <Compile Include="FingerprintClassificator.cs" />
+    <Compile Include="Model\BaseModel.cs" />
     <Compile Include="XML_ImportExport.cs" />
     <Compile Include="MinutiaeDetector.cs" />
     <Compile Include="Model\Fingerprint.cs" />

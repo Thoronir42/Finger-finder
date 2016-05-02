@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,19 +13,72 @@ namespace FingerprintAnalyzer.Model
     /// <summary>
     /// Fingerprint data container
     /// </summary>
-    public class Fingerprint
+    public class FingerprintData : BaseModel, IDisposable
     {
+        private DateTime dateSaved = DateTime.Now;
+        private string name = "John Doe";
+        private ObservableCollection<Minutia> minutiae = new ObservableCollection<Minutia>();
+        private FingerprintCategory category = FingerprintCategory.Undefined;
+
         [XmlElement("SavedOn")]
-        public DateTime DateSaved { get; set; } = DateTime.Now;
+        public DateTime DateSaved
+        {
+            get { return dateSaved; }
+            set {
+                dateSaved = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         [XmlElement("Name")]
-        public string Name { get; set; } = "John Doe";
+        public string Name
+        {
+            get { return name; }
+            set {
+                name = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         [XmlElement("Minutiae")]
-        public List<Minutia> Minutiae { get; set; } = new List<Minutia>();
+        public ObservableCollection<Minutia> Minutiae
+        {
+            get { return minutiae; }
+            set
+            {
+                minutiae = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         [XmlElement("Category")]
-        public FingerprintCategory Category { get; set; } = FingerprintCategory.Undefined;
+        public FingerprintCategory Category
+        {
+            get { return category; }
+            set
+            {
+                category = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public FingerprintData()
+        {
+            minutiae.CollectionChanged += this.minutiaeCollectionChanged;
+        }
+
+        private void minutiaeCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.NotifyPropertyChanged("Minutiae");
+        }
+
+        public void Dispose()
+        {
+            minutiae.CollectionChanged -= this.minutiaeCollectionChanged;
+        }
+
+        
+
 
     }
 }

@@ -2,43 +2,53 @@
 using FingerprintAnalyzer.Analyze;
 using FingerprintAnalyzer.Model;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace FingerFinderPresenter.ViewModel
 {
-    class FingerFinder : BaseModel
+    partial class FingerFinder : BaseModel
     {
         private Analyzer analyzer = new Analyzer();
+        private int selectedIndex = 0;
+        private SolidColorBrush canvasBackground;
+        private ImageSource fingerprintImageSource;
 
-        public Analyzer Analyzer
-        {
-            get { return analyzer; }
-            private set
-            {
-                analyzer = value;
-            }
-        }
+        public Analyzer Analyzer { get { return analyzer; } private set { analyzer = value; NotifyPropertyChanged(); } }
+        public int SelectedIndex { get { return selectedIndex; } set { selectedIndex = value; NotifyPropertyChanged(); selectedIndexChanged(value); } }
 
-        public RelayCommand PreviousStage { get; set; }
-        public RelayCommand NextStage { get; set; }
+        public SolidColorBrush CanvasBackground { get { return canvasBackground; } set { canvasBackground = value; NotifyPropertyChanged(); } }
+        public ImageSource FingerprintImageSource { get { return fingerprintImageSource; } set { fingerprintImageSource = value; NotifyPropertyChanged(); } }
+
+        public int CanvasWidth { get; } = 350;
+        public int CanvasHeight { get; } = 350;
 
         public FingerFinder()
         {
+            InitializeCommands();
+            Analyzer.StageChanged += Analyzer_StageChanged;
+        }
 
-            PreviousStage = new RelayCommand(
-                o => { analyzer.CurrentStage--; },
-                o => analyzer.CurrentStage > AnalyzerStages.Original
-                );
-            NextStage = new RelayCommand(
-                o => { analyzer.CurrentStage++; },
-                o => analyzer.CurrentStage < AnalyzerStages.Skeletonized
-                );
+        private void drawFingerprint(Analyzer.Stages stage)
+        {
+            var currentImage = Analyzer.CurrentImage;
+
+            if (currentImage == null)
+            {
+                CanvasBackground = new SolidColorBrush(Color.FromRgb(240, 80, 160));
+                return;
+            }
+            CanvasBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
+            Console.WriteLine($"canvas {CanvasWidth}x{CanvasHeight}");
+
+            var bmp = FiFiPrToolkit.imageToRenderTargetBitmap(currentImage, CanvasWidth, CanvasHeight);
+            FingerprintImageSource = bmp;
+        }
+
+        private void selectedIndexChanged(int newValue)
+        {
+            drawFingerprint((Analyzer.Stages)newValue);
         }
     }
 
-    
 }

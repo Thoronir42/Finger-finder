@@ -15,10 +15,10 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Soubor">
-                <MenuItem Header="Otevřít" IsEnabled="False" InputGestureText="Ctrl+O"/>
-                <MenuItem x:Name="MenuItem_save" Header="Uložit" IsEnabled="False" Click="MenuItem_save_Click" InputGestureText="Ctrl+S"/>
+                <MenuItem Header="Otevřít"  InputGestureText="Ctrl+O"/>
+                <MenuItem x:Name="MenuItem_save" Header="Uložit"  InputGestureText="Ctrl+S" Command="{Binding CmdSave}"/>
                 <Separator/>
-                <MenuItem Header="Import" Click="MenuItem_import_Click"/>
+                <MenuItem Header="Import" Command="{Binding CmdImport}"/>
                 <Separator/>
                 <MenuItem Header="Zavřít" Click="MenuItem_close_Click"  InputGestureText="Alt+F4"/>
             </MenuItem>
@@ -38,7 +38,7 @@
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
 
-            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch" SelectionChanged="tabControl_fingerprintDrawer_SelectionChanged">
+            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch">
                 <TabItem x:Name="tab_fingerprintOriginal" Header="Otisk originál" IsEnabled="False">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
@@ -77,12 +77,12 @@
                         <Setter Property="Margin" Value="10,0,0,0"/>
                     </Style>
                 </StackPanel.Resources>
-                <Button x:Name="button_prevStage" Command="{Binding PreviousStage}" IsEnabled="false">Předcházející fáze</Button>
-                <Button x:Name="button_nextStage" IsEnabled="false" Command="{Binding NextStage}">Další fáze</Button>
+                <Button x:Name="button_prevStage" Command="{Binding PreviousStage}">Předcházející fáze</Button>
+                <Button x:Name="button_nextStage" Command="{Binding NextStage}">Další fáze</Button>
             </StackPanel>
 
             <Canvas x:Name="canvas" Grid.Column="1" Grid.RowSpan="2">
-                <Image x:Name="image_fingerprint"/>
+                <Image x:Name="image_fingerprint" Source="{Binding FingerprintImageSource}"/>
             </Canvas>
 
         </Grid>

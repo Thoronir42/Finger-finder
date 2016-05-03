@@ -13,9 +13,9 @@ namespace FingerprintAnalyzer.Analyze
     /// <summary>
     /// Interface grouping fingerprint analyzation controls
     /// </summary>
-    public class Analyzer : BaseModel
+    public partial class Analyzer : BaseModel
     {
-        private AnalyzerStages currentStage = AnalyzerStages.Original;
+        private Stages currentStage = Stages.Standby;
 
         public FingerprintData FingerprintData { get; private set; }
 
@@ -24,39 +24,38 @@ namespace FingerprintAnalyzer.Analyze
         public Image ImageTresholding { get; private set; }
         public Image ImageSkeleton { get; private set; }
 
-        public AnalyzerStages CurrentStage {
+        public Stages CurrentStage {
             get { return currentStage; }
-            set { currentStage = value; NotifyPropertyChanged(); NotifyPropertyChanged("CurrentImage"); } }
+            set
+            {
+                var oldStage = currentStage;
+                currentStage = value;
+                NotifyPropertyChanged();
+                stageChanged(oldStage, value);
+                NotifyPropertyChanged("CurrentImage");
+            } }
 
         public Image CurrentImage { get{ return this.getImageFor(CurrentStage); } }
 
         private MinutiaeDetector MinutiaeDetector { get; } = new MinutiaeDetector();
         private FingerprintClassificator FingerprintClassificator { get; } = new FingerprintClassificator();
-        private FingerprintXML XML { get; } = new FingerprintXML();
-
-
-        public void createNewFromImage(Image original)
-        {
-            FingerprintData = new FingerprintData();
-            ImageOriginal = original;
-            CurrentStage = AnalyzerStages.Original;
-        }
+        
 
         public Image transformEqualization()
         {
-            CurrentStage = AnalyzerStages.Equalized;
+            CurrentStage = Stages.Equalized;
             return ImageEqualization = (new ImageEqualizer()).transform(ImageOriginal);
         }
 
         public Image transformTresholding(int tresholdLevel)
         {
-            CurrentStage = AnalyzerStages.Tresholded;
+            CurrentStage = Stages.Tresholded;
             return ImageTresholding = (new ImageTresholder { TresholdLevel = tresholdLevel }).transform(ImageOriginal);
         }
 
         public Image transformSkeletonize()
         {
-            CurrentStage = AnalyzerStages.Skeletonized;
+            CurrentStage = Stages.Skeletonized;
             return ImageSkeleton = new ImageSkeletonizer().transform(ImageTresholding);
         }
 
@@ -65,15 +64,15 @@ namespace FingerprintAnalyzer.Analyze
         /// </summary>
         /// <param name="stage">Stage number specifying requested image</param>
         /// <returns>Corresponding image</returns>
-        public Image getImageFor(AnalyzerStages stage)
+        public Image getImageFor(Stages stage)
         {
             switch (stage)
             {
                 default:
-                case AnalyzerStages.Original: return ImageOriginal;
-                case AnalyzerStages.Equalized: return ImageEqualization;
-                case AnalyzerStages.Tresholded: return ImageTresholding;
-                case AnalyzerStages.Skeletonized: return ImageSkeleton;
+                case Stages.Original: return ImageOriginal;
+                case Stages.Equalized: return ImageEqualization;
+                case Stages.Tresholded: return ImageTresholding;
+                case Stages.Skeletonized: return ImageSkeleton;
             }
         }
 
@@ -85,30 +84,6 @@ namespace FingerprintAnalyzer.Analyze
         {
             FingerprintData.Minutiae = new ObservableCollection<Minutia>(MinutiaeDetector.detectMinituae(ImageSkeleton));
             FingerprintData.Category = FingerprintClassificator.classificate(ImageSkeleton);
-        }
-
-        /// <summary>
-        /// Loads fingerprint datafrom file
-        /// TODO: specify which image (if any) will be saved alongside fingerprint data
-        /// </summary>
-        /// <param name="filename">Location of file containing fingerprint data</param>
-        /// <returns>Succesfullness of operation</returns>
-        public bool loadFromFile(string filename)
-        {
-            this.XML.Load(filename);
-            return true;
-        }
-
-        /// <summary>
-        /// Saves fingerprint data to file
-        /// TODO: specify which image (if any) will be saved alongside fingerprint data
-        /// </summary>
-        /// <param name="filename">Desired destination for fingerprint data file</param>
-        /// <returns>Succesfullness of operation</returns>
-        public bool saveToFile(string filename)
-        {
-            this.XML.Save(FingerprintData, filename);
-            return true;
         }
     }
 }

@@ -38,12 +38,13 @@
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
 
-            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch">
+            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}">
                 <TabItem x:Name="tab_fingerprintOriginal" Header="Otisk originál" IsEnabled="False">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        <Label>Originální snímek</Label>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tab_fingerprintEqualization" Header="Otisk ekvalizace" IsEnabled="False">
@@ -51,7 +52,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-
+                        <Label>Ekvalizovaný snímek</Label>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tab_fingerprintTresholding" Header="Otisk prahování" IsEnabled="False">
@@ -59,7 +60,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-
+                        <Label>Naprahovaný snímek</Label>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton" IsEnabled="False">
@@ -67,6 +68,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        <Label>Kostra otisku prstu</Label>
                     </Grid>
                 </TabItem>
             </TabControl>

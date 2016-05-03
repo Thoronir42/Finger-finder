@@ -12,7 +12,7 @@ namespace FingerFinderPresenter.ViewModel
 
         private void nextStage()
         {
-            changeStage(Analyzer.CurrentStage + 1, true);
+            changeStage(Analyzer.CurrentStage + 1);
         }
 
         private void changeStage(Analyzer.Stages newStage, bool reverting = false)

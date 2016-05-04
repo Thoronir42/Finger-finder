@@ -42,9 +42,11 @@ namespace FingerprintAnalyzer.Analyze
             return ImageEqualization = (new ImageEqualizer()).transform(ImageOriginal);
         }
 
-        public Image transformTresholding(int tresholdLevel)
+        public Image transformTresholding(int tresholdLevel, bool preview = false)
         {
-            CurrentStage = Stages.Tresholded;
+            if (!preview) {
+                CurrentStage = Stages.Tresholded;
+            }
             return ImageTresholding = (new ImageTresholder { TresholdLevel = tresholdLevel }).transform(ImageOriginal);
         }
 

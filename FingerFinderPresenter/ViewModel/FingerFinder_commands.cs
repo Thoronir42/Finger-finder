@@ -16,6 +16,7 @@ namespace FingerFinderPresenter.ViewModel
     {
         public RelayCommand PreviousStage { get; set; }
         public RelayCommand NextStage { get; set; }
+        public RelayCommand PreviewChanges { get; set; }
 
         public RelayCommand CmdImport { get; set; }
         public RelayCommand CmdSave { get; set; }
@@ -30,6 +31,12 @@ namespace FingerFinderPresenter.ViewModel
                 o => { nextStage(); },
                 o => analyzer.CurrentStage != Analyzer.Stages.Standby && analyzer.CurrentStage < Analyzer.LastStage
                 );
+            PreviewChanges = new RelayCommand(
+                o => { previewChanges(); },
+                o => analyzer.CurrentStage == Analyzer.Stages.Equalized
+            );
+
+
             CmdImport = new RelayCommand(
                 o => { ImportFingerprint(); },
                 o => analyzer != null
@@ -38,6 +45,17 @@ namespace FingerFinderPresenter.ViewModel
                 o => { SaveFingerprintData(); },
                 o => analyzer != null && analyzer.CurrentStage == Analyzer.Stages.Finalised
                 );
+        }
+
+        private void previewChanges()
+        {
+            switch (Analyzer.CurrentStage)
+            {
+                case Analyzer.Stages.Equalized:
+                    Analyzer.transformTresholding(TresholdLevel, true);
+                    drawFingerprint(Analyzer.Stages.Tresholded);
+                    break;
+            }
         }
 
         private bool ImportFingerprint()

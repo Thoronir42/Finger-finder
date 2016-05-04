@@ -13,11 +13,15 @@ namespace FingerFinderPresenter.ViewModel
         private SolidColorBrush canvasBackground;
         private ImageSource fingerprintImageSource;
 
+        private int tresholdLevel = 160;
+
         public Analyzer Analyzer { get { return analyzer; } private set { analyzer = value; NotifyPropertyChanged(); } }
         public int SelectedIndex { get { return selectedIndex; } set { selectedIndex = value; NotifyPropertyChanged(); selectedIndexChanged(value); } }
 
         public SolidColorBrush CanvasBackground { get { return canvasBackground; } set { canvasBackground = value; NotifyPropertyChanged(); } }
         public ImageSource FingerprintImageSource { get { return fingerprintImageSource; } set { fingerprintImageSource = value; NotifyPropertyChanged(); } }
+
+        public int TresholdLevel { get { return tresholdLevel; } set { tresholdLevel = value; NotifyPropertyChanged(); } }
 
         public int CanvasWidth { get; } = 350;
         public int CanvasHeight { get; } = 350;
@@ -30,7 +34,7 @@ namespace FingerFinderPresenter.ViewModel
 
         private void drawFingerprint(Analyzer.Stages stage)
         {
-            var currentImage = Analyzer.CurrentImage;
+            var currentImage = Analyzer.getImageFor(stage);
 
             if (currentImage == null)
             {

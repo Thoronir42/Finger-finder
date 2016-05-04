@@ -26,12 +26,13 @@ namespace FingerFinderPresenter.ViewModel
             {
                 default: return;
                 case Analyzer.Stages.Original:
+                    Analyzer.CurrentStage = Analyzer.Stages.Original;
                     break;
                 case Analyzer.Stages.Equalized:
                     Analyzer.transformEqualization();
                     break;
                 case Analyzer.Stages.Tresholded:
-                    Analyzer.transformTresholding(160); // TODO: user controls
+                    Analyzer.transformTresholding(TresholdLevel); // TODO: user controls
                     break;
                 case Analyzer.Stages.Skeletonized:
                     Analyzer.transformSkeletonize();

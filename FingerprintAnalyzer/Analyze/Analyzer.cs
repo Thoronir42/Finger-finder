@@ -11,8 +11,9 @@ namespace FingerprintAnalyzer.Analyze
     public partial class Analyzer : BaseModel
     {
         private Stages currentStage = Stages.Standby;
+        private FingerprintData fingerprintData;
 
-        public FingerprintData FingerprintData { get; private set; }
+        public FingerprintData FingerprintData { get { return fingerprintData; } private set { fingerprintData = value; NotifyPropertyChanged(); } }
 
         public Image ImageOriginal { get; private set; }
         public Image ImageEqualization { get; private set; }
@@ -73,13 +74,17 @@ namespace FingerprintAnalyzer.Analyze
             }
         }
 
-
         /// <summary>
-        /// Temporary method assigning testing data to fingerprint
+        /// Finds minutiae and classificates fingerprint
         /// </summary>
-        public void mockAnalyzeAndClassify()
+        public void analyzeFingerprint()
         {
-            FingerprintData.Minutiae = new ObservableCollection<Minutia>(MinutiaeDetector.detectMinituae(ImageSkeleton));
+            FingerprintData.Minutiae.Clear();
+            foreach(Minutia minutia in MinutiaeDetector.detectMinituae(ImageSkeleton))
+            {
+                FingerprintData.Minutiae.Add(minutia);
+            }
+            
             FingerprintData.Category = FingerprintClassificator.classificate(ImageSkeleton);
         }
     }

@@ -44,7 +44,7 @@ namespace FingerprintAnalyzer.Model
         public ObservableCollection<Minutia> Minutiae
         {
             get { return minutiae; }
-            set
+            private set
             {
                 minutiae = value;
                 NotifyPropertyChanged();

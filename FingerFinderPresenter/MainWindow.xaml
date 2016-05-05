@@ -5,26 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FingerFinderPresenter"
         xmlns:ViewModel="clr-namespace:FingerFinderPresenter.ViewModel"
+        xmlns:Model="clr-namespace:FingerprintAnalyzer.Model;assembly=FingerprintAnalyzer"
+        
         mc:Ignorable="d"
         Title="Finger Finder" Height="420" Width="800">
     <Window.DataContext>
         <ViewModel:FingerFinder/>
     </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type Model:Minutia}" x:Key="MinutiaTpl">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="["/>
+                <TextBlock Text="{Binding Position.X, StringFormat={}{0:F4}}"/>
+                <TextBlock Text="; "/>
+                <TextBlock Text="{Binding Position.Y, StringFormat={}{0:F4}}"/>
+                <TextBlock Text="] "/>
+                <TextBlock Text="{Binding Type}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
 
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Soubor">
+                <MenuItem Header="Import" Command="{Binding CmdImport}"/>
+                <Separator/>
                 <MenuItem Header="Otevřít"  InputGestureText="Ctrl+O"/>
                 <MenuItem x:Name="MenuItem_save" Header="Uložit"  InputGestureText="Ctrl+S" Command="{Binding CmdSave}"/>
                 <Separator/>
-                <MenuItem Header="Import" Command="{Binding CmdImport}"/>
-                <Separator/>
                 <MenuItem Header="Zavřít" Click="MenuItem_close_Click"  InputGestureText="Alt+F4"/>
             </MenuItem>
+
             <MenuItem Header="Analýza">
-                <MenuItem Header="Detekce markantů"/>
-                <MenuItem Header="Klasifikace"/>
+                <MenuItem Header="Detekce markantů a klasifikace" Command="{Binding CmdAnalyze}"/>
             </MenuItem>
         </Menu>
 
@@ -38,7 +52,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedIndex}">
+            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTab}">
                 <TabItem x:Name="tab_fingerprintOriginal" Header="Otisk originál" IsEnabled="False">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
@@ -73,9 +87,27 @@
                 <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton" IsEnabled="False">
                     <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.531,0.556">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label>Kostra otisku prstu</Label>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="23"/>
+                            <RowDefinition Height="23"/>
+                            <RowDefinition Height="23"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.ColumnSpan="2">Kostra otisku prstu</Label>
+                        <Button Grid.Column="2" Command="{Binding CmdAnalyze}">Spustit analýzu</Button>
+
+                        <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" Text="{Binding SelectedMinutia.Position.X}"></TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedMinutia.Position.Y}"></TextBox>
+                        <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding MinutiaTypes, Mode=OneTime}" SelectedItem="{Binding SelectedMinutia.Type}"></ComboBox>
+
+                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Kategorie</Label>
+                        <ComboBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding FingerprintCategories, Mode=OneTime}" SelectedItem="{Binding Analyzer.FingerprintData.Category}"></ComboBox>
+                        
+                        <ListBox  Grid.Row="3" Grid.ColumnSpan="3" x:Name="listBox" ItemTemplate="{StaticResource MinutiaTpl}" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedMinutia}"/>
                     </Grid>
                 </TabItem>
             </TabControl>

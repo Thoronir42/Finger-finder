@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FingerprintAnalyzer</RootNamespace>
-    <AssemblyName>FiingerprintAnalyzer</AssemblyName>
+    <AssemblyName>FingerprintAnalyzer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -10,6 +10,8 @@ using System.IO;
 using System.Drawing.Imaging;
 using FingerprintAnalyzer.Model;
 using FingerprintAnalyzer.Analyze;
+using System.Windows.Input;
+using FingerFinderPresenter.ViewModel;
 
 namespace FingerFinderPresenter
 {

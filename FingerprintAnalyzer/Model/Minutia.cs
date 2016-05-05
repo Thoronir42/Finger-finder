@@ -18,6 +18,11 @@ namespace FingerprintAnalyzer.Model
         public PointF Position { get; set; } = new PointF();
         [XmlElement("Type")]
         public MinutiaType Type { get; set; } = MinutiaType.Unspecified;
+
+        public override string ToString()
+        {
+            return $"{Type} at [{Position.X}, {Position.Y}]";
+        }
     }
 
     /// <summary>

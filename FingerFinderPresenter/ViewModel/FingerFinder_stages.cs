@@ -5,6 +5,26 @@ namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder
     {
+        public RelayCommand PreviousStage { get; set; }
+        public RelayCommand NextStage { get; set; }
+        public RelayCommand PreviewChanges { get; set; }
+
+        private void InitializeStages()
+        {
+            PreviousStage = new RelayCommand(
+            o => { previousStage(); },
+                o => analyzer.CurrentStage > Analyzer.FirstStage
+                );
+            NextStage = new RelayCommand(
+                o => { nextStage(); },
+                o => analyzer.CurrentStage != Analyzer.Stages.Standby && analyzer.CurrentStage < Analyzer.LastStage
+                );
+            PreviewChanges = new RelayCommand(
+                o => { previewChanges(); },
+                o => analyzer.CurrentStage == Analyzer.Stages.Equalized
+            );
+        }
+
         private void previousStage()
         {
             changeStage(Analyzer.CurrentStage - 1, true);
@@ -17,10 +37,6 @@ namespace FingerFinderPresenter.ViewModel
 
         private void changeStage(Analyzer.Stages newStage, bool reverting = false)
         {
-            // TODO: refactor
-            int currentStage = SelectedIndex;
-
-
             // Stage is going forward - create new stage if newStage is a valid one and draw is
             switch (newStage)
             {
@@ -39,13 +55,14 @@ namespace FingerFinderPresenter.ViewModel
                     break;
             }
             this.drawFingerprint(newStage);
-            SelectedIndex = (int)newStage;
+            //Console.WriteLine("Selecting tab for:" + newStage);
+            SelectedTab = (int)newStage;
         }
 
         private void Analyzer_StageChanged(Analyzer sender, StageChangedEventArgs e)
         {
-            Console.WriteLine($"Stage changed from {e.OldStage} to {e.NewStage}");
-            SelectedIndex = stageToTabIndex(e.NewStage);
+            //Console.WriteLine($"Stage changed from {e.OldStage} to {e.NewStage}");
+            SelectedTab = stageToTabIndex(e.NewStage);
         }
 
         private int stageToTabIndex(Analyzer.Stages stage)

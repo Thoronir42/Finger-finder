@@ -9,14 +9,16 @@ namespace FingerFinderPresenter.ViewModel
     partial class FingerFinder : BaseModel
     {
         private Analyzer analyzer = new Analyzer();
-        private int selectedIndex = 0;
+
+        private int selectedTab = 0;
         private SolidColorBrush canvasBackground;
         private ImageSource fingerprintImageSource;
 
         private int tresholdLevel = 160;
 
         public Analyzer Analyzer { get { return analyzer; } private set { analyzer = value; NotifyPropertyChanged(); } }
-        public int SelectedIndex { get { return selectedIndex; } set { selectedIndex = value; NotifyPropertyChanged(); selectedIndexChanged(value); } }
+
+        public int SelectedTab { get { return selectedTab; } set { selectedTab = value; NotifyPropertyChanged(); selectedIndexChanged(value); } }
 
         public SolidColorBrush CanvasBackground { get { return canvasBackground; } set { canvasBackground = value; NotifyPropertyChanged(); } }
         public ImageSource FingerprintImageSource { get { return fingerprintImageSource; } set { fingerprintImageSource = value; NotifyPropertyChanged(); } }
@@ -29,6 +31,8 @@ namespace FingerFinderPresenter.ViewModel
         public FingerFinder()
         {
             InitializeCommands();
+            InitializeStages();
+            InitializePostProcess();
             Analyzer.StageChanged += Analyzer_StageChanged;
         }
 
@@ -43,7 +47,7 @@ namespace FingerFinderPresenter.ViewModel
             }
             CanvasBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
 
-            Console.WriteLine($"canvas {CanvasWidth}x{CanvasHeight}");
+            //Console.WriteLine($"canvas {CanvasWidth}x{CanvasHeight}");
 
             var bmp = FiFiPrToolkit.imageToRenderTargetBitmap(currentImage, CanvasWidth, CanvasHeight);
             FingerprintImageSource = bmp;

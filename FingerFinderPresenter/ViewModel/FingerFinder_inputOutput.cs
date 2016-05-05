@@ -1,45 +1,27 @@
-﻿using FingerprintAnalyzer;
-using FingerprintAnalyzer.Analyze;
+﻿using FingerprintAnalyzer.Analyze;
 using FingerprintAnalyzer.Model;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder : BaseModel
     {
-        public RelayCommand PreviousStage { get; set; }
-        public RelayCommand NextStage { get; set; }
-        public RelayCommand PreviewChanges { get; set; }
 
         public RelayCommand CmdImport { get; set; }
+        public RelayCommand CmdLoad { get; set; }
         public RelayCommand CmdSave { get; set; }
 
         private void InitializeCommands()
         {
-            PreviousStage = new RelayCommand(
-                o => { previousStage(); },
-                o => analyzer.CurrentStage > Analyzer.FirstStage
-                );
-            NextStage = new RelayCommand(
-                o => { nextStage(); },
-                o => analyzer.CurrentStage != Analyzer.Stages.Standby && analyzer.CurrentStage < Analyzer.LastStage
-                );
-            PreviewChanges = new RelayCommand(
-                o => { previewChanges(); },
-                o => analyzer.CurrentStage == Analyzer.Stages.Equalized
-            );
-
 
             CmdImport = new RelayCommand(
                 o => { ImportFingerprint(); },
                 o => analyzer != null
+                );
+            CmdLoad = new RelayCommand(
+                o => { LoadFingerprintData(); },
+                o => false // TODO implement and enable loading
                 );
             CmdSave = new RelayCommand(
                 o => { SaveFingerprintData(); },
@@ -82,8 +64,6 @@ namespace FingerFinderPresenter.ViewModel
 
         private bool SaveFingerprintData()
         {
-            Analyzer.mockAnalyzeAndClassify();
-
             SaveFileDialog saver = new SaveFileDialog();
             saver.Filter = "Otisk prstu (*.fpr) | *.fpr;";
             if (saver.ShowDialog() != true)
@@ -93,6 +73,12 @@ namespace FingerFinderPresenter.ViewModel
             Analyzer.saveToFile(saver.FileName);
             return true;
         }
+
+        private bool LoadFingerprintData()
+        {
+            return false;
+        }
+
     }
 
 }

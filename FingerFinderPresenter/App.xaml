@@ -2,8 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FingerFinderPresenter"
+             xmlns:ViewModel="clr-namespace:FingerFinderPresenter.ViewModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ViewModel:FingerFinder x:Key="FingerFinderVM"/>
     </Application.Resources>
 </Application>

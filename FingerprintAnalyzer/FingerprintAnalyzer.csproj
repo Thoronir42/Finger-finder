@@ -45,20 +45,24 @@
   <ItemGroup>
     <Compile Include="Analyze\Analyzer.cs" />
     <Compile Include="Analyze\AnalyzerInOut.cs" />
-    <Compile Include="Analyze\AnalyzerStages.cs" />
+    <Compile Include="PreProcess\Sequences\ASequence.cs" />
+    <Compile Include="PreProcess\Sequences\SequenceSkeletisation.cs" />
+    <Compile Include="PreProcess\Sequences\Stage.cs" />
     <Compile Include="FingerprintClassificator.cs" />
     <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="PreProcess\Sequences\SkeletoniserStage.cs" />
     <Compile Include="XML_ImportExport.cs" />
     <Compile Include="MinutiaeDetector.cs" />
     <Compile Include="Model\Fingerprint.cs" />
-    <Compile Include="ImageManipulation\AImageManipulator.cs" />
-    <Compile Include="ImageManipulation\ImageEqualizer.cs" />
-    <Compile Include="ImageManipulation\ImageSkeletonizer.cs" />
-    <Compile Include="ImageManipulation\ImageTresholder.cs" />
+    <Compile Include="PreProcess\ImageManipulation\AImageManipulator.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageEqualizer.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageSkeletonizer.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageTresholder.cs" />
     <Compile Include="Model\FingerprintCategory.cs" />
     <Compile Include="Model\Minutia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

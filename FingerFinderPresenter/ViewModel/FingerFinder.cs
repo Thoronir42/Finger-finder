@@ -1,6 +1,7 @@
 ﻿using FingerprintAnalyzer;
 using FingerprintAnalyzer.Analyze;
 using FingerprintAnalyzer.Model;
+using FingerprintAnalyzer.PreProcess.Sequences;
 using System;
 using System.Windows.Media;
 
@@ -36,7 +37,7 @@ namespace FingerFinderPresenter.ViewModel
             Analyzer.StageChanged += Analyzer_StageChanged;
         }
 
-        private void drawFingerprint(Analyzer.Stages stage)
+        private void drawFingerprint(Stage stage)
         {
             var currentImage = Analyzer.getImageFor(stage);
 
@@ -49,13 +50,13 @@ namespace FingerFinderPresenter.ViewModel
 
             //Console.WriteLine($"canvas {CanvasWidth}x{CanvasHeight}");
 
-            var bmp = FiFiPrToolkit.imageToRenderTargetBitmap(currentImage, CanvasWidth, CanvasHeight);
+            var bmp = GenericToolkit.imageToRenderTargetBitmap(currentImage, CanvasWidth, CanvasHeight);
             FingerprintImageSource = bmp;
         }
 
         private void selectedIndexChanged(int newValue)
         {
-            drawFingerprint((Analyzer.Stages)newValue);
+            drawFingerprint(Analyzer.getStageBySelectedIndex(newValue));
         }
     }
 

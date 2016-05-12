@@ -52,16 +52,41 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TabControl x:Name="tabControl_fingerprintDrawer" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTab}">
-                <TabItem x:Name="tab_fingerprintOriginal" Header="Otisk originál" IsEnabled="False">
+            <TabControl x:Name="tabControl_fingerprintDrawer"
+                        Grid.Column="0" Grid.Row="1"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTab}">
+                <TabControl.Resources>
+                    <Style TargetType="{x:Type TabItem}" x:Name="GenericTabItem">
+                        <Setter Property="IsEnabled" Value="False"/>
+                    </Style>
+                    
+                    <Style TargetType="{x:Type TabItem}" x:Key="SequenceOne" BasedOn="{StaticResource {x:Type TabItem}}">
+                        <Setter Property="Visibility" Value="{Binding SequenceOne}"></Setter>
+                    </Style>
+                    <Style TargetType="{x:Type TabItem}" x:Key="SequenceTwo" BasedOn="{StaticResource {x:Type TabItem}}">
+                        <Setter Property="Visibility" Value="{Binding SequenceTwo}"></Setter>
+                    </Style>
+                    
+                </TabControl.Resources>
+                <TabItem x:Name="tab_original" Header="Originál">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label>Originální snímek</Label>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0">Originální snímek</Label>
+                        
+                        <StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button Command="{Binding CmdChooseSequence}" CommandParameter="1">Sekvence 1</Button>
+                            <Button Command="{Binding CmdChooseSequence}" CommandParameter="2">Sekvence 2</Button>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tab_fingerprintEqualization" Header="Otisk ekvalizace" IsEnabled="False">
+                <!--#region Sequence One-->
+                <TabItem x:Name="tab_equalization" Header="Ekvalizace" Style="{StaticResource SequenceOne}">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -76,7 +101,7 @@
                         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TresholdLevel, Mode=OneWay}" IsReadOnly="True"></TextBox>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tab_fingerprintTresholding" Header="Otisk prahování" IsEnabled="False">
+                <TabItem x:Name="tab_tresholding" Header="Prahování" Style="{StaticResource SequenceOne}">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -84,8 +109,35 @@
                         <Label>Naprahovaný snímek</Label>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tab_fingerprintSkeleton" Header="Otisk skeleton" IsEnabled="False">
-                    <Grid Background="#FFE5E5E5" RenderTransformOrigin="0.531,0.556">
+                <!--#endregion-->
+                <!--#region Sequence Two-->
+                <TabItem x:Name="tab_hidden" Header="Jiná cesta" Style="{StaticResource SequenceTwo}">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label>Skrytý</Label>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_hiddenn" Header="Jiná cesta 2" Style="{StaticResource SequenceTwo}">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label>Skrytý</Label>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab_hiddennn" Header="Jiná cesta 3" Style="{StaticResource SequenceTwo}">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label>Skrytý</Label>
+                    </Grid>
+                </TabItem>
+                <!--#endregion-->
+                <TabItem x:Name="tab_analysis" Header="Analýza">
+                    <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="60"/>
@@ -106,7 +158,7 @@
 
                         <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">Kategorie</Label>
                         <ComboBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding FingerprintCategories, Mode=OneTime}" SelectedItem="{Binding Analyzer.FingerprintData.Category}"></ComboBox>
-                        
+
                         <ListBox  Grid.Row="3" Grid.ColumnSpan="3" x:Name="listBox" ItemTemplate="{StaticResource MinutiaTpl}" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}" IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedMinutia}"/>
                     </Grid>
                 </TabItem>

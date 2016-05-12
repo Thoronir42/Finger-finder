@@ -1,5 +1,6 @@
 ﻿using FingerprintAnalyzer.Analyze;
 using FingerprintAnalyzer.Model;
+using FingerprintAnalyzer.PreProcess.Sequences;
 using Microsoft.Win32;
 using System;
 
@@ -21,22 +22,20 @@ namespace FingerFinderPresenter.ViewModel
                 );
             CmdLoad = new RelayCommand(
                 o => { LoadFingerprintData(); },
-                o => false // TODO implement and enable loading
+                o => false // TODO implement
                 );
             CmdSave = new RelayCommand(
                 o => { SaveFingerprintData(); },
-                o => analyzer != null && analyzer.CurrentStage == Analyzer.Stages.Finalised
+                o => analyzer != null && analyzer.CurrentStage == Stage.Final
                 );
         }
 
         private void previewChanges()
         {
-            switch (Analyzer.CurrentStage)
+            if (Analyzer.CurrentStage.Equals(SkeletoniserStage.Equalised))
             {
-                case Analyzer.Stages.Equalized:
-                    Analyzer.transformTresholding(TresholdLevel, true);
-                    drawFingerprint(Analyzer.Stages.Tresholded);
-                    break;
+                Analyzer.peakForward();
+                drawFingerprint(SkeletoniserStage.Tresholded);
             }
         }
 

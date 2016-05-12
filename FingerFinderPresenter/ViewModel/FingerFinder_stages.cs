@@ -1,5 +1,7 @@
 ﻿using FingerprintAnalyzer.Analyze;
+using FingerprintAnalyzer.PreProcess.Sequences;
 using System;
+using System.Windows;
 
 namespace FingerFinderPresenter.ViewModel
 {
@@ -9,54 +11,56 @@ namespace FingerFinderPresenter.ViewModel
         public RelayCommand NextStage { get; set; }
         public RelayCommand PreviewChanges { get; set; }
 
+        public RelayCommand CmdChooseSequence { get; set; }
+
+
+        private Visibility sequenceOne, sequenceTwo;
+        public Visibility SequenceOne { get { return sequenceOne; } set { sequenceOne = value; NotifyPropertyChanged(); } }
+        public Visibility SequenceTwo { get { return sequenceTwo; } set { sequenceTwo = value; NotifyPropertyChanged(); } }
+
         private void InitializeStages()
         {
             PreviousStage = new RelayCommand(
-            o => { previousStage(); },
-                o => analyzer.CurrentStage > Analyzer.FirstStage
+            o => { Analyzer.stepBackward(); },
+                o => Analyzer.canStepBackward()
                 );
             NextStage = new RelayCommand(
-                o => { nextStage(); },
-                o => analyzer.CurrentStage != Analyzer.Stages.Standby && analyzer.CurrentStage < Analyzer.LastStage
+                o => { Analyzer.stepForward(); },
+                o => Analyzer.canStepForward()
                 );
             PreviewChanges = new RelayCommand(
                 o => { previewChanges(); },
-                o => analyzer.CurrentStage == Analyzer.Stages.Equalized
+                o => Analyzer.PreviewAvailable
             );
+
+            CmdChooseSequence = new RelayCommand(
+                o => {
+                    int seq;
+                    if(int.TryParse(o.ToString(), out seq))
+                    {
+                        Console.WriteLine(seq);
+                        ChooseSequence(seq);
+                    }
+
+                }
+                );
+
+            SequenceOne = Visibility.Visible;
+            SequenceTwo = Visibility.Collapsed;
+
         }
 
-        private void previousStage()
+        private void ChooseSequence(int sequence)
         {
-            changeStage(Analyzer.CurrentStage - 1, true);
-        }
-
-        private void nextStage()
-        {
-            changeStage(Analyzer.CurrentStage + 1);
-        }
-
-        private void changeStage(Analyzer.Stages newStage, bool reverting = false)
-        {
-            // Stage is going forward - create new stage if newStage is a valid one and draw is
-            switch (newStage)
+            if(sequence == 1)
             {
-                default: return;
-                case Analyzer.Stages.Original:
-                    Analyzer.CurrentStage = Analyzer.Stages.Original;
-                    break;
-                case Analyzer.Stages.Equalized:
-                    Analyzer.transformEqualization();
-                    break;
-                case Analyzer.Stages.Tresholded:
-                    Analyzer.transformTresholding(TresholdLevel); // TODO: user controls
-                    break;
-                case Analyzer.Stages.Skeletonized:
-                    Analyzer.transformSkeletonize();
-                    break;
+                SequenceOne = Visibility.Visible;
+                SequenceTwo = Visibility.Collapsed;
+            } else
+            {
+                SequenceOne = Visibility.Collapsed;
+                SequenceTwo = Visibility.Visible;
             }
-            this.drawFingerprint(newStage);
-            //Console.WriteLine("Selecting tab for:" + newStage);
-            SelectedTab = (int)newStage;
         }
 
         private void Analyzer_StageChanged(Analyzer sender, StageChangedEventArgs e)
@@ -65,15 +69,34 @@ namespace FingerFinderPresenter.ViewModel
             SelectedTab = stageToTabIndex(e.NewStage);
         }
 
-        private int stageToTabIndex(Analyzer.Stages stage)
+        private int stageToTabIndex(Stage stage)
         {
+            // TODO wtf??
 
+            if (stage.Equals(Stage.Original))
+            {
+                return 0;
+            }
+            if (stage.Equals(SkeletoniserStage.Equalised))
+            {
+                return 1;
+            }
+            if (stage.Equals(SkeletoniserStage.Tresholded))
+            {
+                return 2;
+            }
+            if (stage.Equals(Stage.Final))
+            {
+                return 3;
+            }
+            /*
             switch (stage)
             {
-                case Analyzer.Stages.Finalised: stage = Analyzer.Stages.Skeletonized; break;
+                case SkeletiniserStage..Finalised: stage = Analyzer.Stages.Skeletonized; break;
                 case Analyzer.Stages.Standby: stage = Analyzer.Stages.Original; break;
             }
-            return (int)stage;
+            */
+            return 0;
         }
     }
 }

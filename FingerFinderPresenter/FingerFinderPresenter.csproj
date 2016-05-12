@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Toolkits\StageToTabIndexMapper.cs" />
     <Compile Include="ViewModel\FingerFinder_inputOutput.cs" />
     <Compile Include="ViewModel\FingerFinder.cs" />
     <Compile Include="ViewModel\FingerFinder_postProcess.cs" />
@@ -69,7 +70,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FiFiPrToolkit.cs" />
+    <Compile Include="Toolkits\GenericToolkit.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

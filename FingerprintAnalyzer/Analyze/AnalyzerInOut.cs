@@ -1,5 +1,7 @@
 ﻿using FingerprintAnalyzer.Model;
 using System.Drawing;
+using FingerprintAnalyzer.PreProcess.Sequences;
+using System;
 
 namespace FingerprintAnalyzer.Analyze
 {
@@ -10,8 +12,8 @@ namespace FingerprintAnalyzer.Analyze
         public void createNewFromImage(Image original)
         {
             FingerprintData = new FingerprintData();
-            ImageOriginal = original;
-            CurrentStage = Stages.Original;
+            CurrentStage = Stage.Original;
+            Images[CurrentStage] = original;
         }
 
         public void loadAndCreateFrom(string fileName)
@@ -44,5 +46,10 @@ namespace FingerprintAnalyzer.Analyze
             return true;
         }
 
+        public Stage getStageBySelectedIndex(int newValue)
+        {
+            // TODO implement
+            return Stage.Original;
+        }
     }
 }

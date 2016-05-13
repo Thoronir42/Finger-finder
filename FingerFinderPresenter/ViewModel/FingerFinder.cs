@@ -1,6 +1,7 @@
 ﻿using FingerprintAnalyzer;
 using FingerprintAnalyzer.Analyze;
 using FingerprintAnalyzer.Model;
+using FingerprintAnalyzer.PreProcess;
 using FingerprintAnalyzer.PreProcess.Sequences;
 using System;
 using System.Windows.Media;
@@ -9,15 +10,14 @@ namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder : BaseModel
     {
-        private Analyzer analyzer = new Analyzer();
-
         private int selectedTab = 0;
         private SolidColorBrush canvasBackground;
         private ImageSource fingerprintImageSource;
 
         private int tresholdLevel = 160;
 
-        public Analyzer Analyzer { get { return analyzer; } private set { analyzer = value; NotifyPropertyChanged(); } }
+        public Preprocesor Preprocesor { get; } = new Preprocesor();
+        public Analyzer Analyzer { get; } = new Analyzer();
 
         public int SelectedTab { get { return selectedTab; } set { selectedTab = value; NotifyPropertyChanged(); selectedIndexChanged(value); } }
 
@@ -34,29 +34,26 @@ namespace FingerFinderPresenter.ViewModel
             InitializeCommands();
             InitializeStages();
             InitializePostProcess();
-            Analyzer.StageChanged += Analyzer_StageChanged;
+            Preprocesor.StageChanged += StageChanged;
         }
 
-        private void drawFingerprint(Stage stage)
+        private void drawFingerprint(System.Drawing.Image image)
         {
-            var currentImage = Analyzer.getImageFor(stage);
-
-            if (currentImage == null)
+            if (image == null)
             {
                 CanvasBackground = new SolidColorBrush(Color.FromRgb(240, 80, 160));
                 return;
             }
             CanvasBackground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
 
-            //Console.WriteLine($"canvas {CanvasWidth}x{CanvasHeight}");
-
-            var bmp = GenericToolkit.imageToRenderTargetBitmap(currentImage, CanvasWidth, CanvasHeight);
+            var bmp = GenericToolkit.imageToRenderTargetBitmap(image, CanvasWidth, CanvasHeight);
             FingerprintImageSource = bmp;
         }
 
-        private void selectedIndexChanged(int newValue)
+        private void selectedIndexChanged(int index)
         {
-            drawFingerprint(Analyzer.getStageBySelectedIndex(newValue));
+            var image = Preprocesor.getImageFor(index);
+            drawFingerprint(image);
         }
     }
 

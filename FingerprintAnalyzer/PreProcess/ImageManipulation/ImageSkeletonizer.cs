@@ -27,89 +27,13 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
 
             X = M.GetLength(0) - 1;
             Y = M.GetLength(1) - 1;
+
             min = findMin(M, X, Y);
 
-            for (int y = 1; y < Y; y++)
-            {
-                for (int x = 1; x < X; x++)
-                {
-                    if (M[y, x] > 0 && Math.Abs(M[y - 1, x]) <= M[y, x] && Math.Abs(M[y, x - 1]) <= M[y, x] &&
-                    (M[y + 1, x] <= M[y, x] || M[y - 1, x] < 0) && (M[y, x + 1] <= M[y, x] || M[y, x - 1] < 0))
-                        M[y, x] *= -1;
-                }
-            }
+            negateTransform(ref M, X, Y);
 
-
-            for (int y = Y - 1; y > 0; y--)
-            {
-                for (int x = X - 1; x > 0; x--)
-                {
-                    if (M[y, x] > 0 && ((M[y + 1, x] < 0 && Math.Abs(M[y - 1, x]) > M[y, x]) ||
-                    (M[y, x + 1] < 0 && Math.Abs(M[y, x - 1]) > M[y, x])))
-                        M[y, x] *= -1;
-                }
-            }
-
-            int transitions, greater;
-            for (int y = 1; y < Y; y++)
-            {
-                for (int x = 1; x < X; x++)
-                {
-                    if (M[y, x] < 0)
-                    {
-                        greater = 0;
-                        transitions = 0;
-                        if (M[y - 1, x - 1] < M[y, x]) greater = 1;
-                        if (M[y - 1, x - 1] < 0 && M[y - 1, x] >= 0) transitions++;
-                        if (M[y - 1, x] < M[y, x]) greater = 1;
-                        if (M[y - 1, x] < 0 && M[y - 1, x + 1] >= 0) transitions++;
-                        if (M[y - 1, x + 1] < M[y, x]) greater = 1;
-                        if (M[y - 1, x + 1] < 0 && M[y, x + 1] >= 0) transitions++;
-                        if (M[y, x - 1] < M[y, x]) greater = 1;
-                        if (M[y, x + 1] < 0 && M[y + 1, x + 1] >= 0) transitions++;
-                        if (M[y, x + 1] < M[y, x]) greater = 1;
-                        if (M[y + 1, x + 1] < 0 && M[y + 1, x] >= 0) transitions++;
-                        if (M[y + 1, x - 1] < M[y, x]) greater = 1;
-                        if (M[y + 1, x] < 0 && M[y + 1, x - 1] >= 0) transitions++;
-                        if (M[y + 1, x] < M[y, x]) greater = 1;
-                        if (M[y + 1, x - 1] < 0 && M[y, x - 1] >= 0) transitions++;
-                        if (M[y + 1, x + 1] < M[y, x]) greater = 1;
-                        if (M[y, x - 1] < 0 && M[y - 1, x - 1] >= 0) transitions++;
-                        if (greater == 1 && transitions < 2) M[y, x] *= -1;
-                    }
-                }
-            }
-
-            for (int y = Y - 1; y > 0; y--)
-            {
-                for (int x = X - 1; x > 0; x--)
-                {
-                    if (M[y, x] >= 0)
-                    {
-                        continue;
-                    }
-                    greater = 0;
-                    transitions = 0;
-                    if (M[y - 1, x - 1] < M[y, x]) greater = 1;
-                    if (M[y - 1, x - 1] < 0 && M[y - 1, x] >= 0) transitions++;
-                    if (M[y - 1, x] < M[y, x]) greater = 1;
-                    if (M[y - 1, x] < 0 && M[y - 1, x + 1] >= 0) transitions++;
-                    if (M[y - 1, x + 1] < M[y, x]) greater = 1;
-                    if (M[y - 1, x + 1] < 0 && M[y, x + 1] >= 0) transitions++;
-                    if (M[y, x - 1] < M[y, x]) greater = 1;
-                    if (M[y, x + 1] < 0 && M[y + 1, x + 1] >= 0) transitions++;
-                    if (M[y, x + 1] < M[y, x]) greater = 1;
-                    if (M[y + 1, x + 1] < 0 && M[y + 1, x] >= 0) transitions++;
-                    if (M[y + 1, x - 1] < M[y, x]) greater = 1;
-                    if (M[y + 1, x] < 0 && M[y + 1, x - 1] >= 0) transitions++;
-                    if (M[y + 1, x] < M[y, x]) greater = 1;
-                    if (M[y + 1, x - 1] < 0 && M[y, x - 1] >= 0) transitions++;
-                    if (M[y + 1, x + 1] < M[y, x]) greater = 1;
-                    if (M[y, x - 1] < 0 && M[y - 1, x - 1] >= 0) transitions++;
-                    if (greater == 1 && transitions < 2) M[y, x] *= -1;
-
-                }
-            }
+            compareForthTransform(ref M, X, Y);
+            compareBackTransform(ref M, X, Y);
 
             return createSkeleton(M, X, Y);
         }
@@ -149,6 +73,99 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
             }
 
             return min;
+        }
+
+        private void negateTransform(ref int[,] M, int X, int Y)
+        {
+            for (int y = 1; y < Y; y++)
+            {
+                for (int x = 1; x < X; x++)
+                {
+                    if (M[y, x] > 0 && Math.Abs(M[y - 1, x]) <= M[y, x] && Math.Abs(M[y, x - 1]) <= M[y, x] &&
+                    (M[y + 1, x] <= M[y, x] || M[y - 1, x] < 0) && (M[y, x + 1] <= M[y, x] || M[y, x - 1] < 0))
+                        M[y, x] *= -1;
+                }
+            }
+
+
+            for (int y = Y - 1; y > 0; y--)
+            {
+                for (int x = X - 1; x > 0; x--)
+                {
+                    if (M[y, x] > 0 && ((M[y + 1, x] < 0 && Math.Abs(M[y - 1, x]) > M[y, x]) ||
+                    (M[y, x + 1] < 0 && Math.Abs(M[y, x - 1]) > M[y, x])))
+                        M[y, x] *= -1;
+                }
+            }
+        }
+
+        private void compareForthTransform(ref int[,] M, int X, int Y)
+        {
+            int transitions, greater;
+            for (int y = 1; y < Y; y++)
+            {
+                for (int x = 1; x < X; x++)
+                {
+                    if (M[y, x] >= 0)
+                    {
+                        continue;
+                    }
+                    greater = 0;
+                    transitions = 0;
+                    if (M[y - 1, x - 1] < M[y, x]) greater = 1;
+                    if (M[y - 1, x - 1] < 0 && M[y - 1, x] >= 0) transitions++;
+                    if (M[y - 1, x] < M[y, x]) greater = 1;
+                    if (M[y - 1, x] < 0 && M[y - 1, x + 1] >= 0) transitions++;
+                    if (M[y - 1, x + 1] < M[y, x]) greater = 1;
+                    if (M[y - 1, x + 1] < 0 && M[y, x + 1] >= 0) transitions++;
+                    if (M[y, x - 1] < M[y, x]) greater = 1;
+                    if (M[y, x + 1] < 0 && M[y + 1, x + 1] >= 0) transitions++;
+                    if (M[y, x + 1] < M[y, x]) greater = 1;
+                    if (M[y + 1, x + 1] < 0 && M[y + 1, x] >= 0) transitions++;
+                    if (M[y + 1, x - 1] < M[y, x]) greater = 1;
+                    if (M[y + 1, x] < 0 && M[y + 1, x - 1] >= 0) transitions++;
+                    if (M[y + 1, x] < M[y, x]) greater = 1;
+                    if (M[y + 1, x - 1] < 0 && M[y, x - 1] >= 0) transitions++;
+                    if (M[y + 1, x + 1] < M[y, x]) greater = 1;
+                    if (M[y, x - 1] < 0 && M[y - 1, x - 1] >= 0) transitions++;
+                    if (greater == 1 && transitions < 2) M[y, x] *= -1;
+                }
+            }
+        }
+
+        private void compareBackTransform(ref int[,] M, int X, int Y)
+        {
+            int greater, transitions;
+            for (int y = Y - 1; y > 0; y--)
+            {
+                for (int x = X - 1; x > 0; x--)
+                {
+                    if (M[y, x] >= 0)
+                    {
+                        continue;
+                    }
+                    greater = 0;
+                    transitions = 0;
+                    if (M[y - 1, x - 1] < M[y, x]) greater = 1;
+                    if (M[y - 1, x - 1] < 0 && M[y - 1, x] >= 0) transitions++;
+                    if (M[y - 1, x] < M[y, x]) greater = 1;
+                    if (M[y - 1, x] < 0 && M[y - 1, x + 1] >= 0) transitions++;
+                    if (M[y - 1, x + 1] < M[y, x]) greater = 1;
+                    if (M[y - 1, x + 1] < 0 && M[y, x + 1] >= 0) transitions++;
+                    if (M[y, x - 1] < M[y, x]) greater = 1;
+                    if (M[y, x + 1] < 0 && M[y + 1, x + 1] >= 0) transitions++;
+                    if (M[y, x + 1] < M[y, x]) greater = 1;
+                    if (M[y + 1, x + 1] < 0 && M[y + 1, x] >= 0) transitions++;
+                    if (M[y + 1, x - 1] < M[y, x]) greater = 1;
+                    if (M[y + 1, x] < 0 && M[y + 1, x - 1] >= 0) transitions++;
+                    if (M[y + 1, x] < M[y, x]) greater = 1;
+                    if (M[y + 1, x - 1] < 0 && M[y, x - 1] >= 0) transitions++;
+                    if (M[y + 1, x + 1] < M[y, x]) greater = 1;
+                    if (M[y, x - 1] < 0 && M[y - 1, x - 1] >= 0) transitions++;
+                    if (greater == 1 && transitions < 2) M[y, x] *= -1;
+
+                }
+            }
         }
 
         private int[,] createBinaryMatrix(Bitmap image)

@@ -1,4 +1,5 @@
-﻿using FingerprintAnalyzer.PreProcess.Sequences;
+﻿using FingerprintAnalyzer.Model;
+using FingerprintAnalyzer.PreProcess.Sequences;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FingerprintAnalyzer.Analyze
+namespace FingerprintAnalyzer.PreProcess
 {
-    partial class Analyzer
+    //stages
+    partial class Preprocesor
     {
         private ASequence SelectedSequence { get; set; }
 
@@ -33,9 +35,6 @@ namespace FingerprintAnalyzer.Analyze
         public Image CurrentImage { get { return this.getImageFor(CurrentStage); } }
 
         public Dictionary<Stage, Image> Images { get; private set; }
-
-        
-        
 
         public void stepBackward()
         {
@@ -86,6 +85,23 @@ namespace FingerprintAnalyzer.Analyze
                 return Images[Stage.Original];
             }
             return null;
+        }
+        public Image getImageFor(int index)
+        {
+            Stage stage = getStageBySelectedIndex(index);
+            return getImageFor(stage);
+        }
+
+
+        public Stage getStageBySelectedIndex(int index)
+        {
+            return this.SelectedSequence.getStage(index);
+        }
+
+        private void stageChanged(Stage oldValue, Stage newValue)
+        {
+            var args = new StageChangedEventArgs { OldStage = oldValue, NewStage = newValue };
+            StageChanged?.Invoke(this, args);
         }
     }
 }

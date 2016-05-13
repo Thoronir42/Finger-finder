@@ -3,6 +3,7 @@ using FingerprintAnalyzer.Model;
 using FingerprintAnalyzer.PreProcess.Sequences;
 using Microsoft.Win32;
 using System;
+using System.Drawing;
 
 namespace FingerFinderPresenter.ViewModel
 {
@@ -17,8 +18,7 @@ namespace FingerFinderPresenter.ViewModel
         {
 
             CmdImport = new RelayCommand(
-                o => { ImportFingerprint(); },
-                o => analyzer != null
+                o => { ImportFingerprint(); }
                 );
             CmdLoad = new RelayCommand(
                 o => { LoadFingerprintData(); },
@@ -26,16 +26,16 @@ namespace FingerFinderPresenter.ViewModel
                 );
             CmdSave = new RelayCommand(
                 o => { SaveFingerprintData(); },
-                o => analyzer != null && analyzer.CurrentStage == Stage.Final
+                o => Preprocesor.CurrentStage == Stage.Final
                 );
         }
 
         private void previewChanges()
         {
-            if (Analyzer.CurrentStage.Equals(SkeletoniserStage.Equalised))
+            if (Preprocesor.CurrentStage.Equals(SkeletoniserStage.Equalised))
             {
-                Analyzer.peekForward();
-                drawFingerprint(SkeletoniserStage.Tresholded);
+                Image image = Preprocesor.peekForward();
+                drawFingerprint(image);
             }
         }
 
@@ -47,11 +47,11 @@ namespace FingerFinderPresenter.ViewModel
             {
                 return false;
             }
-            Console.WriteLine("Opened file: " + openFileDialog.FileName);
+            Console.WriteLine("Importing from file: " + openFileDialog.FileName);
 
             try
             { 
-                this.Analyzer.loadAndCreateFrom(openFileDialog.FileName);
+                Preprocesor.loadAndCreateFrom(openFileDialog.FileName);
             }
             catch (Exception ex)
             {

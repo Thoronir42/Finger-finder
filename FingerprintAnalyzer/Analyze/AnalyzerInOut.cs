@@ -1,6 +1,5 @@
 ﻿using FingerprintAnalyzer.Model;
 using System.Drawing;
-using FingerprintAnalyzer.PreProcess.Sequences;
 using System;
 
 namespace FingerprintAnalyzer.Analyze
@@ -9,18 +8,6 @@ namespace FingerprintAnalyzer.Analyze
     {
         private FingerprintXML XML { get; } = new FingerprintXML();
 
-        public void createNewFromImage(Image original)
-        {
-            FingerprintData = new FingerprintData();
-            CurrentStage = Stage.Original;
-            Images[CurrentStage] = original;
-        }
-
-        public void loadAndCreateFrom(string fileName)
-        {
-            Image fingerprint = Image.FromFile(fileName);
-            this.createNewFromImage(fingerprint);
-        }
 
         /// <summary>
         /// Loads fingerprint datafrom file
@@ -30,7 +17,8 @@ namespace FingerprintAnalyzer.Analyze
         /// <returns>Succesfullness of operation</returns>
         public bool loadFromFile(string filename)
         {
-            this.XML.Load(filename);
+            var data = this.XML.Load(filename);
+            Console.WriteLine(data);
             return true;
         }
 
@@ -44,12 +32,6 @@ namespace FingerprintAnalyzer.Analyze
         {
             this.XML.Save(FingerprintData, filename);
             return true;
-        }
-
-        public Stage getStageBySelectedIndex(int newValue)
-        {
-            // TODO implement
-            return Stage.Original;
         }
     }
 }

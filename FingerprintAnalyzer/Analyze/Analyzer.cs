@@ -1,8 +1,6 @@
 ﻿using System.Drawing;
 using FingerprintAnalyzer.Model;
-using System.Collections.Generic;
 using System;
-using FingerprintAnalyzer.PreProcess.Sequences;
 
 namespace FingerprintAnalyzer.Analyze
 {
@@ -14,16 +12,10 @@ namespace FingerprintAnalyzer.Analyze
         private FingerprintData fingerprintData;
         public FingerprintData FingerprintData { get { return fingerprintData; } private set { fingerprintData = value; NotifyPropertyChanged(); } }
 
-        private void stageChanged(Stage oldValue, Stage newValue)
-        {
-            var args = new StageChangedEventArgs { OldStage = oldValue, NewStage = newValue };
-            StageChanged?.Invoke(this, args);
-        }
-
         private MinutiaeDetector MinutiaeDetector { get; } = new MinutiaeDetector();
         private FingerprintClassificator FingerprintClassificator { get; } = new FingerprintClassificator();
 
-        
+        public Image FingerprintImage { get; set; }
 
         
 
@@ -32,21 +24,13 @@ namespace FingerprintAnalyzer.Analyze
         /// </summary>
         public void analyzeFingerprint()
         {
-            Image finalImage = Images[Stage.Final];
             FingerprintData.Minutiae.Clear();
-            foreach(Minutia minutia in MinutiaeDetector.detectMinituae(finalImage))
+            foreach(Minutia minutia in MinutiaeDetector.detectMinituae(FingerprintImage))
             {
                 FingerprintData.Minutiae.Add(minutia);
             }
             
-            FingerprintData.Category = FingerprintClassificator.classificate(finalImage);
+            FingerprintData.Category = FingerprintClassificator.classificate(FingerprintImage);
         }
-    }
-
-    public delegate void StageChangedEventHandler(Analyzer sender, StageChangedEventArgs e);
-    public class StageChangedEventArgs : EventArgs
-    {
-        public Stage OldStage { get; set; }
-        public Stage NewStage { get; set; }
     }
 }

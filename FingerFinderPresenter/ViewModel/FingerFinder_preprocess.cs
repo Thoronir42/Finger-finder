@@ -1,6 +1,8 @@
 ﻿using FingerprintAnalyzer.Analyze;
+using FingerprintAnalyzer.PreProcess;
 using FingerprintAnalyzer.PreProcess.Sequences;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace FingerFinderPresenter.ViewModel
@@ -18,19 +20,22 @@ namespace FingerFinderPresenter.ViewModel
         public Visibility SequenceOne { get { return sequenceOne; } set { sequenceOne = value; NotifyPropertyChanged(); } }
         public Visibility SequenceTwo { get { return sequenceTwo; } set { sequenceTwo = value; NotifyPropertyChanged(); } }
 
+        private Dictionary<Stage, int> stageTabDictionary;
+
         private void InitializeStages()
         {
             PreviousStage = new RelayCommand(
-            o => { Analyzer.stepBackward(); },
-                o => Analyzer.canStepBackward()
+            o => { Preprocesor.stepBackward(); },
+                o => Preprocesor.canStepBackward()
                 );
             NextStage = new RelayCommand(
-                o => { Analyzer.stepForward(); },
-                o => Analyzer.canStepForward()
+                o => { Preprocesor.stepForward(); },
+                o => Preprocesor.canStepForward()
                 );
             PreviewChanges = new RelayCommand(
                 o => { previewChanges(); },
-                o => Analyzer.PreviewAvailable
+
+                o => Preprocesor.PreviewAvailable
             );
 
             CmdChooseSequence = new RelayCommand(
@@ -41,13 +46,24 @@ namespace FingerFinderPresenter.ViewModel
                         Console.WriteLine(seq);
                         ChooseSequence(seq);
                     }
-
                 }
                 );
 
-            SequenceOne = Visibility.Visible;
+            SequenceOne = Visibility.Collapsed;
             SequenceTwo = Visibility.Collapsed;
+            stageTabDictionary = createStageTabDictionary();
 
+        }
+
+        private Dictionary<Stage, int> createStageTabDictionary()
+        {
+            var dictionary = new Dictionary<Stage, int>();
+            dictionary[Stage.Original] = 0;
+            dictionary[SkeletoniserStage.Equalised] = 1;
+            dictionary[SkeletoniserStage.Tresholded] = 2;
+            dictionary[Stage.Final] = 3;
+
+            return dictionary;
         }
 
         private void ChooseSequence(int sequence)
@@ -63,7 +79,7 @@ namespace FingerFinderPresenter.ViewModel
             }
         }
 
-        private void Analyzer_StageChanged(Analyzer sender, StageChangedEventArgs e)
+        private void StageChanged(object sender, StageChangedEventArgs e)
         {
             //Console.WriteLine($"Stage changed from {e.OldStage} to {e.NewStage}");
             SelectedTab = stageToTabIndex(e.NewStage);
@@ -71,31 +87,15 @@ namespace FingerFinderPresenter.ViewModel
 
         private int stageToTabIndex(Stage stage)
         {
-            // TODO wtf??
-
-            if (stage.Equals(Stage.Original))
+            if (stageTabDictionary.ContainsKey(stage))
             {
-                return 0;
+                return stageTabDictionary[stage];
             }
-            if (stage.Equals(SkeletoniserStage.Equalised))
-            {
-                return 1;
+            Console.Error.WriteLine("Tab index was not found for stage " + stage);
+            if (stageTabDictionary.ContainsKey(Stage.Original)){
+                return stageTabDictionary[Stage.Original];
             }
-            if (stage.Equals(SkeletoniserStage.Tresholded))
-            {
-                return 2;
-            }
-            if (stage.Equals(Stage.Final))
-            {
-                return 3;
-            }
-            /*
-            switch (stage)
-            {
-                case SkeletiniserStage..Finalised: stage = Analyzer.Stages.Skeletonized; break;
-                case Analyzer.Stages.Standby: stage = Analyzer.Stages.Original; break;
-            }
-            */
+            Console.Error.WriteLine("Missing tab index for original stage");
             return 0;
         }
     }

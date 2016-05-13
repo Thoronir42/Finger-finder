@@ -45,15 +45,16 @@
   <ItemGroup>
     <Compile Include="Analyze\Analyzer.cs" />
     <Compile Include="Analyze\AnalyzerInOut.cs" />
-    <Compile Include="Analyze\AnalyzerPreprocess.cs" />
+    <Compile Include="PreProcess\PreprocesorStages.cs" />
+    <Compile Include="PreProcess\Preprocesor.cs" />
     <Compile Include="PreProcess\Sequences\ASequence.cs" />
     <Compile Include="PreProcess\Sequences\SequenceSkeletisation.cs" />
     <Compile Include="PreProcess\Sequences\Stage.cs" />
-    <Compile Include="FingerprintClassificator.cs" />
+    <Compile Include="Analyze\FingerprintClassificator.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="PreProcess\Sequences\SkeletoniserStage.cs" />
     <Compile Include="XML_ImportExport.cs" />
-    <Compile Include="MinutiaeDetector.cs" />
+    <Compile Include="Analyze\MinutiaeDetector.cs" />
     <Compile Include="Model\Fingerprint.cs" />
     <Compile Include="PreProcess\ImageManipulation\AImageManipulator.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageEqualizer.cs" />

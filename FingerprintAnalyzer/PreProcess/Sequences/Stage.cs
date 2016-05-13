@@ -6,8 +6,14 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
     {
         String label;
         private static Stage
+            stageChoosingSequence = new Stage("Choosing sequence"),
             stageOriginal = new Stage("Original"),
             stageFinal = new Stage("Final");
+
+        public static Stage ChoosingSequence
+        {
+            get { return stageChoosingSequence; }
+        }
 
         public static Stage Original
         {
@@ -43,5 +49,13 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
             return GetType().GetHashCode() * label.GetHashCode();
         }
 
+    }
+
+    public delegate void StageChangedEventHandler(object sender, StageChangedEventArgs e);
+
+    public class StageChangedEventArgs : EventArgs
+    {
+        public Stage OldStage { get; set; }
+        public Stage NewStage { get; set; }
     }
 }

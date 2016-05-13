@@ -59,8 +59,8 @@
     <Compile Include="Toolkits\StageToTabIndexMapper.cs" />
     <Compile Include="ViewModel\FingerFinder_inputOutput.cs" />
     <Compile Include="ViewModel\FingerFinder.cs" />
-    <Compile Include="ViewModel\FingerFinder_postProcess.cs" />
-    <Compile Include="ViewModel\FingerFinder_stages.cs" />
+    <Compile Include="ViewModel\FingerFinder_analyze.cs" />
+    <Compile Include="ViewModel\FingerFinder_preprocess.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

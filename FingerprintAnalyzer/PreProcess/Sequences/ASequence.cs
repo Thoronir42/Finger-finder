@@ -7,16 +7,16 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
 {
     abstract class ASequence
     {
-        private readonly List<Stage> stages;
+        public List<Stage> Stages { get; }
         private int iCurrentStage;
 
         public Stage CurrentStage {
-            get { return this.stages[iCurrentStage]; }
+            get { return this.Stages[iCurrentStage]; }
             set
             {
-                if (stages.Contains(value))
+                if (Stages.Contains(value))
                 {
-                    iCurrentStage = stages.IndexOf(value);
+                    iCurrentStage = Stages.IndexOf(value);
                 }
                 throw new ArgumentException("Provided stage does not belong to current pool of available stages");
             }
@@ -30,7 +30,7 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
 
         public ASequence()
         {
-            this.stages = this.getStages();
+            this.Stages = this.getStages();
         }
 
         public Stage StepBackward()
@@ -66,6 +66,15 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
                 return manipulators[currentStage];
             }
             return null;
+        }
+
+        internal Stage getStage(int index)
+        {
+            if(index < 0 || index > Stages.Count)
+            {
+                throw new ArgumentOutOfRangeException($"For {GetType().Name}, stage index must be between 0 and {Stages.Count}, {index} given.");
+            }
+            return Stages[index];
         }
     }
 }

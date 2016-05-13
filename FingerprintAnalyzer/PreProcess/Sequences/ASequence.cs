@@ -5,9 +5,9 @@ using System.Drawing;
 
 namespace FingerprintAnalyzer.PreProcess.Sequences
 {
-    abstract class ASequence
+    public abstract class ASequence
     {
-        public List<Stage> Stages { get; }
+        public List<Stage> Stages { get; private set; }
         private int iCurrentStage;
 
         public Stage CurrentStage {
@@ -25,13 +25,22 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
         private Dictionary<Stage, AImageManipulator> manipulators;
 
 
-        internal abstract List<Stage> getStages();
-        internal abstract Dictionary<Stage, AImageManipulator> getManipulators();
+        public bool PreviewAvailable
+        {
+            get { return this.isPreviewAvailable(); }
+        }
 
         public ASequence()
         {
-            this.Stages = this.getStages();
+            Stages = this.getStages();
+            Stages.Add(Stage.Final);
+            manipulators = getManipulators();
         }
+
+        internal abstract List<Stage> getStages();
+        internal abstract Dictionary<Stage, AImageManipulator> getManipulators();
+        protected abstract bool isPreviewAvailable();
+
 
         public Stage StepBackward()
         {
@@ -51,12 +60,12 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
 
         public bool CanStepBackward()
         {
-            return false;
+            return iCurrentStage > 0;
         }
 
         public bool CanStepForward()
         {
-            return false;
+            return iCurrentStage < Stages.Count - 1;
         }
 
         internal AImageManipulator getManipulator(Stage currentStage)
@@ -65,7 +74,7 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
             {
                 return manipulators[currentStage];
             }
-            return null;
+            return ImageDuplicator.Instance;
         }
 
         internal Stage getStage(int index)

@@ -12,9 +12,19 @@ namespace FingerprintAnalyzer.PreProcess
     //stages
     partial class Preprocesor
     {
-        private ASequence SelectedSequence { get; set; }
+        private ASequence selectedSequence;
+        public ASequence SelectedSequence {
+            get { return selectedSequence; }
+            set
+            {
+                selectedSequence = value;
+                CurrentStage = selectedSequence.CurrentStage;
+            }
+        }
 
-        public Stage currentStage;
+        public Dictionary<Stage, Image> Images { get; private set; } = new Dictionary<Stage, Image>();
+
+        public Stage currentStage = Stage.JustOpened;
         public Stage CurrentStage
         {
             get { return currentStage; }
@@ -30,12 +40,12 @@ namespace FingerprintAnalyzer.PreProcess
         }
         public event StageChangedEventHandler StageChanged;
 
-        public bool PreviewAvailable { get { return false; } }
+
+
+        public bool PreviewAvailable { get { return SelectedSequence != null && SelectedSequence.PreviewAvailable; } }
 
         public Image CurrentImage { get { return this.getImageFor(CurrentStage); } }
-
-        public Dictionary<Stage, Image> Images { get; private set; }
-
+        
         public void stepBackward()
         {
             CurrentStage = SelectedSequence.StepBackward();
@@ -69,32 +79,13 @@ namespace FingerprintAnalyzer.PreProcess
             return SelectedSequence != null && SelectedSequence.CanStepBackward();
         }
 
-        /// <summary>
-        /// Returns image corresponding to requested stageNumber or original if stage number wasn't recognised
-        /// </summary>
-        /// <param name="stage">Stage number specifying requested image</param>
-        /// <returns>Corresponding image</returns>
-        public Image getImageFor(Stage stage)
-        {
-            if (Images.ContainsKey(stage))
-            {
-                return Images[stage];
-            }
-            if (Images.ContainsKey(Stage.Original))
-            {
-                return Images[Stage.Original];
-            }
-            return null;
-        }
-        public Image getImageFor(int index)
-        {
-            Stage stage = getStageBySelectedIndex(index);
-            return getImageFor(stage);
-        }
-
 
         public Stage getStageBySelectedIndex(int index)
         {
+            if(SelectedSequence == null)
+            {
+                return Stage.ChoosingSequence;
+            }
             return this.SelectedSequence.getStage(index);
         }
 

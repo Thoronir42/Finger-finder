@@ -15,6 +15,8 @@ namespace FingerprintAnalyzer.Analyze
         private MinutiaeDetector MinutiaeDetector { get; } = new MinutiaeDetector();
         private FingerprintClassificator FingerprintClassificator { get; } = new FingerprintClassificator();
 
+        public bool CanAnalyze { get { return FingerprintImage != null; } }
+
         public Image FingerprintImage { get; set; }
 
         

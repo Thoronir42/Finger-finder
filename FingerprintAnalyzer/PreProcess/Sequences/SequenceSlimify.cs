@@ -8,28 +8,25 @@ using FingerprintAnalyzer.PreProcess.ImageManipulation;
 
 namespace FingerprintAnalyzer.PreProcess.Sequences
 {
-    public class SequenceSkeletisation : ASequence
+    public class SequenceSlimify : ASequence
     {
         protected override bool isPreviewAvailable()
         {
-            return CurrentStage == SkeletoniserStage.Equalised;
+            throw new NotImplementedException();
         }
 
         internal override Dictionary<Stage, AImageManipulator> getManipulators()
         {
+            throw new NotImplementedException();
             Dictionary<Stage, AImageManipulator> manipulators = new Dictionary<Stage, AImageManipulator>();
-
-            manipulators[SkeletoniserStage.Original] = ImageEqualizer.Instance;
-            manipulators[SkeletoniserStage.Equalised] = ImageTresholder.Instance;
-            manipulators[SkeletoniserStage.Tresholded] = ImageSkeletonizer.Instance;
 
             return manipulators;
         }
 
         internal override List<Stage> getStages()
         {
+            throw new NotImplementedException();
             List<Stage> stages = new List<Stage> {
-                SkeletoniserStage.Original,
                 SkeletoniserStage.Equalised,
                 SkeletoniserStage.Tresholded
             };

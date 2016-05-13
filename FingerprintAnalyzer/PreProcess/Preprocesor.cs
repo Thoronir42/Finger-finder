@@ -22,5 +22,28 @@ namespace FingerprintAnalyzer.PreProcess
             Image fingerprint = Image.FromFile(fileName);
             this.createNewFromImage(fingerprint);
         }
+
+        /// <summary>
+        /// Returns image corresponding to requested stageNumber or original if stage number wasn't recognised
+        /// </summary>
+        /// <param name="stage">Stage number specifying requested image</param>
+        /// <returns>Corresponding image</returns>
+        public Image getImageFor(Stage stage)
+        {
+            if (Images.ContainsKey(stage))
+            {
+                return Images[stage];
+            }
+            if (Images.ContainsKey(Stage.ChoosingSequence))
+            {
+                return Images[Stage.ChoosingSequence];
+            }
+            return null;
+        }
+        public Image getImageFor(int index)
+        {
+            Stage stage = getStageBySelectedIndex(index);
+            return getImageFor(stage);
+        }
     }
 }

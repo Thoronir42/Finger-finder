@@ -6,23 +6,14 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
     {
         String label;
         private static Stage
+            stageJustOpened = new Stage("Just opened"),
             stageChoosingSequence = new Stage("Choosing sequence"),
-            stageOriginal = new Stage("Original"),
             stageFinal = new Stage("Final");
 
-        public static Stage ChoosingSequence
-        {
-            get { return stageChoosingSequence; }
-        }
-
-        public static Stage Original
-        {
-            get { return stageOriginal; }
-        }
-        public static Stage Final
-        {
-            get { return stageFinal; }
-        }
+        public static Stage JustOpened { get { return stageJustOpened; } }
+        public static Stage ChoosingSequence { get { return stageChoosingSequence; } }
+        
+        public static Stage Final { get { return stageFinal; } }
 
         public Stage(string label)
         {

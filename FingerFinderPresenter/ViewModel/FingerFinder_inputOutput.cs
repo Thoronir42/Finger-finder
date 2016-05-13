@@ -30,15 +30,6 @@ namespace FingerFinderPresenter.ViewModel
                 );
         }
 
-        private void previewChanges()
-        {
-            if (Preprocesor.CurrentStage.Equals(SkeletoniserStage.Equalised))
-            {
-                Image image = Preprocesor.peekForward();
-                drawFingerprint(image);
-            }
-        }
-
         private bool ImportFingerprint()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -52,6 +43,7 @@ namespace FingerFinderPresenter.ViewModel
             try
             { 
                 Preprocesor.loadAndCreateFrom(openFileDialog.FileName);
+                Preprocesor.CurrentStage = Stage.ChoosingSequence;
             }
             catch (Exception ex)
             {

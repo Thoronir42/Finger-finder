@@ -1,4 +1,5 @@
 ﻿using FingerprintAnalyzer.Model;
+using FingerprintAnalyzer.PreProcess.Sequences;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,15 @@ namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder
     {
+        public List<MinutiaType> MinutiaTypes
+        {
+            get { return Enum.GetValues(typeof(MinutiaType)).Cast<MinutiaType>().ToList(); }
+        }
+        public List<FingerprintCategory> FingerprintCategories
+        {
+            get { return Enum.GetValues(typeof(FingerprintCategory)).Cast<FingerprintCategory>().ToList(); }
+        }
+
         private Minutia selectedMinutia = new Minutia { Type = MinutiaType.Unspecified };
         public Minutia SelectedMinutia { get { return selectedMinutia; } set { selectedMinutia = value; NotifyPropertyChanged(); } }
 
@@ -18,17 +28,8 @@ namespace FingerFinderPresenter.ViewModel
         {
             CmdAnalyze = new RelayCommand(
                 o => { Analyzer.analyzeFingerprint(); },
-                o => Analyzer.FingerprintData != null
+                o => Analyzer.CanAnalyze
                 );
-        }
-
-        public List<MinutiaType> MinutiaTypes
-        {
-            get { return Enum.GetValues(typeof(MinutiaType)).Cast<MinutiaType>().ToList(); }
-        }
-        public List<FingerprintCategory> FingerprintCategories
-        {
-            get { return Enum.GetValues(typeof(FingerprintCategory)).Cast<FingerprintCategory>().ToList(); }
         }
 
     }

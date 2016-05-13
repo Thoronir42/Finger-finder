@@ -10,18 +10,24 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
 {
     class SequenceSkeletisation : ASequence
     {
-        public SequenceSkeletisation()
+        internal override Dictionary<Stage, AImageManipulator> getManipulators()
         {
-            
+            Dictionary<Stage, AImageManipulator> manipulators = new Dictionary<Stage, AImageManipulator>();
+
+            manipulators[Stage.Original] = ImageEqualizer.Instance;
+            manipulators[SkeletoniserStage.Equalised] = ImageTresholder.Instance;
+            manipulators[SkeletoniserStage.Tresholded] = ImageSkeletonizer.Instance;
+
+            return manipulators;
         }
 
-        internal override List<AImageManipulator> getManipulators()
+        internal override List<Stage> getStages()
         {
-            List<AImageManipulator> manipulators = new List<AImageManipulator>();
-            manipulators.Add(new ImageEqualizer());
-            manipulators.Add(new ImageTresholder());
-            manipulators.Add(new ImageSkeletonizer());
-            return manipulators;
+            List<Stage> stages = new List<Stage> {
+                SkeletoniserStage.Equalised,
+                SkeletoniserStage.Tresholded
+            };
+            return stages;
         }
     }
 }

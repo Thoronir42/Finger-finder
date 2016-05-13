@@ -34,7 +34,7 @@ namespace FingerFinderPresenter.ViewModel
         {
             if (Analyzer.CurrentStage.Equals(SkeletoniserStage.Equalised))
             {
-                Analyzer.peakForward();
+                Analyzer.peekForward();
                 drawFingerprint(SkeletoniserStage.Tresholded);
             }
         }

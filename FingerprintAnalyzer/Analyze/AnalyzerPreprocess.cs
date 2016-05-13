@@ -42,14 +42,22 @@ namespace FingerprintAnalyzer.Analyze
             CurrentStage = SelectedSequence.StepBackward();
         }
 
-        public void stepForward()
+        public Image stepForward()
         {
-            return SelectedSequence.CanStepForward();
+            Image newImage;
+            Stage newStage = SelectedSequence.StepForward(CurrentImage, out newImage);
+
+            Images[newStage] = newImage;
+            CurrentStage = newStage;
+
+            return newImage;
         }
 
-        public void peakForward()
+        public Image peekForward()
         {
-            throw new NotImplementedException();
+            Image newImage;
+            SelectedSequence.StepForward(CurrentImage, out newImage, true);
+            return newImage;
         }
 
         public bool canStepForward()

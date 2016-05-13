@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Analyze\Analyzer.cs" />
     <Compile Include="Analyze\AnalyzerInOut.cs" />
+    <Compile Include="Analyze\AnalyzerPreprocess.cs" />
     <Compile Include="PreProcess\Sequences\ASequence.cs" />
     <Compile Include="PreProcess\Sequences\SequenceSkeletisation.cs" />
     <Compile Include="PreProcess\Sequences\Stage.cs" />

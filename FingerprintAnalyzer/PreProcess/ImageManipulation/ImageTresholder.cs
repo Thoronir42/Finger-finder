@@ -12,9 +12,13 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
     /// </summary>
     class ImageTresholder : AImageManipulator
     {
+        public static ImageTresholder Instance { get; } = new ImageTresholder();
+
         public int TresholdLevel { get; set; } = 128;
 
-        public override Image transform(Image original)
+        private ImageTresholder() { }
+
+        public override Image transform(Image original, dynamic parameters = null)
         {
             Bitmap origBitmap = new Bitmap(original);
             Bitmap result = new Bitmap(original.Width, original.Height);

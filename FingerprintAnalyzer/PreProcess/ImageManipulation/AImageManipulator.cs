@@ -21,7 +21,7 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
         /// </summary>
         /// <param name="original">Base image</param>
         /// <returns>Image transformed in a way defined by specific image manupulator</returns>
-        public abstract Image transform(Image original);
+        public abstract Image transform(Image original, dynamic parameters = null);
 
 
         protected int colorToLuminance(Color c)

@@ -12,7 +12,12 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
     /// </summary>
     class ImageEqualizer : AImageManipulator
     {
-        public override Image transform(Image original)
+        public static ImageEqualizer Instance { get; } = new ImageEqualizer();
+
+
+        private ImageEqualizer() { }
+
+        public override Image transform(Image original, dynamic parameters = null)
         {
             Bitmap origBitmap = new Bitmap(original);
             Bitmap result = new Bitmap(original.Width, original.Height);

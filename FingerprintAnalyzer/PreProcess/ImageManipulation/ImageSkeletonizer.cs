@@ -13,43 +13,21 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
     /// </summary>
     class ImageSkeletonizer : AImageManipulator
     {
-        public override Image transform(Image original)
+        public static ImageSkeletonizer Instance { get; } = new ImageSkeletonizer();
+
+
+        private ImageSkeletonizer() { }
+
+        public override Image transform(Image original, dynamic parameters = null)
         {
             Bitmap origBitmap = new Bitmap(original);
-
-            int min, X = original.Width - 1, Y = original.Height - 1;
             int[,] M = createBinaryMatrix(origBitmap);
 
-            for (int y = 1; y < Y; y++)
-            {
-                for (int x = 1; x < X; x++)
-                {
-                    if (M[y, x] == 1)
-                    {
-                        min = M[y - 1, x - 1];
-                        if (M[y - 1, x] < min) min = M[y - 1, x];
-                        if (M[y - 1, x + 1] < min) min = M[y - 1, x + 1];
-                        if (M[y, x - 1] < min) min = M[y, x - 1];
-                        M[y, x] = min + 1;
-                    }
-                }
-            }
+            int min, X, Y;
 
-
-            for (int y = Y - 1; y > 0; y--)
-            {
-                for (int x = X - 1; x > 0; x--)
-                {
-                    if (M[y, x] > 1)
-                    {
-                        min = M[y, x + 1];
-                        if (M[y + 1, x - 1] < min) min = M[y + 1, x - 1];
-                        if (M[y + 1, x] < min) min = M[y + 1, x];
-                        if (M[y + 1, x + 1] < min) min = M[y + 1, x + 1];
-                        if (min + 1 < M[y, x]) M[y, x] = min + 1;
-                    }
-                }
-            }
+            X = M.GetLength(0) - 1;
+            Y = M.GetLength(1) - 1;
+            min = findMin(M, X, Y);
 
             for (int y = 1; y < Y; y++)
             {
@@ -136,7 +114,42 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
             return createSkeleton(M, X, Y);
         }
 
-        
+        private int findMin(int[,] M, int X, int Y)
+        {
+            int min = 0;
+
+            for (int y = 1; y < Y; y++)
+            {
+                for (int x = 1; x < X; x++)
+                {
+                    if (M[y, x] == 1)
+                    {
+                        min = M[y - 1, x - 1];
+                        if (M[y - 1, x] < min) min = M[y - 1, x];
+                        if (M[y - 1, x + 1] < min) min = M[y - 1, x + 1];
+                        if (M[y, x - 1] < min) min = M[y, x - 1];
+                        M[y, x] = min + 1;
+                    }
+                }
+            }
+
+            for (int y = Y - 1; y > 0; y--)
+            {
+                for (int x = X - 1; x > 0; x--)
+                {
+                    if (M[y, x] > 1)
+                    {
+                        min = M[y, x + 1];
+                        if (M[y + 1, x - 1] < min) min = M[y + 1, x - 1];
+                        if (M[y + 1, x] < min) min = M[y + 1, x];
+                        if (M[y + 1, x + 1] < min) min = M[y + 1, x + 1];
+                        if (min + 1 < M[y, x]) M[y, x] = min + 1;
+                    }
+                }
+            }
+
+            return min;
+        }
 
         private int[,] createBinaryMatrix(Bitmap image)
         {

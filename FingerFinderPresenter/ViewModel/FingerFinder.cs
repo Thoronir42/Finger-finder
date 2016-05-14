@@ -11,14 +11,10 @@ namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder : BaseModel
     {
-        private int selectedTab = 0;
-
         private SolidColorBrush canvasBackground;
 
         private Image currentImage;
         private ImageSource fingerprintImageSource;
-
-        private int tresholdLevel = 160;
 
         public Preprocesor Preprocesor { get; } = new Preprocesor();
         public Analyzer Analyzer { get; } = new Analyzer();
@@ -46,16 +42,15 @@ namespace FingerFinderPresenter.ViewModel
         }
         public ImageSource FingerprintImageSource { get { return fingerprintImageSource; } set { fingerprintImageSource = value; NotifyPropertyChanged(); } }
 
-        public int TresholdLevel { get { return tresholdLevel; } set { tresholdLevel = value; NotifyPropertyChanged(); } }
-
         public int CanvasWidth { get; } = 350;
         public int CanvasHeight { get; } = 350;
 
         public FingerFinder()
         {
             InitializeCommands();
-            InitializeStages();
+            InitializePreprocess();
             InitializePostProcess();
+            InitializeTabVisibility();
             Preprocesor.StageChanged += StageChanged;
         }
 

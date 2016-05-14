@@ -48,14 +48,18 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
             return CurrentStage;
             
         }
-        public Stage StepForward(Image source, out Image destination, bool preview = false)
+        public Stage StepForward(Image source, out Image destination, bool preview = false, dynamic parameters = null)
         {
             AImageManipulator manipulator = this.getManipulator(CurrentStage);
-            destination = manipulator.transform(source);
+            destination = manipulator.transform(source, parameters);
             if (!preview) {
                 iCurrentStage++;
             }
             return CurrentStage;
+        }
+        public Stage StepForward(Image source, out Image destination, dynamic parameters)
+        {
+            return StepForward(source, out destination, false, parameters);
         }
 
         public bool CanStepBackward()

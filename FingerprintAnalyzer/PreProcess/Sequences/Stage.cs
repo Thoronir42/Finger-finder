@@ -15,6 +15,8 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
         
         public static Stage Final { get { return stageFinal; } }
 
+        public bool IsPreprocessStage { get { return this.GetType() != typeof(Stage); } }
+
         public Stage(string label)
         {
             this.label = label;

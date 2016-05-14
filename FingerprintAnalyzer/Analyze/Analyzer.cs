@@ -17,7 +17,19 @@ namespace FingerprintAnalyzer.Analyze
 
         public bool CanAnalyze { get { return FingerprintImage != null; } }
 
-        public Image FingerprintImage { get; set; }
+        private Image fingerprintImage;
+        public Image FingerprintImage {
+            get { return fingerprintImage; }
+            set
+            {
+                if(fingerprintImage == null)
+                {
+                    FingerprintData = new FingerprintData();
+                }
+                fingerprintImage = value;
+                NotifyPropertyChanged("CanAnalyze");
+            }
+        }
 
         
 

@@ -15,36 +15,18 @@ namespace FingerFinderPresenter.ViewModel
 
         public RelayCommand CmdChooseSequence { get; set; }
 
-        public int SelectedTab { get { return selectedTab; } set { selectedTab = value; NotifyPropertyChanged(); selectedIndexChanged(value); } }
+        private int tresholdLevel = 160;
+        public int TresholdLevel { get { return tresholdLevel; } set { tresholdLevel = value; NotifyPropertyChanged(); } }
 
 
-        private Visibility[] visibilities = new Visibility[5];
-
-        public Visibility VisibilityIntroduction { get { return visibilities[0]; } set { visibilities[0] = value; NotifyPropertyChanged(); } }
-
-        public Visibility VisibilityPreprocess {
-            get { return visibilities[1]; }
-            set {
-                visibilities[1] = value; NotifyPropertyChanged();
-                NotifyPropertyChanged("VisibilitySequenceOne");
-                NotifyPropertyChanged("VisibilitySequenceTwo");
-            }
-        }
-        public Visibility VisibilitySequenceOne { get { return getSequenceVisibility(visibilities[2]); } set { visibilities[2] = value; NotifyPropertyChanged(); } }
-        public Visibility VisibilitySequenceTwo { get { return getSequenceVisibility(visibilities[3]); } set { visibilities[3] = value; NotifyPropertyChanged(); } }
-
-        public Visibility VisibilityAnalyze { get { return visibilities[4]; } set { visibilities[4] = value; NotifyPropertyChanged(); } }
-
-        private Dictionary<Stage, int> stageTabDictionary;
-
-        private void InitializeStages()
+        private void InitializePreprocess()
         {
             PreviousStage = new RelayCommand(
             o => { Preprocesor.stepBackward(); },
                 o => Preprocesor.canStepBackward()
                 );
             NextStage = new RelayCommand(
-                o => { Preprocesor.stepForward(); },
+                o => { Preprocesor.stepForward(getParameters()); },
                 o => Preprocesor.canStepForward()
                 );
             PreviewChanges = new RelayCommand(
@@ -63,99 +45,53 @@ namespace FingerFinderPresenter.ViewModel
                     }
                 }
                 );
-
-            VisibilityIntroduction = Visibility.Visible;
-
-            VisibilityPreprocess = Visibility.Collapsed;
-            VisibilitySequenceOne = Visibility.Collapsed;
-            VisibilitySequenceTwo = Visibility.Collapsed;
-
-            VisibilityAnalyze = Visibility.Collapsed;
-
-            stageTabDictionary = createStageTabDictionary();
-
         }
 
         private void previewChanges()
         {
             if (Preprocesor.CurrentStage.Equals(SkeletoniserStage.Equalised))
             {
-                CurrentlyRenderedImage = Preprocesor.peekForward();
+                CurrentlyRenderedImage = Preprocesor.peekForward(getParameters());
             }
         }
 
-        private Dictionary<Stage, int> createStageTabDictionary()
+        private dynamic getParameters()
         {
-            var dictionary = new Dictionary<Stage, int>();
-            dictionary[Stage.JustOpened] = 0;
-            dictionary[Stage.ChoosingSequence] = 1;
+            dynamic parameters = new System.Dynamic.ExpandoObject();
 
-            dictionary[SkeletoniserStage.Original] = 2;
-            dictionary[SkeletoniserStage.Equalised] = 3;
-            dictionary[SkeletoniserStage.Tresholded] = 4;
-            dictionary[Stage.Final] = 8;
-
-            return dictionary;
+            if (Preprocesor.CurrentStage.Equals(SkeletoniserStage.Equalised))
+            {
+                parameters.TresholdLevel = TresholdLevel;
+            }
+            return parameters;
         }
 
         private void ChooseSequence(int sequence)
         {
-            VisibilitySequenceOne = Visibility.Collapsed;
-            VisibilitySequenceTwo = Visibility.Collapsed;
-
-            ASequence select;
-            if(sequence == 1)
+            ASequence select = null;
+            switch (sequence)
             {
-                VisibilitySequenceOne = Visibility.Visible;
-                select = new SequenceSkeletisation();
-            } else
-            {
-                VisibilitySequenceTwo = Visibility.Visible;
-                select = new SequenceSlimify();
+                case 1:
+                    select = new SequenceSkeletisation();
+                    break;
+                case 2:
+                    select = new SequenceSlimify();
+                    break;
             }
             Preprocesor.SelectedSequence = select;
+            updateSequenceVisibilities(select);
 
         }
 
         private void StageChanged(object sender, StageChangedEventArgs e)
         {
             //Console.WriteLine($"Stage changed from {e.OldStage} to {e.NewStage}");
-            VisibilityIntroduction = Visibility.Collapsed;
-            VisibilityPreprocess = Visibility.Collapsed;
-            VisibilityAnalyze = Visibility.Collapsed;
-
-            if (e.NewStage == Stage.Final)
-            {
-                VisibilityAnalyze = Visibility.Visible;
-            }
-            else
-            {
-                VisibilityPreprocess = Visibility.Visible;
-            }
+            updateVisibilities(e.NewStage);
             SelectedTab = stageToTabIndex(e.NewStage);
-        }
-
-        private Visibility getSequenceVisibility(Visibility individual)
-        {
-            if(VisibilityPreprocess != Visibility.Visible)
+            if(e.NewStage == Stage.Final)
             {
-                return Visibility.Collapsed;
+                Analyzer.FingerprintImage = Preprocesor.CurrentImage;
             }
-            return individual;
-        }
-
-        private int stageToTabIndex(Stage stage)
-        {
-            if (stageTabDictionary.ContainsKey(stage))
-            {
-                return stageTabDictionary[stage];
-            }
-            Console.Error.WriteLine("Tab index was not found for stage " + stage);
-            if (stageTabDictionary.ContainsKey(Stage.ChoosingSequence)){ // TODO: add error tab
-                return stageTabDictionary[Stage.ChoosingSequence];
-            }
-            Console.Error.WriteLine("Missing tab index for original stage");
-            return 0;
         }
     }
 }

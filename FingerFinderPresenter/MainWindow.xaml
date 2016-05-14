@@ -94,7 +94,7 @@
                     </Grid>
                 </TabItem>
                 
-                <TabItem x:Name="tab_chooseSequence" Header="Výběr způsobu předzpracování" Style="{StaticResource GroupPreprocess}">
+                <TabItem x:Name="tab_chooseSequence" Header="Výběr způsobu předzpracování" Visibility="{Binding VisibilityChooseSequence}">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

@@ -43,7 +43,7 @@ namespace FingerFinderPresenter.ViewModel
             try
             { 
                 Preprocesor.loadAndCreateFrom(openFileDialog.FileName);
-                Preprocesor.CurrentStage = Stage.ChoosingSequence;
+                Console.WriteLine("Import successfull: " + openFileDialog.FileName);
             }
             catch (Exception ex)
             {

@@ -28,7 +28,7 @@ namespace FingerFinderPresenter.ViewModel
         {
             CmdAnalyze = new RelayCommand(
                 o => { Analyzer.analyzeFingerprint(); },
-                o => Analyzer.CanAnalyze
+                o => Preprocesor.CurrentStage == Stage.Final && Analyzer.CanAnalyze
                 );
         }
 

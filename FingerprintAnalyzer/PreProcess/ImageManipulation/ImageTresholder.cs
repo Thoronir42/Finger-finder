@@ -14,8 +14,6 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
     {
         public static ImageTresholder Instance { get; } = new ImageTresholder();
 
-        public int TresholdLevel { get; set; } = 128;
-
         private ImageTresholder() { }
 
         public override Image transform(Image original, dynamic parameters = null)
@@ -28,7 +26,7 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
             {
                 for (int x = 0; x < original.Width; x++)
                 {
-                    gray = (colorToLuminance(origBitmap.GetPixel(x, y)) < TresholdLevel) ? 0 : 255;
+                    gray = (colorToLuminance(origBitmap.GetPixel(x, y)) < parameters.TresholdLevel) ? 0 : 255;
 
                     Color c2 = Color.FromArgb(gray, gray, gray);
                     result.SetPixel(x, y, c2);

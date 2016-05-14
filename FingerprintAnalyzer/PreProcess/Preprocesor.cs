@@ -21,6 +21,9 @@ namespace FingerprintAnalyzer.PreProcess
         {
             Image fingerprint = Image.FromFile(fileName);
             this.createNewFromImage(fingerprint);
+
+            SelectedSequence = null;
+            CurrentStage = Stage.ChoosingSequence;
         }
 
         /// <summary>

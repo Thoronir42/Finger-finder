@@ -18,7 +18,10 @@ namespace FingerprintAnalyzer.PreProcess
             set
             {
                 selectedSequence = value;
-                CurrentStage = selectedSequence.CurrentStage;
+                if(selectedSequence != null) {
+                    CurrentStage = selectedSequence.CurrentStage;
+                }
+                
             }
         }
 
@@ -51,10 +54,10 @@ namespace FingerprintAnalyzer.PreProcess
             CurrentStage = SelectedSequence.StepBackward();
         }
 
-        public Image stepForward()
+        public Image stepForward(dynamic parameters = null)
         {
             Image newImage;
-            Stage newStage = SelectedSequence.StepForward(CurrentImage, out newImage);
+            Stage newStage = SelectedSequence.StepForward(CurrentImage, out newImage, parameters);
 
             Images[newStage] = newImage;
             CurrentStage = newStage;
@@ -62,10 +65,10 @@ namespace FingerprintAnalyzer.PreProcess
             return newImage;
         }
 
-        public Image peekForward()
+        public Image peekForward(dynamic parameters = null)
         {
             Image newImage;
-            SelectedSequence.StepForward(CurrentImage, out newImage, true);
+            SelectedSequence.StepForward(CurrentImage, out newImage, true, parameters);
             return newImage;
         }
 
@@ -78,7 +81,6 @@ namespace FingerprintAnalyzer.PreProcess
         {
             return SelectedSequence != null && SelectedSequence.CanStepBackward();
         }
-
 
         public Stage getStageBySelectedIndex(int index)
         {

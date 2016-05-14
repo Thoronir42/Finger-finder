@@ -46,6 +46,10 @@
     <Compile Include="Analyze\Analyzer.cs" />
     <Compile Include="Analyze\AnalyzerInOut.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageDuplicator.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageDirection.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrix.Pixel.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrix.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrixSign.cs" />
     <Compile Include="PreProcess\PreprocesorStages.cs" />
     <Compile Include="PreProcess\Preprocesor.cs" />
     <Compile Include="PreProcess\Sequences\ASequence.cs" />

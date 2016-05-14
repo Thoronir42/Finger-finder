@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FingerprintAnalyzer.PreProcess.ImageManipulation.ImageTools;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FingerprintAnalyzer.PreProcess.ImageManipulation
 {
@@ -18,22 +14,18 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
 
         public override Image transform(Image original, dynamic parameters = null)
         {
-            Bitmap origBitmap = new Bitmap(original);
-            Bitmap result = new Bitmap(original.Width, original.Height);
-            int gray;
+            ImageMatrix matrix = new ImageMatrix(new Bitmap(original));
 
             for (int y = 0; y < original.Height; y++)
             {
                 for (int x = 0; x < original.Width; x++)
                 {
-                    gray = (colorToLuminance(origBitmap.GetPixel(x, y)) < parameters.TresholdLevel) ? 0 : 255;
-
-                    Color c2 = Color.FromArgb(gray, gray, gray);
-                    result.SetPixel(x, y, c2);
+                    var pixel = matrix[x, y];
+                    pixel.Luminance = pixel.Luminance < parameters.TresholdLevel ? 0 : 255;
                 }
             }
 
-            return result;
+            return matrix.ToImage;
         }
     }
 }

@@ -23,16 +23,12 @@ namespace FingerprintAnalyzer
 
         public Type Load(string fileName)
         {
-            Type result;
-
             var xs = new XmlSerializer(typeof(Type));
 
             using (var reader = XmlReader.Create(fileName))
             {
-                result = (Type)xs.Deserialize(reader);
+                return (Type)xs.Deserialize(reader);
             }
-
-            return result;
         }
     }
 

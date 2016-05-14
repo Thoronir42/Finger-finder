@@ -16,6 +16,11 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
         public const float LUMINANCY_COEFICIENT_GREEN = 0.587f;
         public const float LUMINANCY_COEFICIENT_BLUE = 0.114f;
 
+        public static int colorToLuminance(Color c)
+        {
+            return (int)Math.Round(LUMINANCY_COEFICIENT_RED * c.R + LUMINANCY_COEFICIENT_GREEN * c.G + LUMINANCY_COEFICIENT_BLUE * c.B);
+        }
+
         /// <summary>
         /// Non-destructive image transformation
         /// </summary>
@@ -24,9 +29,6 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
         public abstract Image transform(Image original, dynamic parameters = null);
 
 
-        protected int colorToLuminance(Color c)
-        {
-            return (int)Math.Round(LUMINANCY_COEFICIENT_RED * c.R + LUMINANCY_COEFICIENT_GREEN * c.G + LUMINANCY_COEFICIENT_BLUE * c.B);
-        }
+        
     }
 }

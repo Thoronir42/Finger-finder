@@ -19,9 +19,7 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
 
         public override Image transform(Image original, dynamic parameters = null)
         {
-            Bitmap origBitmap = new Bitmap(original);
-
-            return origBitmap;
+            return new Bitmap(original);
         }
     }
 }

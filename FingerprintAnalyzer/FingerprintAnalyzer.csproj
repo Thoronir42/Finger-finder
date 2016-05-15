@@ -47,6 +47,7 @@
     <Compile Include="InOut\DataImageWrapper.cs" />
     <Compile Include="InOut\FingerprintIO.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageDuplicator.cs" />
+    <Compile Include="PreProcess\ImageManipulation\ImageTools\Histogram.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageDirection.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrix.Pixel.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrix.cs" />

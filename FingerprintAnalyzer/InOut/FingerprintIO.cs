@@ -19,15 +19,13 @@ namespace FingerprintAnalyzer.InOut
         /// <returns>Succesfullness of operation</returns>
         public bool load(string filePath, out Image destination, out FingerprintData data)
         {
-            var dataWrapper = XML.Load(filePath);
-
             try
             {
+                var dataWrapper = XML.Load(filePath);
                 data = dataWrapper.Item;
                 string imageFilepath = makeImageFilepath(filePath, dataWrapper.ImageFilename);
                 destination = Image.FromFile(imageFilepath);
-
-                Console.WriteLine("Loaded item: " + data);
+                
                 return true;
             }
             catch (Exception ex)
@@ -44,13 +42,7 @@ namespace FingerprintAnalyzer.InOut
             var pathParts = filepath.Split('\\');
             pathParts[pathParts.Length - 1] = imageFilename;
 
-            string imagePath = pathParts[0];
-            for(int i = 1; i < pathParts.Length; i++)
-            {
-                imagePath += "\\" + pathParts[i];
-            }
-
-            return imagePath;
+            return String.Join("\\", pathParts);
         }
 
         /// <summary>
@@ -94,13 +86,8 @@ namespace FingerprintAnalyzer.InOut
                 throw new FormatException("File name didn't contain extension");
             }
             pathParts[pathParts.Length - 1] = "png";
-            string path = pathParts[0];
-            for (int i = 1; i < pathParts.Length; i++)
-            {
-                path += "." + pathParts[i];
-            }
 
-            return path;
+            return String.Join(".", pathParts);
         }
     }
 }

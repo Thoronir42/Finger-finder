@@ -58,20 +58,22 @@ namespace FingerprintAnalyzer.Analyze
             FingerprintData.Category = FingerprintClassificator.classificate(FingerprintImage);
         }
 
+        public void Clear()
+        {
+            SetFingerprint(null, null);
+        }
+
         public void SetFingerprint(Image image, FingerprintData data)
         {
             FingerprintImage = image;
             FingerprintData = data;
-            canAnalyze = true;
+            CanAnalyze = image != null && data != null;
         }
 
         public void SetFingerprint(Image image, bool clearFingerprintData = false)
         {
-            FingerprintImage = image;
-            if(clearFingerprintData || FingerprintData == null)
-            {
-                FingerprintData = new FingerprintData();
-            }
+            FingerprintData data = (clearFingerprintData || FingerprintData == null) ? data = new FingerprintData() : null;
+            SetFingerprint(image, data);
         }
     }
 }

@@ -22,9 +22,7 @@ namespace FingerFinderPresenter.ViewModel
         private void InitializeCommands()
         {
 
-            CmdImport = new RelayCommand(
-                o => { ImportFingerprint(); }
-                );
+            CmdImport = new RelayCommand( o => { ImportFingerprint(); } );
             CmdLoad = new RelayCommand( o => { LoadFingerprintData(); } );
             CmdSave = new RelayCommand(
                 o => { SaveFingerprintData(); },
@@ -46,7 +44,7 @@ namespace FingerFinderPresenter.ViewModel
             {
                 Image image = Image.FromFile(openFileDialog.FileName);
                 Preprocesor.createNewFromImage(image);
-                Console.WriteLine("Import successfull: " + openFileDialog.FileName);
+                Analyzer.Clear();
             }
             catch (Exception ex)
             {

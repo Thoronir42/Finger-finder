@@ -97,11 +97,8 @@ namespace FingerFinderPresenter.ViewModel
                 return stageTabDictionary[stage];
             }
             Console.Error.WriteLine("Tab index was not found for stage " + stage);
-            if (stageTabDictionary.ContainsKey(Stage.ChoosingSequence)){ // TODO: add error tab
-                return stageTabDictionary[Stage.ChoosingSequence];
-            }
-            Console.Error.WriteLine("Missing tab index for original stage");
-            return 0;
+            
+            return stageTabDictionary[Stage.ChoosingSequence];
         }
     }
 }

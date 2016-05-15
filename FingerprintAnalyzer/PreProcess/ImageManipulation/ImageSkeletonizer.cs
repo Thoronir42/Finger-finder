@@ -24,12 +24,12 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
             Bitmap origBitmap = new Bitmap(original);
             ImageMatrix matrix = new ImageMatrixSign(origBitmap);
 
-            int min, X, Y;
+            int X, Y;
 
             X = matrix.Width - 1;
             Y = matrix.Height - 1;
 
-            min = findMin(matrix, X, Y);
+            minTransform(matrix, X, Y);
 
             negateTransform(matrix, X, Y);
 
@@ -39,7 +39,7 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
             return matrix.ToImage;
         }
 
-        private int findMin(ImageMatrix M, int X, int Y)
+        private void minTransform(ImageMatrix M, int X, int Y)
         {
             ImageMatrix.Pixel min = null;
 
@@ -74,12 +74,6 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
                     }
                 }
             }
-
-            if(min == null)
-            {
-                return 0;
-            }
-            return min.Luminance;
         }
 
         private void negateTransform(ImageMatrix M, int X, int Y)

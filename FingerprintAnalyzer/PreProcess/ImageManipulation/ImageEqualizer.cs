@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FingerprintAnalyzer.PreProcess.ImageManipulation.ImageTools;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FingerprintAnalyzer.PreProcess.ImageManipulation
 {
@@ -19,58 +15,23 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation
 
         public override Image transform(Image original, dynamic parameters = null)
         {
-            Bitmap origBitmap = new Bitmap(original);
-            Bitmap result = new Bitmap(original.Width, original.Height);
+            ImageMatrix matrix = new ImageMatrix(new Bitmap(original));
+            
+            Histogram histogram = matrix.Histogram;
+            int luminancyRange = histogram.Range;
+            double surfaceArea = matrix.Width * matrix.Height;
 
-            int max, min;
-            int[] histogram = new int[256];
-
-            scanImage(origBitmap, histogram, out max, out min);
-
-
-            int surface = original.Width * original.Height;
-            for (int y = 0; y < original.Height; y++)
+            for (int y = 0; y < matrix.Height; y++)
             {
-                for (int x = 0; x < original.Width; x++)
+                for (int x = 0; x < matrix.Width; x++)
                 {
-                    int luminance = colorToLuminance(origBitmap.GetPixel(x, y));
-                    double sum = 0;
-                    
-                    for (int n = 0; n < luminance; n++)
-                    {
-                        sum += histogram[n] / (double)surface;
-                    }
+                    double distribution = histogram.Distribution(matrix[x, y]) / surfaceArea;
 
-                    int gray = (int)((max - min) * sum + min);
-
-
-                    Color color = Color.FromArgb(gray, gray, gray);
-                    result.SetPixel(x, y, color);
+                    matrix[x, y].Luminance = (int)(luminancyRange * distribution + histogram.Min);
                 }
             }
 
-            return result;
-        }
-
-        private void scanImage(Bitmap image, int[] histogram, out int max, out int min)
-        {
-            max = 0;
-            min = 255;
-
-            for (int y = 0; y < image.Height; y++)
-            {
-                for (int x = 0; x < image.Width; x++)
-                {
-                    int luminance = colorToLuminance(image.GetPixel(x, y));
-
-                    histogram[luminance]++;
-
-                    if (max < luminance)
-                        max = luminance;
-                    if (min > luminance)
-                        min = luminance;
-                }
-            }
+            return matrix.ToImage;
         }
     }
 }

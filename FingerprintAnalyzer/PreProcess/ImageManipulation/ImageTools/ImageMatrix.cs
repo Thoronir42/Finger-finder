@@ -23,11 +23,11 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation.ImageTools
             get{
                 if(x < 0 || x >= Width)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
                 }
                 if(y < 0 || y >= Height)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
                 }
                 return new Pixel(this, x, y);
             }
@@ -49,6 +49,24 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation.ImageTools
             }
         }
 
+        public Histogram Histogram
+        {
+            get
+            {
+                Histogram histogram = new Histogram();
+
+                for (int y = 0; y < Height; y++)
+                {
+                    for (int x = 0; x < Width; x++)
+                    {
+                        int luminance = this[x, y];
+                        histogram[luminance]++;
+                    }
+                }
+                return histogram;
+            }
+
+        }
 
         public ImageMatrix(int[,] M)
         {
@@ -77,6 +95,7 @@ namespace FingerprintAnalyzer.PreProcess.ImageManipulation.ImageTools
             Height = IntMap.GetLength(1);
         }
 
+        
         protected virtual int getLuminance(Color c)
         {
             return AImageManipulator.colorToLuminance(c);

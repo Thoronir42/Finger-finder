@@ -30,5 +30,16 @@ namespace FingerFinderPresenter
         {
             this.Close();
         }
+
+        private void canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine("Canvas mouse up detected");
+            Canvas canvas = (sender as Canvas);
+
+            var count = ic_minutiae.Items.Count;
+            var position = e.GetPosition(canvas);
+
+            Console.WriteLine($"{count} [{position.X}, {position.Y}]");
+        }
     }
 }

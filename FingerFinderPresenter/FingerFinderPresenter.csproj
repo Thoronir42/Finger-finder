@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Toolkits\StageToTabIndexMapper.cs" />
+    <Compile Include="ViewModel\Converters\MinutiaConverter.cs" />
     <Compile Include="ViewModel\FingerFinder_inputOutput.cs" />
     <Compile Include="ViewModel\FingerFinder.cs" />
     <Compile Include="ViewModel\FingerFinder_analyze.cs" />

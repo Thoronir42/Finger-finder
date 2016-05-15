@@ -9,10 +9,12 @@ namespace FingerprintAnalyzer.Model
     /// </summary>
     public class Minutia
     {
+        [XmlAttribute("Type")]
+        public MinutiaType Type { get; set; } = MinutiaType.Unspecified;
+
         [XmlElement("Position")]
         public PointF Position { get; set; } = new PointF();
-        [XmlElement("Type")]
-        public MinutiaType Type { get; set; } = MinutiaType.Unspecified;
+        
 
         public override string ToString()
         {

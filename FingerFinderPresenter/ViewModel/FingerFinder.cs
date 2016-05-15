@@ -11,8 +11,6 @@ namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder : BaseModel
     {
-        private SolidColorBrush canvasBackground;
-
         private Image currentImage;
         private ImageSource fingerprintImageSource;
 
@@ -21,23 +19,13 @@ namespace FingerFinderPresenter.ViewModel
 
         
 
-        public SolidColorBrush CanvasBackground { get { return canvasBackground; } set { canvasBackground = value; NotifyPropertyChanged(); } }
-
         public Image CurrentlyRenderedImage
         {
             get { return currentImage; }
             set
             {
                 currentImage = value;
-
-                if (value == null)
-                {
-                    CanvasBackground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 80, 160));
-                    return;
-                }
-                CanvasBackground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-
-                FingerprintImageSource = GenericToolkit.imageToRenderTargetBitmap(value, CanvasWidth, CanvasHeight);
+                FingerprintImageSource = GenericToolkit.imageToImageSource(value, CanvasWidth, CanvasHeight);
             }
         }
         public ImageSource FingerprintImageSource { get { return fingerprintImageSource; } set { fingerprintImageSource = value; NotifyPropertyChanged(); } }
@@ -52,11 +40,6 @@ namespace FingerFinderPresenter.ViewModel
             InitializePostProcess();
             InitializeTabVisibility();
             Preprocesor.StageChanged += StageChanged;
-        }
-
-        private void selectedIndexChanged(int index)
-        {
-            CurrentlyRenderedImage = Preprocesor.getImageFor(Preprocesor.CurrentStage);
         }
     }
 

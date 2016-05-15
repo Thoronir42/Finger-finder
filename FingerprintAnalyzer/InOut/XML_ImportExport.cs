@@ -2,7 +2,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace FingerprintAnalyzer
+namespace FingerprintAnalyzer.InOut
 {
     /// <summary>
     /// Generic data importer/exporter
@@ -31,9 +31,4 @@ namespace FingerprintAnalyzer
             }
         }
     }
-
-    /// <summary>
-    /// Fingerprint specific data importer/exporter
-    /// </summary>
-    public class FingerprintXML : XML_ImportExport<FingerprintData> { }
 }

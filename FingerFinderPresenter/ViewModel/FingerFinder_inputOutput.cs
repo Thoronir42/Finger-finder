@@ -1,5 +1,6 @@
 ﻿using FingerprintAnalyzer.Analyze;
 using FingerprintAnalyzer.Model;
+using FingerprintAnalyzer.InOut;
 using FingerprintAnalyzer.PreProcess.Sequences;
 using Microsoft.Win32;
 using System;
@@ -14,16 +15,17 @@ namespace FingerFinderPresenter.ViewModel
         public RelayCommand CmdLoad { get; set; }
         public RelayCommand CmdSave { get; set; }
 
+        public FingerprintIO IO { get; private set; } = new FingerprintIO();
+
+        private string IOFilter { get; } = String.Format("Otisk prstu (*.{0}) | *.{0};", FingerprintIO.FILE_EXTENSION);
+
         private void InitializeCommands()
         {
 
             CmdImport = new RelayCommand(
                 o => { ImportFingerprint(); }
                 );
-            CmdLoad = new RelayCommand(
-                o => { LoadFingerprintData(); },
-                o => false // TODO implement
-                );
+            CmdLoad = new RelayCommand( o => { LoadFingerprintData(); } );
             CmdSave = new RelayCommand(
                 o => { SaveFingerprintData(); },
                 o => Preprocesor.CurrentStage == Stage.Final
@@ -33,7 +35,7 @@ namespace FingerFinderPresenter.ViewModel
         private bool ImportFingerprint()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.tif, *.png) | *.jpg; *.jpeg; *.tif; *.png";
+            openFileDialog.Filter = "Obrázek (*.jpg, *.jpeg, *.tif, *.png) | *.jpg; *.jpeg; *.tif; *.png";
             if (openFileDialog.ShowDialog() != true)
             {
                 return false;
@@ -41,8 +43,9 @@ namespace FingerFinderPresenter.ViewModel
             Console.WriteLine("Importing from file: " + openFileDialog.FileName);
 
             try
-            { 
-                Preprocesor.loadAndCreateFrom(openFileDialog.FileName);
+            {
+                Image image = Image.FromFile(openFileDialog.FileName);
+                Preprocesor.createNewFromImage(image);
                 Console.WriteLine("Import successfull: " + openFileDialog.FileName);
             }
             catch (Exception ex)
@@ -56,18 +59,37 @@ namespace FingerFinderPresenter.ViewModel
         private bool SaveFingerprintData()
         {
             SaveFileDialog saver = new SaveFileDialog();
-            saver.Filter = "Otisk prstu (*.fpr) | *.fpr;";
+            
+            saver.Filter = IOFilter;
             if (saver.ShowDialog() != true)
             {
                 return false;
             }
-            Analyzer.saveToFile(saver.FileName);
-            return true;
+            return IO.save(saver.FileName, Analyzer.FingerprintData, Analyzer.FingerprintImage);
         }
 
         private bool LoadFingerprintData()
         {
-            return false;
+            OpenFileDialog opener = new OpenFileDialog();
+            opener.Filter = IOFilter;
+            if(opener.ShowDialog() != true)
+            {
+                return false;
+            }
+
+            Image img;
+            FingerprintData data;
+
+            if (!IO.load(opener.FileName, out img, out data))
+            {
+                return false;
+            }
+
+            Analyzer.SetFingerprint(img, data);
+            Preprocesor.SelectedSequence = new SequenceLoaded();
+            CurrentlyRenderedImage = img;
+
+            return true;
         }
 
     }

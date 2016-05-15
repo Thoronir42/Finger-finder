@@ -9,8 +9,13 @@ namespace FingerFinderPresenter
 {
     class GenericToolkit
     {
-        public static RenderTargetBitmap imageToRenderTargetBitmap(Image originalImage, int reqWidth, int reqHeight)
+        public static ImageSource imageToImageSource(Image originalImage, int reqWidth, int reqHeight)
         {
+            if(originalImage == null)
+            {
+                return null;
+            }
+
             BitmapImage fingerprint = new BitmapImage();
 
             using (MemoryStream memory = new MemoryStream())

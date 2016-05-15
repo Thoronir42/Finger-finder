@@ -22,29 +22,19 @@ namespace FingerFinderPresenter.ViewModel
         private void InitializePreprocess()
         {
             PreviousStage = new RelayCommand(
-            o => { Preprocesor.stepBackward(); },
+                o => { Preprocesor.stepBackward(); },
                 o => Preprocesor.canStepBackward()
-                );
+            );
             NextStage = new RelayCommand(
                 o => { Preprocesor.stepForward(getParameters()); },
                 o => Preprocesor.canStepForward()
-                );
+            );
             PreviewChanges = new RelayCommand(
                 o => { previewChanges(); },
-
                 o => Preprocesor.PreviewAvailable
             );
 
-            CmdChooseSequence = new RelayCommand(
-                o => {
-                    int seq;
-                    if(int.TryParse(o.ToString(), out seq))
-                    {
-                        Console.WriteLine(seq);
-                        ChooseSequence(seq);
-                    }
-                }
-                );
+            CmdChooseSequence = new RelayCommand( o => { ChooseSequence(o); });
         }
 
         private void previewChanges()
@@ -66,6 +56,15 @@ namespace FingerFinderPresenter.ViewModel
             return parameters;
         }
 
+        private void ChooseSequence(object param)
+        {
+            int seq;
+            if (int.TryParse(param.ToString(), out seq))
+            {
+                Console.WriteLine(seq);
+                ChooseSequence(seq);
+            }
+        }
         private void ChooseSequence(int sequence)
         {
             ASequence select = null;
@@ -86,11 +85,15 @@ namespace FingerFinderPresenter.ViewModel
         private void StageChanged(object sender, StageChangedEventArgs e)
         {
             //Console.WriteLine($"Stage changed from {e.OldStage} to {e.NewStage}");
-            updateVisibilities(e.NewStage);
+            updateTabVisibilities(e.NewStage);
             SelectedTab = stageToTabIndex(e.NewStage);
             if(e.NewStage == Stage.Final)
             {
-                Analyzer.FingerprintImage = Preprocesor.CurrentImage;
+                Analyzer.SetFingerprint(Preprocesor.CurrentImage);
+                CurrentlyRenderedImage = Analyzer.FingerprintImage;
+            } else
+            {
+                CurrentlyRenderedImage = Preprocesor.CurrentImage;
             }
         }
     }

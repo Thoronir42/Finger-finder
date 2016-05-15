@@ -15,9 +15,9 @@
         <DataTemplate DataType="{x:Type Model:Minutia}" x:Key="MinutiaTpl">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="["/>
-                <TextBlock Text="{Binding Position.X, StringFormat=\{0:F4\}}"/>
+                <TextBlock Text="{Binding Position.X, StringFormat=\{0:F3\}}"/>
                 <TextBlock Text="; "/>
-                <TextBlock Text="{Binding Position.Y, StringFormat=\{0:F4\}}"/>
+                <TextBlock Text="{Binding Position.Y, StringFormat=\{0:F3\}}"/>
                 <TextBlock Text="] "/>
                 <TextBlock Text="{Binding Type}"/>
             </StackPanel>
@@ -35,8 +35,8 @@
             <MenuItem Header="Soubor">
                 <MenuItem Header="Import" Command="{Binding CmdImport}"/>
                 <Separator/>
-                <MenuItem Header="Otevřít"  InputGestureText="Ctrl+O"/>
-                <MenuItem x:Name="MenuItem_save" Header="Uložit"  InputGestureText="Ctrl+S" Command="{Binding CmdSave}"/>
+                <MenuItem Header="Otevřít" InputGestureText="Ctrl+O" Command="{Binding CmdLoad}"/>
+                <MenuItem Header="Uložit"  InputGestureText="Ctrl+S" Command="{Binding CmdSave}"/>
                 <Separator/>
                 <MenuItem Header="Zavřít" Click="MenuItem_close_Click"  InputGestureText="Alt+F4"/>
             </MenuItem>

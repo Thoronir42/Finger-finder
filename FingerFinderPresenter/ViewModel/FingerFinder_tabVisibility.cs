@@ -10,7 +10,14 @@ namespace FingerFinderPresenter.ViewModel
     partial class FingerFinder
     {
         private int selectedTab = 0;
-        public int SelectedTab { get { return selectedTab; } set { selectedTab = value; NotifyPropertyChanged(); selectedIndexChanged(value); } }
+        public int SelectedTab {
+            get { return selectedTab; }
+            set
+            {
+                selectedTab = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private Visibility[] visibilities = new Visibility[6];
 
@@ -34,7 +41,7 @@ namespace FingerFinderPresenter.ViewModel
 
         private void InitializeTabVisibility()
         {
-            updateVisibilities(Stage.JustOpened);
+            updateTabVisibilities(Stage.JustOpened);
             updateSequenceVisibilities(null);
 
             stageTabDictionary = createStageTabDictionary();
@@ -61,7 +68,7 @@ namespace FingerFinderPresenter.ViewModel
             VisibilitySequenceTwo = boolToVisible(typeof(SequenceSlimify).Equals(selectedType));
         }
 
-        private void updateVisibilities(Stage currentStage)
+        private void updateTabVisibilities(Stage currentStage)
         {
             VisibilityIntroduction = boolToVisible(currentStage.Equals(Stage.JustOpened));
             VisibilityChooseSequence = boolToVisible(currentStage.Equals(Stage.ChoosingSequence));

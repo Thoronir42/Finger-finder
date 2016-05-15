@@ -44,22 +44,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analyze\Analyzer.cs" />
-    <Compile Include="Analyze\AnalyzerInOut.cs" />
+    <Compile Include="InOut\DataImageWrapper.cs" />
+    <Compile Include="InOut\FingerprintIO.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageDuplicator.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageDirection.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrix.Pixel.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrix.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageMatrixSign.cs" />
-    <Compile Include="PreProcess\PreprocesorStages.cs" />
     <Compile Include="PreProcess\Preprocesor.cs" />
     <Compile Include="PreProcess\Sequences\ASequence.cs" />
+    <Compile Include="PreProcess\Sequences\SequenceLoaded.cs" />
     <Compile Include="PreProcess\Sequences\SequenceSlimify.cs" />
     <Compile Include="PreProcess\Sequences\SequenceSkeletisation.cs" />
     <Compile Include="PreProcess\Sequences\Stage.cs" />
     <Compile Include="Analyze\FingerprintClassificator.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="PreProcess\Sequences\SkeletoniserStage.cs" />
-    <Compile Include="XML_ImportExport.cs" />
+    <Compile Include="InOut\XML_ImportExport.cs" />
     <Compile Include="Analyze\MinutiaeDetector.cs" />
     <Compile Include="Model\Fingerprint.cs" />
     <Compile Include="PreProcess\ImageManipulation\AImageManipulator.cs" />

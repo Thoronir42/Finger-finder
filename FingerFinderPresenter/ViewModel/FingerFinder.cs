@@ -37,7 +37,7 @@ namespace FingerFinderPresenter.ViewModel
         {
             InitializeCommands();
             InitializePreprocess();
-            InitializePostProcess();
+            InitializeAnalyze();
             InitializeTabVisibility();
             Preprocesor.StageChanged += StageChanged;
         }

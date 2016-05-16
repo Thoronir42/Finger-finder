@@ -61,24 +61,15 @@ namespace FingerFinderPresenter.ViewModel
             int seq;
             if (int.TryParse(param.ToString(), out seq))
             {
-                Console.WriteLine(seq);
                 ChooseSequence(seq);
             }
         }
         private void ChooseSequence(int sequence)
         {
-            ASequence select = null;
-            switch (sequence)
-            {
-                case 1:
-                    select = new SequenceSkeletisation();
-                    break;
-                case 2:
-                    select = new SequenceSlimify();
-                    break;
-            }
+            ASequence select = ASequence.getSequence(sequence);
             Preprocesor.SelectedSequence = select;
-            updateSequenceVisibilities(select);
+            Type type = select == null ? null : select.GetType();
+            updateSequenceVisibilities(type);
 
         }
 
@@ -94,6 +85,10 @@ namespace FingerFinderPresenter.ViewModel
             } else
             {
                 CurrentlyRenderedImage = Preprocesor.CurrentImage;
+            }
+            if(e.OldStage == Stage.Final)
+            {
+                Analyzer.Clear();
             }
         }
     }

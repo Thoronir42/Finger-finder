@@ -7,18 +7,46 @@ namespace FingerprintAnalyzer.Model
     /// <summary>
     /// Minutia container
     /// </summary>
-    public class Minutia
+    public class Minutia : BaseModel
     {
+        private MinutiaType type = MinutiaType.Unspecified;
         [XmlAttribute("Type")]
-        public MinutiaType Type { get; set; } = MinutiaType.Unspecified;
+        public MinutiaType Type {
+            get { return type; }
+            set
+            {
+                type = value;
+                NotifyPropertyChanged();
+            }
+        }
 
-        [XmlElement("Position")]
-        public PointF Position { get; set; } = new PointF();
+        private PointF position = new PointF();
         
+        [XmlElement("X")]
+        public float X {
+            get { return position.X; }
+            set
+            {
+                position.X = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [XmlElement("Y")]
+        public float Y
+        {
+            get { return position.Y; }
+            set
+            {
+                position.Y = value;
+                NotifyPropertyChanged();
+            }
+        }
+
 
         public override string ToString()
         {
-            return $"{Type} at [{Position.X}, {Position.Y}]";
+            return $"{Type} at [{X}, {Y}]";
         }
     }
 

@@ -15,8 +15,7 @@ namespace FingerprintAnalyzer.Analyze
 
             for (int i = 0; i < types.Length; i++)
             {
-                PointF point = new PointF((float)randVal.NextDouble(), (float)randVal.NextDouble());
-                Minutia minutia = new Minutia { Type = types[i], Position = point };
+                Minutia minutia = new Minutia { Type = types[i], X = (float)randVal.NextDouble(), Y = (float)randVal.NextDouble() };
                 minutiae.Add(minutia);
             }
             return minutiae;

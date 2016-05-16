@@ -7,6 +7,16 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
 {
     public abstract class ASequence
     {
+        public static ASequence getSequence(int n)
+        {
+            switch (n)
+            {
+                case 1: return new SequenceSkeletisation();
+                case 2: return new SequenceSlimify();
+            }
+            return null;
+        }
+
         public List<Stage> Stages { get; private set; }
         private int iCurrentStage;
 

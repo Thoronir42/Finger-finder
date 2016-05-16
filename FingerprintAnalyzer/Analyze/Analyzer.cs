@@ -72,7 +72,7 @@ namespace FingerprintAnalyzer.Analyze
 
         public void SetFingerprint(Image image, bool clearFingerprintData = false)
         {
-            FingerprintData data = (clearFingerprintData || FingerprintData == null) ? data = new FingerprintData() : null;
+            FingerprintData data = (clearFingerprintData || FingerprintData == null) ? new FingerprintData() : FingerprintData;
             SetFingerprint(image, data);
         }
     }

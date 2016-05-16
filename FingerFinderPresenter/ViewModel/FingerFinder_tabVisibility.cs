@@ -61,9 +61,8 @@ namespace FingerFinderPresenter.ViewModel
             return dictionary;
         }
 
-        private void updateSequenceVisibilities(ASequence selectedSequence)
+        private void updateSequenceVisibilities(Type selectedType)
         {
-            Type selectedType = selectedSequence == null ? null : selectedSequence.GetType();
             VisibilitySequenceOne = boolToVisible(typeof(SequenceSkeletisation).Equals(selectedType));
             VisibilitySequenceTwo = boolToVisible(typeof(SequenceSlimify).Equals(selectedType));
         }

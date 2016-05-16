@@ -24,11 +24,11 @@ namespace FingerFinderPresenter.ViewModel
 
         public RelayCommand CmdAnalyze { get; set; }
 
-        private void InitializePostProcess()
+        private void InitializeAnalyze()
         {
             CmdAnalyze = new RelayCommand(
                 o => { Analyzer.analyzeFingerprint(); },
-                o => Preprocesor.CurrentStage == Stage.Final && Analyzer.CanAnalyze
+                o => Analyzer.CanAnalyze
                 );
         }
 

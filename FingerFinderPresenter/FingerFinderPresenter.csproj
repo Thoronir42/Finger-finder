@@ -56,7 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\Converters\MinutiaConverter.cs" />
+    <Compile Include="ViewModel\Converters\MinutiaDimensionConverter.cs" />
+    <Compile Include="ViewModel\Converters\MinutiaTypeConverter.cs" />
     <Compile Include="ViewModel\FingerFinder_inputOutput.cs" />
     <Compile Include="ViewModel\FingerFinder.cs" />
     <Compile Include="ViewModel\FingerFinder_analyze.cs" />

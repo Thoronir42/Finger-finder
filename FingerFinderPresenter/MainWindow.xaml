@@ -24,7 +24,7 @@
                 <TextBlock Text="{Binding Type}"/>
             </StackPanel>
         </DataTemplate>
-        
+
         <Converters:MinutiaDimensionConverter x:Key="DimensionConverter" />
         <Converters:MinutiaTypeConverter x:Key="TypeConverter" />
     </Window.Resources>
@@ -209,7 +209,7 @@
                                   ItemTemplate="{StaticResource MinutiaTpl}" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}"
                                   IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedMinutia}"
                                   >
-                            
+
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Background">
@@ -249,58 +249,90 @@
                 <Button x:Name="button_previewChanges" Command="{Binding PreviewChanges}" Content="Náhlad změn"/>
             </StackPanel>
 
-            <ItemsControl x:Name="ic_minutiae" Grid.Column="1" Grid.RowSpan="1" Grid.Row="1" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}">
-
-                <ItemsControl.Background>
-                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
-                </ItemsControl.Background>
+            <Grid Grid.Column="1" Grid.RowSpan="1" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="25"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
                 
+                <ItemsControl x:Name="ic_minutiae" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}"
+                           Grid.Column="0" Grid.Row="0">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuColorKey}}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ItemsControl.Style>
+                    <ItemsControl.Resources>
+                        <System:Double x:Key="Radius">8</System:Double>
+                    </ItemsControl.Resources>
 
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas x:Name="canvas" MouseUp="canvas_MouseUp">
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="{Binding FingerprintImageSource}" Stretch="None" AlignmentX="Left" AlignmentY="Top">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
 
-                                </ImageBrush>
-                            </Canvas.Background>
-                        </Canvas>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                            <Canvas x:Name="canvas" MouseUp="canvas_MouseUp">
+                                <Canvas.Background>
+                                    <ImageBrush ImageSource="{Binding FingerprintImageSource}" Stretch="None" AlignmentX="Left" AlignmentY="Top" Opacity="0.4">
 
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="Canvas.Top" >
-                            <Setter.Value>
-                                <MultiBinding Converter="{StaticResource DimensionConverter}">
-                                    <Binding Path="Y"></Binding>
-                                </MultiBinding>
-                            </Setter.Value>
-                        </Setter>
+                                    </ImageBrush>
+                                </Canvas.Background>
+                            </Canvas>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                        <Setter Property="Canvas.Left">
-                            <Setter.Value>
-                                <MultiBinding Converter="{StaticResource DimensionConverter}">
-                                    <Binding Path="X"></Binding>
-                                    <Binding RelativeSource="{RelativeSource Self}" Path="FingerprintImageSource" />
-                                </MultiBinding>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource DimensionConverter}" ConverterParameter="{StaticResource Radius}">
+                                        <Binding Path="X" />
+                                        <Binding Path="DataContext.FingerprintImageSource.Width" 
+                                                 RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}">
+                                        </Binding>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Ellipse Width="5" Height="5">
-                            <Ellipse.Stroke>
-                                <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}">
-                                    
-                                </SolidColorBrush>
-                            </Ellipse.Stroke>
-                        </Ellipse>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Canvas.Top" >
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource DimensionConverter}" ConverterParameter="{StaticResource Radius}">
+                                        <Binding Path="Y" />
+                                        <Binding Path="DataContext.FingerprintImageSource.Height" 
+                                                 RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}">
+                                        </Binding>
+
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Ellipse Width="{StaticResource Radius}" Height="{StaticResource Radius}">
+                                <Ellipse.Stroke>
+                                    <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}">
+
+                                    </SolidColorBrush>
+                                </Ellipse.Stroke>
+                            </Ellipse>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Slider Minimum="0" Maximum="1" Value="{Binding SelectedMinutia.X}"
+                        Grid.Row="1" Orientation="Horizontal" />
+                <Slider x:Name="__" Minimum="0" Maximum="1" Value="{Binding SelectedMinutia.Y}"
+                        Grid.Column="1" Orientation="Vertical" IsDirectionReversed="True"/>
+
+            </Grid>
 
             <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center">
                 <TextBlock Text="Fáze: "/>

@@ -14,13 +14,13 @@ namespace FingerFinderPresenter.ViewModel.Converters
         private static Dictionary<MinutiaType, Color> prepareDictionary()
         {
             var d = new Dictionary<MinutiaType, Color>();
-            d[MinutiaType.Core] = Colors.PowderBlue;
-            d[MinutiaType.CrossoverOrBridge] = Colors.BlanchedAlmond;
+            d[MinutiaType.Core] = Colors.DarkCyan;
+            d[MinutiaType.CrossoverOrBridge] = Colors.Orange;
             d[MinutiaType.Delta] = Colors.DarkCyan;
             d[MinutiaType.Island] = Colors.DarkTurquoise;
             d[MinutiaType.RidgeBifurcation] = Colors.ForestGreen;
             d[MinutiaType.RidgeEnclosure] = Colors.Goldenrod;
-            d[MinutiaType.RidgeEnding] = Colors.Honeydew;
+            d[MinutiaType.RidgeEnding] = Colors.DarkOliveGreen;
             d[MinutiaType.ShortRidge] = Colors.HotPink;
             d[MinutiaType.Spur] = Colors.Indigo;
             d[MinutiaType.Unspecified] = Colors.Magenta;

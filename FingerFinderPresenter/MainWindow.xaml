@@ -27,6 +27,7 @@
 
         <Converters:MinutiaDimensionConverter x:Key="DimensionConverter" />
         <Converters:MinutiaTypeConverter x:Key="TypeConverter" />
+        <Converters:ImageSourceConverter x:Key="ImageSourceConverter"/>
     </Window.Resources>
 
 
@@ -279,7 +280,8 @@
 
                             <Canvas x:Name="canvas" MouseUp="canvas_MouseUp">
                                 <Canvas.Background>
-                                    <ImageBrush ImageSource="{Binding FingerprintImageSource}" Stretch="None" AlignmentX="Left" AlignmentY="Top" Opacity="0.4">
+                                    <ImageBrush ImageSource="{Binding CurrentImage, Converter={StaticResource ImageSourceConverter}}"
+                                                Stretch="None" AlignmentX="Left" AlignmentY="Top" Opacity="0.4">
 
                                     </ImageBrush>
                                 </Canvas.Background>
@@ -293,7 +295,7 @@
                                 <Setter.Value>
                                     <MultiBinding Converter="{StaticResource DimensionConverter}" ConverterParameter="{StaticResource Radius}">
                                         <Binding Path="X" />
-                                        <Binding Path="DataContext.FingerprintImageSource.Width" 
+                                        <Binding Path="DataContext.CurrentImage.Width" 
                                                  RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}">
                                         </Binding>
 
@@ -304,7 +306,7 @@
                                 <Setter.Value>
                                     <MultiBinding Converter="{StaticResource DimensionConverter}" ConverterParameter="{StaticResource Radius}">
                                         <Binding Path="Y" />
-                                        <Binding Path="DataContext.FingerprintImageSource.Height" 
+                                        <Binding Path="DataContext.CurrentImage.Height" 
                                                  RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}">
                                         </Binding>
 

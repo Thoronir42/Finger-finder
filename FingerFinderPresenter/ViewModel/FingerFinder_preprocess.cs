@@ -41,7 +41,7 @@ namespace FingerFinderPresenter.ViewModel
         {
             if (Preprocesor.CurrentStage.Equals(SkeletoniserStage.Equalised))
             {
-                CurrentlyRenderedImage = Preprocesor.peekForward(getParameters());
+                CurrentImage = Preprocesor.peekForward(getParameters());
             }
         }
 
@@ -81,10 +81,10 @@ namespace FingerFinderPresenter.ViewModel
             if(e.NewStage == Stage.Final)
             {
                 Analyzer.SetFingerprint(Preprocesor.CurrentImage);
-                CurrentlyRenderedImage = Analyzer.FingerprintImage;
+                CurrentImage = Analyzer.FingerprintImage;
             } else
             {
-                CurrentlyRenderedImage = Preprocesor.CurrentImage;
+                CurrentImage = Preprocesor.CurrentImage;
             }
             if(e.OldStage == Stage.Final)
             {

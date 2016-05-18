@@ -10,19 +10,22 @@ namespace FingerFinderPresenter.ViewModel.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            Single value = (Single)values[0];
-            if (values[1] == null || !values[1].GetType().Equals(typeof(Double)))
+            Single value;
+            double dimension;
+            double radius;
+            try
             {
-                Console.WriteLine("Dimension conversion error: " + values[1]);
-                return value;
+                value = (Single)values[0];
+                dimension = (Int32)values[1];
+                radius = (Double)parameter;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Dimension conversion error: ({values[1].GetType()} {values[1]}) \n+ {e}");
+                return Binding.DoNothing;
             }
 
-            double multipler = (double)values[1];
-            Console.WriteLine(parameter.GetType() + " " + parameter);
-            double radius = (parameter != null && parameter.GetType().Equals(typeof(Double))) ? (Double)parameter : 0;
-
-            Double result = value * multipler - radius / 2;
-
+            Double result = value * dimension - radius / 2;
             return  result;
         }
 

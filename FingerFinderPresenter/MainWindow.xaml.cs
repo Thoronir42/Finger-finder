@@ -24,6 +24,7 @@ namespace FingerFinderPresenter
         public MainWindow()
         {
             InitializeComponent();
+            System.Console.SetError(Console.Out);
         }
 
         private void MenuItem_close_Click(object sender, RoutedEventArgs e)

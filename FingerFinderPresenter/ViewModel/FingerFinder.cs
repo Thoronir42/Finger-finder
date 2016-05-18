@@ -12,26 +12,21 @@ namespace FingerFinderPresenter.ViewModel
     partial class FingerFinder : BaseModel
     {
         private Image currentImage;
-        private ImageSource fingerprintImageSource;
 
         public Preprocesor Preprocesor { get; } = new Preprocesor();
         public Analyzer Analyzer { get; } = new Analyzer();
 
         
 
-        public Image CurrentlyRenderedImage
+        public Image CurrentImage
         {
             get { return currentImage; }
             set
             {
                 currentImage = value;
-                FingerprintImageSource = GenericToolkit.imageToImageSource(value, CanvasWidth, CanvasHeight);
+                NotifyPropertyChanged();
             }
         }
-        public ImageSource FingerprintImageSource { get { return fingerprintImageSource; } set { fingerprintImageSource = value; NotifyPropertyChanged(); } }
-
-        public int CanvasWidth { get; } = 350;
-        public int CanvasHeight { get; } = 350;
 
         public FingerFinder()
         {

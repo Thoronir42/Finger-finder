@@ -85,7 +85,7 @@ namespace FingerFinderPresenter.ViewModel
 
             Analyzer.SetFingerprint(img, data);
             Preprocesor.SelectedSequence = new SequenceLoaded();
-            CurrentlyRenderedImage = img;
+            CurrentImage = img;
 
             return true;
         }

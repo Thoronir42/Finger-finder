@@ -185,57 +185,89 @@
                 <!--#endregion-->
                 <TabItem x:Name="tab_analysis" Header="Analýza" Style="{StaticResource GroupAnalyze}">
                     <Grid Background="#FFE5E5E5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="23"/>
-                            <RowDefinition Height="23"/>
-                            <RowDefinition Height="23"/>
+                            <RowDefinition Height="80"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.ColumnSpan="2" Content="Kostra otisku prstu"/>
-                        <Button Grid.Column="2" Command="{Binding CmdAnalyze}" Content="Spustit analýzu"/>
 
-                        <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" Text="{Binding SelectedMinutia.X}"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedMinutia.Y}"/>
-                        <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding MinutiaTypes, Mode=OneTime}" SelectedItem="{Binding SelectedMinutia.Type}"/>
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="27"/>
+                                <RowDefinition Height="27"/>
+                                <RowDefinition Height="27"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Column="0" Grid.ColumnSpan="2" Content="Markanty a kategorie otisku prstu"/>
+                            <Button Grid.Column="3" Command="{Binding CmdAnalyze}" Content="Spustit analýzu"/>
+                            <Label Grid.Row="1" Grid.Column="0" Content="Kategorie"/>
+                            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding FingerprintCategories, Mode=OneTime}" 
+                                      SelectedItem="{Binding Analyzer.FingerprintData.Category}"/>
+                            
+                            <Label Grid.Row="2" Grid.Column="0" Content="Popisek"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Analyzer.FingerprintData.Name}"/>
+                        </Grid>
 
-                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Kategorie"/>
-                        <ComboBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding FingerprintCategories, Mode=OneTime}" SelectedItem="{Binding Analyzer.FingerprintData.Category}"/>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="23"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            
 
-                        <ListBox  Grid.Row="3" Grid.ColumnSpan="3" x:Name="listBox" 
+                            <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" Text="{Binding SelectedMinutia.X}"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedMinutia.Y}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding MinutiaTypes, Mode=OneTime}" SelectedItem="{Binding SelectedMinutia.Type}"/>
+
+                            
+                            
+
+                            <Button Grid.Row="2" Grid.ColumnSpan="2" Content="Přidat markant" Command="{Binding CmdAddMinutia}"/>
+                            <Button Grid.Row="2" Grid.Column="2" Content="Odebrat vybraný markant" Command="{Binding CmdRemoveMinutia}"/>
+
+                            <ListBox  Grid.Row="3" Grid.ColumnSpan="3" x:Name="listBox"
                                   ItemTemplate="{StaticResource MinutiaTpl}" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}"
-                                  IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedMinutia}"
-                                  >
+                                  IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedMinutia}">
 
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}" Opacity="0.5">
-                                            </SolidColorBrush>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsSelected" Value="true"></Condition>
-                                            </MultiTrigger.Conditions>
-                                            <Setter Property="Background">
-                                                <Setter.Value>
-                                                    <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}" Opacity="0.5">
-                                                    </SolidColorBrush>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </MultiTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                        </ListBox>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}" Opacity="0.5"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="true"></Condition>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}" Opacity="0.5">
+                                                        </SolidColorBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </MultiTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Grid>
+
                     </Grid>
+                    
                 </TabItem>
             </TabControl>
 
@@ -330,9 +362,9 @@
                 </ItemsControl>
 
                 <Slider Minimum="0" Maximum="1" Value="{Binding SelectedMinutia.X}"
-                        Grid.Row="1" Orientation="Horizontal" />
+                        Grid.Row="1" Orientation="Horizontal" IsEnabled="{Binding IsMinutiaSelected}" />
                 <Slider x:Name="__" Minimum="0" Maximum="1" Value="{Binding SelectedMinutia.Y}"
-                        Grid.Column="1" Orientation="Vertical" IsDirectionReversed="True"/>
+                        Grid.Column="1" Orientation="Vertical" IsDirectionReversed="True" IsEnabled="{Binding IsMinutiaSelected}"/>
 
             </Grid>
 

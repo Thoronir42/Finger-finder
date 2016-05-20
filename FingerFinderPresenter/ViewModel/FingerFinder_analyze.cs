@@ -10,6 +10,8 @@ namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder
     {
+        public const int MINUTIA_COUNT_MAX = 40;
+
         public List<MinutiaType> MinutiaTypes
         {
             get { return Enum.GetValues(typeof(MinutiaType)).Cast<MinutiaType>().ToList(); }
@@ -20,9 +22,22 @@ namespace FingerFinderPresenter.ViewModel
         }
 
         private Minutia selectedMinutia = new Minutia { Type = MinutiaType.Unspecified };
-        public Minutia SelectedMinutia { get { return selectedMinutia; } set { selectedMinutia = value; NotifyPropertyChanged(); } }
+        public Minutia SelectedMinutia { get { return selectedMinutia; } set { selectedMinutia = value; NotifyPropertyChanged(); IsMinutiaSelected = value != null; } }
+
+        private bool isMinutiaSelected = false;
+        public bool IsMinutiaSelected
+        {
+            get { return isMinutiaSelected; }
+            set
+            {
+                isMinutiaSelected = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public RelayCommand CmdAnalyze { get; set; }
+        public RelayCommand CmdAddMinutia { get; set; }
+        public RelayCommand CmdRemoveMinutia { get; set; }
 
         private void InitializeAnalyze()
         {
@@ -30,6 +45,27 @@ namespace FingerFinderPresenter.ViewModel
                 o => { Analyzer.analyzeFingerprint(); },
                 o => Analyzer.CanAnalyze
                 );
+
+            CmdAddMinutia = new RelayCommand(
+                o => { addMinutia(); },
+                o => Analyzer.FingerprintData != null && Analyzer.FingerprintData.Minutiae.Count <= MINUTIA_COUNT_MAX
+                );
+            CmdRemoveMinutia = new RelayCommand(
+                o => { removeMinutia(); },
+                o => IsMinutiaSelected
+                );
+        }
+
+        private void addMinutia()
+        {
+            Minutia m = new Minutia { };
+            Analyzer.FingerprintData.Minutiae.Add(m);
+            SelectedMinutia = m;
+        }
+        private void removeMinutia()
+        {
+            Analyzer.FingerprintData.Minutiae.Remove(SelectedMinutia);
+            SelectedMinutia = null;
         }
 
     }

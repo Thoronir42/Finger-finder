@@ -9,13 +9,15 @@ using System.Windows.Media;
 
 namespace FingerFinderPresenter.ViewModel
 {
+    /// <summary>
+    /// ViewModel class used as DataContext for main window
+    /// </summary>
     partial class FingerFinder : BaseModel
     {
         private Image currentImage;
 
         public Preprocesor Preprocesor { get; } = new Preprocesor();
         public Analyzer Analyzer { get; } = new Analyzer();
-
         
 
         public Image CurrentImage

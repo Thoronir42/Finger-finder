@@ -33,7 +33,7 @@ namespace FingerFinderPresenter.ViewModel.Converters
                 }
                 return bitmapimage;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 Console.Error.WriteLine($"Invalid ImageSourceConverter usage: Attepmted conversion {value.GetType()} => {targetType}");
                 return Binding.DoNothing;

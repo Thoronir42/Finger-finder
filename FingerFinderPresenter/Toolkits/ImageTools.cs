@@ -11,20 +11,23 @@ namespace FingerFinderPresenter.Toolkits
 {
     class ImageTools
     {
+        /// <summary>
+        /// Scales provided image to largest dimensions that fill target size
+        /// </summary>
+        /// <param name="original">Image to be up/down-scaled</param>
+        /// <param name="targetWidth">Target width for upscaling</param>
+        /// <param name="targetHeight">Target height for upscaling</param>
+        /// <returns></returns>
         public static Image resize(Image original, double targetWidth, double targetHeight)
         {
-            double iWidth = original.Width, iHeight = original.Height;
-            double scale = Math.Min(targetWidth / iWidth, targetHeight / iHeight);
-
-            double
-                resultWidth = iWidth * scale,
-                resultHeight = iHeight * scale;
-
-            return ResizeImage(original, (int)resultWidth, (int)resultHeight);
+            double scale = Math.Min(targetWidth / original.Width, targetHeight / original.Height);
+            return ResizeImage(original, (int)(original.Width * scale), (int)(original.Height * scale));
         }
 
         /// <summary>
         /// Resize the image to the specified width and height.
+        /// 
+        /// Taken from http://stackoverflow.com/questions/1922040/resize-an-image-c-sharp
         /// </summary>
         /// <param name="image">The image to resize.</param>
         /// <param name="width">The width to resize to.</param>

@@ -5,11 +5,15 @@ using FingerprintAnalyzer.PreProcess.Sequences;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
+using FingerFinderPresenter.Toolkits;
 
 namespace FingerFinderPresenter.ViewModel
 {
     partial class FingerFinder : BaseModel
     {
+        public const int TARGET_IMAGE_WIDTH = 300;
+        public const int TARGET_IMAGE_HEIGHT = 300;
+
 
         public RelayCommand CmdImport { get; set; }
         public RelayCommand CmdLoad { get; set; }
@@ -43,6 +47,8 @@ namespace FingerFinderPresenter.ViewModel
             try
             {
                 Image image = Image.FromFile(openFileDialog.FileName);
+                image = ImageTools.resize(image, TARGET_IMAGE_WIDTH, TARGET_IMAGE_HEIGHT);
+
                 Preprocesor.createNewFromImage(image);
                 Analyzer.Clear();
             }
@@ -75,18 +81,19 @@ namespace FingerFinderPresenter.ViewModel
                 return false;
             }
 
-            Image img;
+            Image image;
             FingerprintData data;
 
-            if (!IO.load(opener.FileName, out img, out data))
+            if (!IO.load(opener.FileName, out image, out data))
             {
                 return false;
             }
 
-            Analyzer.SetFingerprint(img, data);
-            Preprocesor.Images[Stage.Final] = img;
+            image = ImageTools.resize(image, TARGET_IMAGE_WIDTH, TARGET_IMAGE_HEIGHT);
+
+            Analyzer.SetFingerprint(image, data);
+            Preprocesor.Images[Stage.Final] = image;
             Preprocesor.SelectedSequence = new SequenceLoaded();
-            CurrentImage = img;
 
             return true;
         }

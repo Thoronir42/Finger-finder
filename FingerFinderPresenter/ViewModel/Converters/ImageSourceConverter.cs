@@ -22,7 +22,8 @@ namespace FingerFinderPresenter.ViewModel.Converters
                 BitmapImage bitmapimage = new BitmapImage();
                 using (MemoryStream memory = new MemoryStream())
                 {
-                    (value as System.Drawing.Image).Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                    System.Drawing.Image original = (value as System.Drawing.Image);
+                    original.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
                     memory.Position = 0;
 
                     bitmapimage.BeginInit();

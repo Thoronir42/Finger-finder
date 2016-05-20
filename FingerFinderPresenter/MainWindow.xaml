@@ -201,13 +201,13 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            
+
                             <Label Grid.Column="0" Grid.ColumnSpan="2" Content="Markanty a kategorie otisku prstu"/>
                             <Button Grid.Column="3" Command="{Binding CmdAnalyze}" Content="Spustit analýzu"/>
                             <Label Grid.Row="1" Grid.Column="0" Content="Kategorie"/>
                             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding FingerprintCategories, Mode=OneTime}" 
                                       SelectedItem="{Binding Analyzer.FingerprintData.Category}"/>
-                            
+
                             <Label Grid.Row="2" Grid.Column="0" Content="Popisek"/>
                             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Analyzer.FingerprintData.Name}"/>
                         </Grid>
@@ -224,15 +224,10 @@
                                 <RowDefinition Height="23"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            
-                            
 
                             <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" Text="{Binding SelectedMinutia.X}"/>
                             <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding SelectedMinutia.Y}"/>
                             <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding MinutiaTypes, Mode=OneTime}" SelectedItem="{Binding SelectedMinutia.Type}"/>
-
-                            
-                            
 
                             <Button Grid.Row="2" Grid.ColumnSpan="2" Content="Přidat markant" Command="{Binding CmdAddMinutia}"/>
                             <Button Grid.Row="2" Grid.Column="2" Content="Odebrat vybraný markant" Command="{Binding CmdRemoveMinutia}"/>
@@ -265,9 +260,7 @@
                                 </ListBox.ItemContainerStyle>
                             </ListBox>
                         </Grid>
-
                     </Grid>
-                    
                 </TabItem>
             </TabControl>
 
@@ -284,16 +277,16 @@
 
             <Grid Grid.Column="1" Grid.RowSpan="1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="{Binding CurrentImage.Size.Width}"/>
                     <ColumnDefinition Width="25"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="{Binding CurrentImage.Size.Height}"/>
                     <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
-                
+
                 <ItemsControl x:Name="ic_minutiae" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}"
-                           Grid.Column="0" Grid.Row="0">
+                           Grid.Column="0" Grid.Row="0" RenderTransformOrigin="0,0">
                     <ItemsControl.Style>
                         <Style TargetType="ItemsControl">
                             <Setter Property="Background">
@@ -313,8 +306,7 @@
                             <Canvas x:Name="canvas" MouseUp="canvas_MouseUp">
                                 <Canvas.Background>
                                     <ImageBrush ImageSource="{Binding CurrentImage, Converter={StaticResource ImageSourceConverter}}"
-                                                Stretch="None" AlignmentX="Left" AlignmentY="Top" Opacity="0.4">
-
+                                                AlignmentX="Left" AlignmentY="Top" Opacity="0.4">
                                     </ImageBrush>
                                 </Canvas.Background>
                             </Canvas>
@@ -322,7 +314,7 @@
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
+                        <Style TargetType="FrameworkElement">
                             <Setter Property="Canvas.Left">
                                 <Setter.Value>
                                     <MultiBinding Converter="{StaticResource DimensionConverter}" ConverterParameter="{StaticResource Radius}">
@@ -350,11 +342,9 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Ellipse Width="{StaticResource Radius}" Height="{StaticResource Radius}">
+                            <Ellipse Width="{StaticResource Radius}" Height="{StaticResource Radius}" StrokeThickness="1.2">
                                 <Ellipse.Stroke>
-                                    <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}">
-
-                                    </SolidColorBrush>
+                                    <SolidColorBrush Color="{Binding Type, Converter={StaticResource TypeConverter}}"/>
                                 </Ellipse.Stroke>
                             </Ellipse>
                         </DataTemplate>

@@ -26,6 +26,7 @@ namespace FingerFinderPresenter.ViewModel.Converters
             }
 
             Double result = value * dimension - radius / 2;
+            //Console.WriteLine($"{value} * {dimension} - {radius / 2}= {result}");
             return  result;
         }
 

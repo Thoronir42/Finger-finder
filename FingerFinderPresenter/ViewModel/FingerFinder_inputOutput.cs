@@ -6,7 +6,6 @@ using Microsoft.Win32;
 using System;
 using System.Drawing;
 using FingerFinderPresenter.Toolkits;
-using FingerFinderPresenter.Properties;
 
 namespace FingerFinderPresenter.ViewModel
 {
@@ -92,7 +91,7 @@ namespace FingerFinderPresenter.ViewModel
             }
             if(version != Analyzer.CurrentVersion)
             {
-                Console.WriteLine($"Version of loaded file ({version}) does not match current version {}");
+                Console.WriteLine($"Version of loaded file ({version}) does not match current version {Analyzer.CurrentVersion}");
             }
 
             image = ImageTools.resize(image, TARGET_IMAGE_WIDTH, TARGET_IMAGE_HEIGHT);

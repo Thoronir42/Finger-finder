@@ -9,9 +9,9 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
     public class SkeletoniserStage : Stage
     {
         private static SkeletoniserStage
-            stageOriginal = new SkeletoniserStage("Original"),
-            stageEqualised = new SkeletoniserStage("Equalisation"),
-            stageTresholded = new SkeletoniserStage("Tresholding");
+            stageOriginal = new SkeletoniserStage("Původní snímek"),
+            stageEqualised = new SkeletoniserStage("Ekvalizovaný snímek"),
+            stageTresholded = new SkeletoniserStage("Naprahovaný snímek");
 
         public SkeletoniserStage(string label) : base(label) { }
 

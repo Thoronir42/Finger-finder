@@ -46,10 +46,6 @@
                 <Separator/>
                 <MenuItem Header="Zavřít" Click="MenuItem_close_Click"  InputGestureText="Alt+F4"/>
             </MenuItem>
-
-            <MenuItem Header="Analýza">
-                <MenuItem Header="Detekce markantů a klasifikace" Command="{Binding CmdAnalyze}"/>
-            </MenuItem>
         </Menu>
 
         <Grid>
@@ -190,7 +186,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0">
+                        <Grid Grid.Row="0"> <!-- General fingerprint data -->
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="27"/>
                                 <RowDefinition Height="27"/>
@@ -207,12 +203,13 @@
                             <Label Grid.Row="1" Grid.Column="0" Content="Kategorie"/>
                             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding FingerprintCategories, Mode=OneTime}" 
                                       SelectedItem="{Binding Analyzer.FingerprintData.Category}"/>
+                            <DatePicker Grid.Row="2" Grid.Column="2" SelectedDate="{Binding Analyzer.FingerprintData.DateSaved}"/>
 
                             <Label Grid.Row="2" Grid.Column="0" Content="Popisek"/>
                             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Analyzer.FingerprintData.Name}"/>
                         </Grid>
 
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="1"> <!-- Minutiae -->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60"/>
                                 <ColumnDefinition Width="60"/>
@@ -234,7 +231,7 @@
 
                             <ListBox  Grid.Row="3" Grid.ColumnSpan="3" x:Name="listBox"
                                   ItemTemplate="{StaticResource MinutiaTpl}" ItemsSource="{Binding Analyzer.FingerprintData.Minutiae}"
-                                  IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedMinutia}">
+                                  IsSynchronizedWithCurrentItem="False" SelectedItem="{Binding SelectedMinutia}" >
 
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">

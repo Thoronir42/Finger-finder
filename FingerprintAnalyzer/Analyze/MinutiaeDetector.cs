@@ -9,7 +9,7 @@ namespace FingerprintAnalyzer.Analyze
     {
         public List<Minutia> detectMinituae(Image fingerprintSkeleton)
         {
-            var types = (MinutiaType[])Enum.GetValues(typeof(MinutiaType));
+            var types = MinutiaType.GetAllValues();
             List<Minutia> minutiae = new List<Minutia>();
             Random randVal = new Random(413);
 

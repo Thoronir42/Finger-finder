@@ -6,9 +6,9 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
     {
         String label;
         private static Stage
-            stageJustOpened = new Stage("Just opened"),
-            stageChoosingSequence = new Stage("Choosing sequence"),
-            stageFinal = new Stage("Final");
+            stageJustOpened = new Stage("Úvod"),
+            stageChoosingSequence = new Stage("Výběr způsobu před-zpracování"),
+            stageFinal = new Stage("Finální fáze");
 
         public static Stage JustOpened { get { return stageJustOpened; } }
         public static Stage ChoosingSequence { get { return stageChoosingSequence; } }
@@ -24,7 +24,7 @@ namespace FingerprintAnalyzer.PreProcess.Sequences
 
         public override string ToString()
         {
-            return $"Stage {label}";
+            return $"{label}";
         }
 
 

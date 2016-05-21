@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System;
 using System.Drawing;
 using FingerFinderPresenter.Toolkits;
+using FingerFinderPresenter.Properties;
 
 namespace FingerFinderPresenter.ViewModel
 {
@@ -69,7 +70,7 @@ namespace FingerFinderPresenter.ViewModel
             {
                 return false;
             }
-            return IO.save(saver.FileName, Analyzer.FingerprintData, Analyzer.FingerprintImage);
+            return IO.save(saver.FileName, Analyzer.FingerprintData, Analyzer.FingerprintImage, Analyzer.CurrentVersion);
         }
 
         private bool LoadFingerprintData()
@@ -83,10 +84,15 @@ namespace FingerFinderPresenter.ViewModel
 
             Image image;
             FingerprintData data;
+            Version version;
 
-            if (!IO.load(opener.FileName, out image, out data))
+            if (!IO.load(opener.FileName, out image, out data, out version))
             {
                 return false;
+            }
+            if(version != Analyzer.CurrentVersion)
+            {
+                Console.WriteLine($"Version of loaded file ({version}) does not match current version {}");
             }
 
             image = ImageTools.resize(image, TARGET_IMAGE_WIDTH, TARGET_IMAGE_HEIGHT);

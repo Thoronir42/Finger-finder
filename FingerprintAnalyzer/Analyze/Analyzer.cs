@@ -9,6 +9,8 @@ namespace FingerprintAnalyzer.Analyze
     /// </summary>
     public partial class Analyzer : BaseModel
     {
+        public static Version CurrentVersion { get; } = new Version(0, 2);
+
         private FingerprintData fingerprintData;
         public FingerprintData FingerprintData {
             get { return fingerprintData; }

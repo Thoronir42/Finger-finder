@@ -2,13 +2,14 @@
 using System.Drawing;
 using System;
 using System.Drawing.Imaging;
+using System.Windows;
 
 namespace FingerprintAnalyzer.InOut
 {
     public class FingerprintIO
     {
         public const string FILE_EXTENSION = "fpr";
-        private XML_ImportExport<DataImageWrapper<FingerprintData>> XML { get; } = new XML_ImportExport<DataImageWrapper<FingerprintData>>();
+        private XML_ImportExport<FingerprintWrapper> XML { get; } = new XML_ImportExport<FingerprintWrapper>();
 
 
         /// <summary>
@@ -17,7 +18,7 @@ namespace FingerprintAnalyzer.InOut
         /// </summary>
         /// <param name="filePath">Location of file containing fingerprint data</param>
         /// <returns>Succesfullness of operation</returns>
-        public bool load(string filePath, out Image destination, out FingerprintData data)
+        public bool load(string filePath, out Image destination, out FingerprintData data, out Version version)
         {
             try
             {
@@ -25,14 +26,18 @@ namespace FingerprintAnalyzer.InOut
                 data = dataWrapper.Item;
                 string imageFilepath = makeImageFilepath(filePath, dataWrapper.ImageFilename);
                 destination = Image.FromFile(imageFilepath);
+                version = dataWrapper.Version;
                 
                 return true;
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine("Loading failed: " + ex);
+                MessageBox.Show("Nastala chyba při načítání souboru otisku prstu.", "Chyba načítání", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
                 data = null;
                 destination = null;
+                version = null;
                 return false;
             }
         }
@@ -51,12 +56,12 @@ namespace FingerprintAnalyzer.InOut
         /// </summary>
         /// <param name="filename">Desired destination for fingerprint data file</param>
         /// <returns>Succesfullness of operation</returns>
-        public bool save(string filename, FingerprintData data, Image image)
+        public bool save(string filename, FingerprintData data, Image image, Version version = null)
         {
             try
             {
                 string imagePath = saveImage(filename, image);
-                var wrapper = new DataImageWrapper<FingerprintData> { Item = data, ImageFilename = imagePath };
+                var wrapper = new FingerprintWrapper { Item = data, ImageFilename = imagePath, Version = version };
 
                 this.XML.Save(wrapper, filename);
                 return true;

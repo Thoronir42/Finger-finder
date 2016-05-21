@@ -48,6 +48,7 @@
     <Compile Include="InOut\DataImageWrapper.cs" />
     <Compile Include="InOut\FingerprintIO.cs" />
     <Compile Include="InOut\VersionXml.cs" />
+    <Compile Include="Model\MinutiaType.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageDuplicator.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\Histogram.cs" />
     <Compile Include="PreProcess\ImageManipulation\ImageTools\ImageDirection.cs" />

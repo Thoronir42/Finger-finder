@@ -18,7 +18,7 @@ namespace FingerFinderPresenter.ViewModel
         }
         public List<FingerprintCategory> FingerprintCategories
         {
-            get { return Enum.GetValues(typeof(FingerprintCategory)).Cast<FingerprintCategory>().ToList(); }
+            get { return FingerprintCategory.GetAllValues().ToList(); }
         }
 
         private Minutia selectedMinutia = new Minutia { Type = MinutiaType.Unspecified };

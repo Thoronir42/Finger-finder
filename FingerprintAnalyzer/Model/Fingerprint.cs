@@ -47,7 +47,7 @@ namespace FingerprintAnalyzer.Model
             }
         }
 
-        [XmlElement("Category")]
+        [XmlIgnore]
         public FingerprintCategory Category
         {
             get { return category; }
@@ -56,6 +56,13 @@ namespace FingerprintAnalyzer.Model
                 category = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        [XmlAttribute("Category")]
+        public string _CategoryString
+        {
+            get { return Category.Serialisation; }
+            set { Category = FingerprintCategory.ParseSerialiseString(value); }
         }
 
         public FingerprintData()
